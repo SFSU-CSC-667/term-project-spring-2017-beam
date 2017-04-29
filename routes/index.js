@@ -53,7 +53,7 @@ function checkAuth(req, res, next) {
 
 function getGameInfo (req, res, next) {
     if (debug) console.log('getGameInfo function called'); 
-    const data = {room_id: req.params.game_id};
+    const data = {room_id: req.params.room_id};
     pool.query('SELECT * FROM rooms WHERE id=$1',
             [data.room_id], function(err, result) {
                 req.gameExists = (result.rowCount > 0);
@@ -83,7 +83,7 @@ function checkIfInGame (req, res, next) {
         next();
         return;
     }
-    const data = {room_id: req.params.game_id, user_id: req.cookies.user_id};
+    const data = {room_id: req.params.room_id, user_id: req.cookies.user_id};
     pool.query('SELECT * FROM room_users WHERE room_id=$1 and user_id=$2',
             [data.room_id, data.user_id], function(err, result) {
                 req.inGame = (result.rowCount > 0);
@@ -100,7 +100,7 @@ function gameEnterFunction (req, res, next) {
         if (debug) console.log('game doesnt exist or already in game or game already started');
         return res.status(204).json();
     }
-    const data = {room_id: req.params.game_id, user_id: req.cookies.user_id};
+    const data = {room_id: req.params.room_id, user_id: req.cookies.user_id};
     // Get a Postgres client from the connection pool
 
     req.user_id_order.push(data.user_id);
@@ -205,7 +205,7 @@ function gameCreateFunction (req, res, next) {
 function gameRemoveFunction (req, res, next) {
     // Grab data from http request
     if (debug) console.log('gameRmoveFunction called'); 
-    const data = {room_id: req.params.game_id, user_id: req.cookies.user_id, target_user_id: req.body.target_user_id};
+    const data = {room_id: req.params.room_id, user_id: req.cookies.user_id, target_user_id: req.body.target_user_id};
     if (!req.gameExists || !req.inGame || req.gameStarted || (data.target_user_id != data.user_id && data.user_id != req.master_user_id)) {
         if (debug) console.log('cant remove from game');
         return res.status(204).json();
@@ -246,7 +246,7 @@ function gameMoveFunction (req, res, next) {
         room_id: req.room_id,
         user_id_order: req.user_id_order,
         master_user_id: req.master_user_id};
-    if (!req.gameExists) {
+    if (!req.gameExists || req.gameEnded || !data.amount || !data.roll) {
         return res.status(204).json();
     }
     //game exists
@@ -254,10 +254,6 @@ function gameMoveFunction (req, res, next) {
     //roll 8 = call liar
     //roll 9 = lost dice
     //roll 0 (database only) = marks last "ended" round
-
-    if (req.gameEnded) {
-        return res.status(204).json();
-    }
 
     if (!req.gameStarted) {
         if (data.master_user_id == req.cookies.user_id && data.roll == 7 && data.user_id_order.length > 1) {
@@ -459,6 +455,34 @@ function insertMove(room_id, user_id, round, roll, amount) {
             });
 }
 
+function insertMessage (room_id, user_id, message) {
+    pool.query('INSERT into chat_messages values ($1, $2, CURRENT_TIMESTAMP, $3)',
+            [room_id, user_id, message]);
+}
+
+function messageGameFunction (req, res, next) {
+    const data = {message: req.body.message, room_id: req.params.room_id};
+    if (data.message && req.gameExists) {
+        insertMessage( data.room_id, req.cookies.user_id, data.message);
+        return res.json();
+        //TODO update screen of everyone in room
+    } else {
+        return res.status(204).json();
+    }
+}
+
+function messageLobbyFunction (req, res, next) {
+    const data = {message: req.body.message};
+    if (data.message) {
+        insertMessage( 0, req.cookies.user_id, data.message);
+        return res.json();
+        //TODO update screen of everyone in lobby
+    } else {
+        return res.status(204).json();
+    }
+}
+    
+
 router.use(createTempUserIfNeeded);
 router.use(checkAuth);
 
@@ -467,15 +491,14 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
 });
 
+router.all('/message/:room_id', getGameInfo, messageGameFunction);
+router.all('/message/lobby', messageLobbyFunction);
 router.all('/game/create', gameCreateFunction);
-router.all('/game/:game_id/enter', getGameInfo, checkIfInGame, gameEnterFunction);
-router.all('/game/:game_id/move', getGameInfo, checkIfInGame, gameMoveFunction);
-router.all('/game/:game_id/remove_user', getGameInfo, checkIfInGame, gameRemoveFunction);
+router.all('/game/:room_id/enter', getGameInfo, checkIfInGame, gameEnterFunction);
+router.all('/game/:room_id/move', getGameInfo, checkIfInGame, gameMoveFunction);
+router.all('/game/:room_id/remove_user', getGameInfo, checkIfInGame, gameRemoveFunction);
 router.all('/user/login', loginFunction);
 router.all('/user/register', registerFunction);
 router.all('/user/edit', editUserFunction);
-router.get('/create', function(req, res, next) {
-    res.render('index', { title: req.cookies.display_name});
-});
 
 module.exports = router;
