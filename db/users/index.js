@@ -1,16 +1,21 @@
 const db = require( '../connection' )
 
 const ALL = `SELECT * FROM users`
-const FIND = `SELECT * FROM users WHERE id=$1`
+const FIND_BY_ID = `SELECT * FROM users WHERE id=$1`
 const AUTH = `SELECT * FROM users WHERE id=$1 and secret=$2`
 const CREATE = `INSERT into users (display_name, secret, registered) VALUES ('Guest', $1, false) RETURNING id, secret, display_name`
-const ALL_ACTIVE = `SELECT rooms.*, users.display_name AS master_user_display_name FROM rooms,users
-                    WHERE rooms.id > 0 AND rooms.ended IS NULL AND rooms.master_user_id = users.id`
+const CHECK_IF_REGISTERED = `SELECT * from users WHERE (id=$1 AND registered=true) OR email=$2`
+const REGISTER = `UPDATE users SET password=$1, email=$2, registered=true WHERE id=$3`
+const FIND_BY_EMAIL = `SELECT * from users WHERE email=$1`
+const UPDATE_DISPLAY_NAME = `UPDATE users SET display_name=$1 WHERE id=$2 RETURNING id, display_name`
 
 module.exports = {
   all: () => db.any( ALL ),
-  allActive: () => db.any( ALL_ACTIVE ),
-  find: id => db.oneOrNone( FIND, id ),
+  findById: id => db.oneOrNone( FIND_BY_ID, id ),
   auth: (id, secret) => db.oneOrNone( AUTH, [id, secret] ),
   create: secret => db.one( CREATE, secret ),
+  checkIfRegistered: (id, email) => db.any( CHECK_IF_REGISTERED, [id, email] ),
+  register: (password, email, id) => db.none( CHECK_IF_REGISTERED, [password, email, id] ),
+  findByEmail: email => db.oneOrNone( FIND_BY_EMAIL, email ),
+  updateDisplayName: (display_name, id) => db.oneOrNone( FIND_BY_EMAIL, [display_name, id] ),
 }
