@@ -1,13 +1,23 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	padding: 50px;
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+	color: #00B7FF;
 }
 
 .name {
-  color: #9d9d9d;
-  margin-top: 15px;
+	color: #9d9d9d;
+	margin-top: 15px;
+}
+
+#user-listing{
+	width: auto;
+	float: left
+}
+
+#lobby-chat{
+	width: 30%;
+	float: right;
 }

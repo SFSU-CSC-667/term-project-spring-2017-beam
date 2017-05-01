@@ -35,7 +35,7 @@ html
                 span.glyphicon.glyphicon-log-in
                 |  Login
 
-    .container
+    .container#user-listing
       h1   User Listing
 
       a.create-user(href='#') Create User
@@ -63,15 +63,14 @@ html
               td= room.name + '#' + room.id
               td= room.master_user_display_name + '#' + room.master_user_id
               td= room.max_players
-    .container
+    .container#lobby-chat
       h1    Lobby Chat
-      .container
-        form
-          .form-group
-            textarea#comment.form-control(readonly='', rows='5')
-            |  
-            input#comment.form-control
-            br
-            |textarea#comment.form-control(rows='5')
-            button.btn.navbar-right(type='submit') Send
+      form
+        .form-group
+          textarea#comment.form-control(readonly='', rows='5')
+          |  
+          input#comment.form-control
+          br
+          |textarea#comment.form-control(rows='5')
+          button.btn.navbar-right(type='submit') Send
 
