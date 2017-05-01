@@ -65,3 +65,13 @@ html
               td= room.max_players
     .container
       h1    Lobby Chat
+      .container
+        form
+          .form-group
+            textarea#comment.form-control(readonly='', rows='5')
+            |  
+            input#comment.form-control
+            br
+            |textarea#comment.form-control(rows='5')
+            button.btn.navbar-right(type='submit') Send
+
