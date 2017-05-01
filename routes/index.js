@@ -25,7 +25,7 @@ router.get( '/', ( request, response ) => {
 router.get( '/rooms', ( request, response ) => {
 
 
-  User.all()
+  User.allActive()
   .then( users => {
     const user_info = {
       id: 3,
