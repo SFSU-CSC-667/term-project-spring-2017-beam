@@ -19,7 +19,9 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.data' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
-    socket.emit( 'data', {email: 'notreallyanemail'})
+    const input = document.querySelector('input.chat_input').value
+
+    socket.emit( 'data', {email: input})
   })
 
   document.querySelector( 'a.signup' ).addEventListener( 'click', event => {
