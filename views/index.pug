@@ -26,20 +26,20 @@ html
                 span.glyphicon.glyphicon-log-out
                 |  Log Off
           else
-            li
-              a.signup(href='#signup')
-                span.glyphicon.glyphicon-user
-                |  Sign Up
-            li
-              a.login(href='#login')
-                span.glyphicon.glyphicon-log-in
-                |  Login
             form
-              .form-group
-                input.form-control.email_input
-                input.form-control.password_input
-
-        
+              li
+                input.email_input.form-control(placeholder='email')
+              li
+                input.password_input.form-control(placeholder='password')
+              li
+                a.signup(href='#signup')
+                  span.glyphicon.glyphicon-user
+                  |  Sign Up
+              li
+                a.login(href='#login')
+                  span.glyphicon.glyphicon-log-in
+                  |  Login
+          
     .container#user-listing
       h1   User Listing
 
@@ -73,12 +73,12 @@ html
       form
           textarea#chat_area.form-control(readonly='', rows='5')
           |  
-          input#chat_input.chat_input.form-control
+          input#chat_input.chat_input.form-control(placeholder='Enter chat message here')
           br
           |
           button.btn.navbar-right(type='submit') Send
 
     form
       .form-group
-        input.form-control.roll                 
-        input.form-control.amount              
+        input.form-control.roll(placeholder='roll')            
+        input.form-control.amount (placeholder='amount')             
