@@ -42,6 +42,10 @@ function checkAuth(req, res, next) {
         }});
 }
 
+
+router.use(createTempUserIfNeeded);
+router.use(checkAuth);
+
 router.get( '/', ( request, response ) => {
 
 
