@@ -1,16 +1,16 @@
 extends layout
 
 block content
-   ul.dropdown-menu
-   user_info.display_name + '#' + user_info.id
-   if (user_info.registered)
-      li
-        a(href='#login' style={color: 'green'}) Login //a(href='javascript:void(0)')
-    else
-      li
-        a(href='#log off' style={color: 'red'}) Log Off //a(href='javascript:void(0)')
-      li
-        a(href='#register' style={color: 'blue'}) Register //a(href='javascript:void(0)')
+  ul.dropdown-menu
+  p= user_info.display_name + '#' + user_info.id
+  if (user_info.registered)
+     li
+       a(href='#login' style={color: 'green'}) Login
+  else
+     li
+       a(href='#log off' style={color: 'red'}) Log Off 
+     li
+       a(href='#register' style={color: 'blue'}) Register
           
 
   h1 User Listing
