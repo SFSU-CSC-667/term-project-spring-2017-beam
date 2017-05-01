@@ -19,7 +19,8 @@ block content
         tr
           td= user.id
           td= user.email
-          td(class='dog-count-${user.id}') = user.dogCount || 0
+          td= 0
+   //       td(class=`dog-count-${user.id}`) = user.dogCount || 0
           td= user.registered
           td = user.id
           td = user.display_name
