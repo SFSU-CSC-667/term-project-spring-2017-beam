@@ -22,9 +22,9 @@ html
             p.name= 'Welcome, ' + user_info.display_name + '#' + user_info.id
           if(user_info.registered)
             li
-              a.logoff(href='#logoff')
+              a.logout(href='/logout')
                 span.glyphicon.glyphicon-log-out
-                |  Log Off
+                |  Log Out
           else
             li
               input.email_input.form-control(placeholder='email')

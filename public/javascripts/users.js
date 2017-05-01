@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.signup' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
-    socket.emit( 'signup', {email: 'teste@me.com', password: 'abc123'})
+
+
+    const email = document.querySelector('email_input').value
+    const password = document.querySelector('password_input').value
+    socket.emit( 'signup', {email: email, password: password})
   })
 })
