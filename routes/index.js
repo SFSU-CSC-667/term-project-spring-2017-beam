@@ -17,8 +17,8 @@ router.get( '/', ( request, response ) => {
       	id: 3,
       	registered: false,
       	display_name: 'Mike',
-      }
-      response.render( 'index', { users , user_info, rooms_info})
+:      }
+     response.render( 'index', { users , user_info, rooms_info})
     })
 })
 
