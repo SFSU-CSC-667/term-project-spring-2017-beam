@@ -18,7 +18,7 @@ router.get( '/', ( request, response ) => {
       	  room_name: 1,
       	  master_user_id: 2,
       	  master_user_display_name: 'Mike',
-      	  max_players: 4
+      	  max_players: 4,
       }
 
 	  const room_2 = {
@@ -26,7 +26,7 @@ router.get( '/', ( request, response ) => {
 	  	  room_name: 1,
 	  	  master_user_id: 3,
 	  	  master_user_display_name: 'Bob',
-	  	  max_players: 5
+	  	  max_players: 5,
 	  	}
       const rooms_info = [room_1, room_2]
 
