@@ -22,23 +22,23 @@ html
             p.name= 'Welcome, ' + user_info.display_name + '#' + user_info.id
           if(user_info.registered)
             li
-              a(href='#logoff')
+              a.logoff(href='#logoff')
                 span.glyphicon.glyphicon-log-out
                 |  Log Off
           else
             li
-              a(href='#signup')
+              a.signup(href='#signup')
                 span.glyphicon.glyphicon-user
                 |  Sign Up
             li
-              a(href='#login')
+              a.login(href='#login')
                 span.glyphicon.glyphicon-log-in
                 |  Login
 
     .container
       h1   User Listing
 
-      a.create-user(href='#') Create User
+      a.data(href='#') Send Data 
 
       table
         thead
@@ -72,6 +72,6 @@ html
             |  
             input#comment.form-control
             br
-            |textarea#comment.form-control(rows='5')
+            |
             button.btn.navbar-right(type='submit') Send
 

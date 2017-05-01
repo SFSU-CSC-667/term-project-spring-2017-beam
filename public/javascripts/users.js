@@ -15,9 +15,16 @@ socket.on( 'user-created', ({ id, email, dogCount }) => {
   tbody.innerHTML += row
 })
 
-document.querySelector( 'a.create-user' ).addEventListener( 'click', event => {
-  event.preventDefault()
-  event.stopPropagation()
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelector( 'a.data' ).addEventListener( 'click', event => {
+    event.preventDefault()
+    event.stopPropagation()
+    socket.emit( 'data', {email: 'notreallyanemail'})
+  })
 
-  socket.emit( 'please-create-user', { email: 'me@me.com' })
+  document.querySelector( 'a.signup' ).addEventListener( 'click', event => {
+    event.preventDefault()
+    event.stopPropagation()
+    socket.emit( 'signup', {email: 'teste@me.com', password: 'abc123'})
+  })
 })

@@ -15,7 +15,7 @@ module.exports = {
   auth: (id, secret) => db.oneOrNone( AUTH, [id, secret] ),
   create: secret => db.one( CREATE, secret ),
   checkIfRegistered: (id, email) => db.any( CHECK_IF_REGISTERED, [id, email] ),
-  register: (password, email, id) => db.none( CHECK_IF_REGISTERED, [password, email, id] ),
+  register: (password, email, id) => db.none( REGISTER, [password, email, id] ),
   findByEmail: email => db.oneOrNone( FIND_BY_EMAIL, email ),
   updateDisplayName: (display_name, id) => db.oneOrNone( FIND_BY_EMAIL, [display_name, id] ),
 }
