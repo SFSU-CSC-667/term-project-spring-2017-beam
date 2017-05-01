@@ -5,6 +5,27 @@ const router = express.Router()
 const { User, Room } = require( '../db' )
 const broadcast = require( '../src/broadcast' )
 
+
+
+function createTempUserIfNeeded(req, res, next) {
+    if (debug) console.log('createTempUserIfNeeded function called');
+    if (!req.cookies.user_id && !req.cookies.user_secret) {
+        var secret = randomstring.generate(60);
+        User.create(secret)
+        .then (result => ) {
+            req.cookies.user_id = result.rows[0].id;
+            req.cookies.user_secret = secret;
+            req.cookies.display_name = 'Guest';
+            res.cookie('display_name', 'Guest');
+            res.cookie('user_secret', secret);
+            res.cookie('user_id', result.rows[0].id);
+            next();
+        });
+    } else {
+        next();
+    }
+}
+
 router.get( '/', ( request, response ) => {
 
 
