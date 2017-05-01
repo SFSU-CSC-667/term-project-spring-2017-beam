@@ -25,8 +25,8 @@ router.get( '/', ( request, response ) => {
 router.get( '/rooms', ( request, response ) => {
 
 
-  User.allActive()
-  .then( users => {
+  const promise = User.allActive()
+  Promise.all([promise]).then( (users) => {
     const user_info = {
       id: 3,
       registered: false,
