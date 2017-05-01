@@ -13,10 +13,10 @@ html
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/users.js')
 
-    nav.navbar-inverse
+    nav.navbar
       .container-fluid
         .navbar-header
-          a.navbar-game(href='#lobby') Liar's Dice
+          a.navbar-brand(href='#lobby') Liar's Dice
         ul.nav.navbar-nav.navbar-right
           li
             p.name= 'Welcome, ' + user_info.display_name + '#' + user_info.id
