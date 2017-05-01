@@ -22,6 +22,8 @@ router.get( '/', ( request, response ) => {
     })
 })
 
+
+
 router.post( '/test', ( request, response ) => {
   User.create( faker.internet.email() )
     .then( user => broadcast( request.app.get( 'io' ), 'user-created', user ))
