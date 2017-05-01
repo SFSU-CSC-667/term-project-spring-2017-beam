@@ -3,6 +3,7 @@ const faker = require( 'faker' )
 const router = express.Router()
 
 const { User } = require( '../db' )
+const { Room } = require( '../db' )
 const broadcast = require( '../src/broadcast' )
 
 router.get( '/', ( request, response ) => {
