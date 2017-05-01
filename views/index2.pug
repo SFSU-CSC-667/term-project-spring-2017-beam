@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  h1 User Listing
+
+  a.create-user(href='#') Create User
+
+  table
+    thead
+      tr
+        th Id
+        th Email
+        th Dog Count
+        th registered
+        th id
+        th display_name
+    tbody
+      each user in users
+        tr
+          td= user.id
+          td= user.email
+          td= 0
+          //td(class=`dog-count-${user.id}`) = user.dogCount || 0
+          td= user_info.registered
+          td= user_info.display_name + '#' + user_info.id

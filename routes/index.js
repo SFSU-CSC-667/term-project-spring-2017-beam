@@ -32,7 +32,7 @@ router.get( '/rooms', ( request, response ) => {
       registered: false,
       display_name: 'Mike',
     }
-   response.render( 'index', { users , user_info})
+   response.render( 'index2', { users , user_info})
   })
 
 })
