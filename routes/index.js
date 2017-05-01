@@ -2,15 +2,14 @@ const express = require('express')
 const faker = require( 'faker' )
 const router = express.Router()
 
-const { User } = require( '../db' )
-const { Room } = require( '../db' )
+const { User, Room } = require( '../db' )
 const broadcast = require( '../src/broadcast' )
 
 router.get( '/', ( request, response ) => {
 
 
   const userPromise = User.all()
-  const roomsPromise = Room.allAcitve()
+  const roomsPromise = Room.allActive()
 
   Promise.all([userPromise,roomsPromise])
     .then( (users, rooms_info) => {
