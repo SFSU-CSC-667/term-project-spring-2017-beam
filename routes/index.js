@@ -52,11 +52,11 @@ router.get( '/', ( request, response ) => {
 
   const userPromise = User.all()
   const roomsPromise = Room.allActive()
-  const userInfo = User.findById(req.cookies.user_id)
+  const userInfo = User.findById(request.cookies.user_id)
 
   Promise.all([userPromise,roomsPromise, userInfo])
     .then( values  => {
-       response.render( 'index', { users: values[0] , values[2], rooms_info: values[1]})
+       response.render( 'index', { users: values[0] , user_info: values[2], rooms_info: values[1]})
     })
 })
 
