@@ -1,6 +1,18 @@
 extends layout
 
 block content
+   ul.dropdown-menu
+   user_info.display_name + '#' + user_info.id
+   if (user_info.registered)
+      li
+        a(href='#login' style={color: 'green'}) Login //a(href='javascript:void(0)')
+    else
+      li
+        a(href='#log off' style={color: 'red'}) Log Off //a(href='javascript:void(0)')
+      li
+        a(href='#register' style={color: 'blue'}) Register //a(href='javascript:void(0)')
+          
+
   h1 User Listing
 
   a.create-user(href='#') Create User
@@ -26,5 +38,5 @@ block content
       each room in rooms_info
         tr
           td= room.name + '#' + room.id
-          td= room.master_user_display_name + '#' + room.master_user_id || 0
+          td= room.master_user_display_name + '#' + room.master_user_id
           td= room.max_players
