@@ -13,10 +13,10 @@ html
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/users.js')
 
-    nav.navbar.navbar-inverse
+    nav.navbar
       .container-fluid
         .navbar-header
-          a.navbar-brand(href='#lobby') Liar's Dice
+          a.navbar-game(href='#lobby') Liar's Dice
         ul.nav.navbar-nav.navbar-right
           li
             p.name= 'Welcome, ' + user_info.display_name + '#' + user_info.id
@@ -29,7 +29,7 @@ html
             li
               input.email_input.form-control(placeholder='email')
             li
-                input.password_input.form-control(placeholder='password' type='password')
+              input.password_input.form-control(placeholder='password' type='password')
             li
               a.signup(href='#signup')
                 span.glyphicon.glyphicon-user
@@ -67,14 +67,18 @@ html
               td= room.name + '#' + room.id
               td= room.master_user_display_name + '#' + room.master_user_id
               td= room.max_players
+      br
+      br
     .container#lobby-chat
       h1    Lobby Chat
       form
         .form-group
-          textarea#chat_area.form-control(readonly='', rows='5')
-          input#chat_input.chat_input.form-control(placeholder='Enter chat message here')
+          textarea.form-control(readonly='', rows='5')
+          input.chat_input.form-control(placeholder='Enter chat message here')
           br
           button.btn.navbar-right(type='submit') Send
+      br
+      br
       form
         .form-group
           input.form-control.roll(placeholder='roll')            
