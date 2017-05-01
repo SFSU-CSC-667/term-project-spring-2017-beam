@@ -4,7 +4,7 @@ body {
 }
 
 a {
-	color: #337ab7;
+	color: black;
 }
 
 .name {
@@ -23,8 +23,10 @@ a {
 }
 
 .navbar{
-	background: #EEE url("/images/grey.jpg")
+	background: #EEE url("/images/grey.jpg");
 	color: black;
+	border-width: 1px;
+	border-color: black;
 }
 
 .navbar-brand{
