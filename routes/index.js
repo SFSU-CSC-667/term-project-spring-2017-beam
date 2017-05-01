@@ -12,13 +12,13 @@ router.get( '/', ( request, response ) => {
   const roomsPromise = Room.allActive()
 
   Promise.all([userPromise,roomsPromise])
-    .then( (users, rooms_info) => {
+    .then( values  => {
       const user_info = {
       	id: 3,
       	registered: false,
       	display_name: 'Mike',
       }
-     response.render( 'index', { users , user_info, rooms_info})
+     response.render( 'index', { users: values[0] , user_info, rooms_info: values[1]})
     })
 })
 
@@ -26,13 +26,13 @@ router.get( '/rooms', ( request, response ) => {
 
 
   const promise = User.allActive()
-  Promise.all([promise]).then( (users) => {
+  Promise.all([promise]).then( values => {
     const user_info = {
       id: 3,
       registered: false,
       display_name: 'Mike',
     }
-   response.render( 'index2', { users , user_info})
+   response.render( 'index2', { users: values[0] , user_info})
   })
 
 })

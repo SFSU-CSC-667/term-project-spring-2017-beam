@@ -25,6 +25,6 @@ block content
           td= user_info.display_name + '#' + user_info.id
       each room in rooms_info
         tr
-          td= rooms_info.room_name + '#' + rooms_info.id
-          td= rooms_info.master_user_display_name + '#' + room_info.master_user_id || 0
-          td= rooms_info.max_players
+          td= room.name + '#' + room.id
+          td= room.master_user_display_name + '#' + room.master_user_id || 0
+          td= room.max_players
