@@ -6,6 +6,7 @@ const debug = true;
 const { User, Room } = require( '../db' )
 const broadcast = require( '../src/broadcast' )
 
+const randomstring = require ('randomstring');
 
 
 function createTempUserIfNeeded(req, res, next) {
@@ -14,12 +15,12 @@ function createTempUserIfNeeded(req, res, next) {
         var secret = randomstring.generate(60);
         User.create(secret)
         .then (result =>  {
-            req.cookies.user_id = result.rows[0].id;
-            req.cookies.user_secret = secret;
-            req.cookies.display_name = 'Guest';
-            res.cookie('display_name', 'Guest');
-            res.cookie('user_secret', secret);
-            res.cookie('user_id', result.rows[0].id);
+            req.cookies.user_id = result.id;
+            req.cookies.user_secret = result.secret;
+            req.cookies.display_name = result.display_name;
+            res.cookie('display_name', result.display_name);
+            res.cookie('user_secret', result.secret);
+            res.cookie('user_id', result.id);
             next();
         });
     } else {

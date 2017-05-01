@@ -11,6 +11,6 @@ module.exports = {
   all: () => db.any( ALL ),
   allActive: () => db.any( ALL_ACTIVE ),
   find: id => db.oneOrNone( FIND, id ),
-  auth: id, secret => db.oneOrNone( AUTH, id, secret ),
+  auth: (id, secret) => db.oneOrNone( AUTH, [id, secret] ),
   create: secret => db.one( CREATE, secret ),
 }
