@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "start:dev": "DATABASE_URL='postgres://jrob@localhost:5432/blargit-development' DEBUG=blargit:* nodemon ./bin/www"
+    "start": "supervisor ./bin/www",
+    "start:dev": "DEBUG=blargit:* nodemon ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.16.0",
