@@ -6,14 +6,19 @@ const { User } = require( '../db' )
 const broadcast = require( '../src/broadcast' )
 
 router.get( '/', ( request, response ) => {
-  User.all()
-    .then( users => {
+
+
+  const userPromise = User.all()
+  const roomsPromise = Room.allAcitve()
+
+  Promise.all([userPromise,roomsPromise])
+    .then( (users, rooms_info => {
       const user_info = {
       	id: 3,
       	registered: false,
       	display_name: 'Mike',
       }
-      response.render( 'index', { users , user_info})
+      response.render( 'index', { users , user_info, rooms_info})
     })
 })
 

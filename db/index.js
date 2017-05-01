@@ -1,4 +1,4 @@
 module.exports = {
   User: require( './users' ),
-  Dog: require( './dogs' )
+  Room: require( './rooms' ),
 }
