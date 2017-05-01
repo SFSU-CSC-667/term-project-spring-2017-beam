@@ -35,8 +35,9 @@ html
                 span.glyphicon.glyphicon-log-in
                 |  Login
             form
-              input.email_input.form-control(placeholder='email')
-              input.password_input.form-control(placeholder='password')
+              .form-group
+                input.email_input.form-control(placeholder='email')
+                input.password_input.form-control(placeholder='password')
             
         
     .container#user-listing
@@ -70,14 +71,13 @@ html
     .container#lobby-chat
       h1    Lobby Chat
       form
+        .form-group
           textarea#chat_area.form-control(readonly='', rows='5')
-          |  
           input#chat_input.chat_input.form-control(placeholder='Enter chat message here')
           br
-          |
           button.btn.navbar-right(type='submit') Send
-
-    form
-      .form-group
-        input.form-control.roll(placeholder='roll')            
-        input.form-control.amount (placeholder='amount')             
+      form
+        .form-group
+          input.form-control.roll(placeholder='roll')            
+          input.form-control.amount(placeholder='amount')    
+          button.btn.navbar-right(type='submit') Send
