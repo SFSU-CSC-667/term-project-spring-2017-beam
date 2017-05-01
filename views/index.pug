@@ -34,7 +34,12 @@ html
               a.login(href='#login')
                 span.glyphicon.glyphicon-log-in
                 |  Login
-
+        form
+          .form-group
+            textarea#comment.form-control(readonly='', rows='5')
+            |  
+            input#comment.form-control
+            br
     .container#user-listing
       h1   User Listing
 
@@ -69,7 +74,7 @@ html
         .form-group
           textarea#comment.form-control(readonly='', rows='5')
           |  
-          input#comment.form-control
+          input#comment.form-control(id='chat_message')
           br
-          |textarea#comment.form-control(rows='5')
+          |
           button.btn.navbar-right(type='submit') Send
