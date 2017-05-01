@@ -7,7 +7,7 @@ const CHECK_IF_IN_GAME = `SELECT * FROM room_users WHERE room_id=$1 and user_id=
 const UPDATE_USER_ID_ORDER = `UPDATE rooms SET user_id_order = $2 WHERE id=$1`
 const UPDATE_MASTER_USER_ID = `UPDATE rooms SET master_user_id = $2 WHERE id=$1`
 const INSERT_USER = `INSERT INTO room_users (room_id,user_id) VALUES ($1,$2) ON CONFLICT DO NOTHING`
-const REMOVE_USER = `DELETE from room_users WHERE room_id = $1 and user_id = $2`
+const REMOVE_USER = `DELETE FROM room_users WHERE room_id = $1 and user_id = $2`
 const CREATE_ROOM = `INSERT INTO rooms (master_user_id, name, max_players, created, user_id_order)
                       VALUES ($1, $2, $3, CURRENT_TIMESTAMP, $4) returning id`
 const CLOSE_ROOM = `UPDATE rooms SET started=CURRENT_TIMESTAMP, ended=CURRENT_TIMESTAMP WHERE id=$1`
