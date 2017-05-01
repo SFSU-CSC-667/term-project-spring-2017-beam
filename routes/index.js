@@ -12,7 +12,7 @@ router.get( '/', ( request, response ) => {
   const roomsPromise = Room.allAcitve()
 
   Promise.all([userPromise,roomsPromise])
-    .then( (users, rooms_info => {
+    .then( (users, rooms_info) => {
       const user_info = {
       	id: 3,
       	registered: false,
