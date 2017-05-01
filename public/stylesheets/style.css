@@ -22,11 +22,9 @@ a {
 	float: right;
 }
 
-.navbar{
+.navbg{
 	background: #EEE url("/images/grey.jpg");
 	color: black;
-	border-width: 1px;
-	border-color: black;
 }
 
 .navbar-brand{
