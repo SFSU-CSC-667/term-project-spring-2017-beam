@@ -13,7 +13,6 @@ nav.nav
     .navbar-header
     if (user_info.registered)
       form.navbar-form.navbar-right
-        p= user_info.display_name + '#' + user_info.id
         .form-group
           input.form-control(type='text', placeholder='Email')
           input.form-control(type='text', placeholder='Password')
@@ -21,6 +20,7 @@ nav.nav
         a(href='#register') Register
     else 
     Submitform.nav.login
+        p= user_info.display_name + '#' + user_info.id
         .form-group
           input.form-control(type='hidden')
         button.btn.btn-default(type='submit') Log Off
