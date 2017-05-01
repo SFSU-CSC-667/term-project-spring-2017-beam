@@ -27,7 +27,12 @@ const init = ( app, server ) => {
             if (result.length > 0) {
                 socket.emit( 'error', {message: 'Email in use or ID already registered'})
             } else {
-               const hash =  'oi'
+               const hash = bcrypt.hash(data.password, 10)
+                .then( hash => {
+                    User.register(hash, data.email, cookies.user_id)
+                    socket.emit( 'success', {message: 'Registration successful!'})
+
+                })
             }
         })
     })
