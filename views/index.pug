@@ -1,7 +1,5 @@
 extends layout
-  
-block content
-  
+    
   include navbar.pug    
   
   h1 User Listing
@@ -31,5 +29,3 @@ block content
           td= room.name + '#' + room.id
           td= room.master_user_display_name + '#' + room.master_user_id
           td= room.max_players
-
-    script(src='/javascripts/bootstrap.min.js')
