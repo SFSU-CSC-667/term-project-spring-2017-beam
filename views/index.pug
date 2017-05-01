@@ -27,6 +27,10 @@ html
                 |  Log Off
           else
             li
+              input.email_input.form-control(placeholder='email' type='password')
+            li
+              input.password_input.form-control(placeholder='password')
+            li
               a.signup(href='#signup')
                 span.glyphicon.glyphicon-user
                 |  Sign Up
@@ -34,11 +38,6 @@ html
               a.login(href='#login')
                 span.glyphicon.glyphicon-log-in
                 |  Login
-            form
-              .form-group
-                input.email_input.form-control(placeholder='email')
-                input.password_input.form-control(placeholder='password')
-            
         
     .container#user-listing
       h1   User Listing
@@ -79,5 +78,4 @@ html
       form
         .form-group
           input.form-control.roll(placeholder='roll')            
-          input.form-control.amount(placeholder='amount')    
-          button.btn.navbar-right(type='submit') Send
+          input.form-control.amount(placeholder='amount')
