@@ -1,24 +1,27 @@
-nav.navbar.navbar-default
+nav.nav
   .container-fluid
     // Brand and toggle get grouped for better mobile display
-    .navbar-header
-      button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
-        span.sr-only Toggle navigation
-        span.icon-bar
-        span.icon-bar
-        span.icon-bar
-      a.navbar-brand(href='#') Liar's
+    .nav.game
+      .nav
+        button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.navbar-brand(href='#') Liar's Dice
     // Collect the nav links, forms, and other content for 
+    .navbar-header
     if (user_info.registered)
       form.navbar-form.navbar-right
+        p= user_info.display_name + '#' + user_info.id
         .form-group
           input.form-control(type='text', placeholder='Email')
           input.form-control(type='text', placeholder='Password')
         button.btn.btn-default(type='submit') Logg On
+        a(href='#register') Register
     else 
-    Submitform.navbar-form.navbar-right
+    Submitform.nav.login
         .form-group
           input.form-control(type='hidden')
         button.btn.btn-default(type='submit') Log Off
-      a(href='#register') Register
         
