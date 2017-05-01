@@ -1,6 +1,7 @@
 const express = require('express')
 const faker = require( 'faker' )
 const router = express.Router()
+const debug = true;
 
 const { User, Room } = require( '../db' )
 const broadcast = require( '../src/broadcast' )
@@ -12,7 +13,7 @@ function createTempUserIfNeeded(req, res, next) {
     if (!req.cookies.user_id && !req.cookies.user_secret) {
         var secret = randomstring.generate(60);
         User.create(secret)
-        .then (result => ) {
+        .then (result =>  {
             req.cookies.user_id = result.rows[0].id;
             req.cookies.user_secret = secret;
             req.cookies.display_name = 'Guest';
@@ -24,6 +25,21 @@ function createTempUserIfNeeded(req, res, next) {
     } else {
         next();
     }
+}
+
+function checkAuth(req, res, next) {
+    //authentication stuff
+    if (debug) console.log('checkAuth function called');
+    const data = {user_id: req.cookies.user_id, user_secret: req.cookies.user_secret};
+    User.auth(req.cookies.user_id, req.cookies.user_secret)
+    .then ( result => {
+        if (!result) {
+            res.clearCookie('user_secret');
+            res.clearCookie('user_id');
+            return res.status(403).json();
+        } else {
+            next();
+        }});
 }
 
 router.get( '/', ( request, response ) => {
