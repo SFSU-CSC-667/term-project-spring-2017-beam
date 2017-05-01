@@ -27,10 +27,11 @@ a {
 	color: black;
 }
 
-.navbar.navbar-game{
+.navbar-brand{
 	color: black;
 }
 
 .form-control{
 	margin-top: 8px;
+	border-color: ghostwhite;
 }
