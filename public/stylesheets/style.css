@@ -21,3 +21,7 @@ a {
 	width: 30%;
 	float: right;
 }
+
+.navbar-inverse{
+	background: #EEE url("/images/grey.jpg")
+}
