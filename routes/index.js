@@ -13,7 +13,22 @@ router.get( '/', ( request, response ) => {
       	registered: false,
       	display_name: 'Mike',
       }
-      response.render( 'index', { users , user_info})
+      const rooms_info = { {
+      	  id: 1,
+      	  room_name: 1,
+      	  master_user_id: 2,
+      	  master_user_display_name: 'Mike',
+      	  max_players: 4,
+      	} , {
+      	  id: 2,
+      	  room_name: 1,
+      	  master_user_id: 3,
+      	  master_user_display_name: 'Bob',
+      	  max_players: 5,
+      	} , 
+
+      }
+      response.render( 'index', { users , user_info, rooms_info})
     })
 })
 
