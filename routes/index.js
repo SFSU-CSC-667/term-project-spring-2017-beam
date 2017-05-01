@@ -22,6 +22,21 @@ router.get( '/', ( request, response ) => {
     })
 })
 
+router.get( '/rooms', ( request, response ) => {
+
+
+  User.all()
+  .then( users => {
+    const user_info = {
+      id: 3,
+      registered: false,
+      display_name: 'Mike',
+    }
+   response.render( 'index', { users , user_info})
+  })
+
+})
+
 
 
 router.post( '/test', ( request, response ) => {
