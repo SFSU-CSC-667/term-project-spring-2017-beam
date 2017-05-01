@@ -4,11 +4,11 @@ body {
 }
 
 a {
-	color: #00B7FF;
+	color: #337ab7;
 }
 
 .name {
-	color: #9d9d9d;
+	color: black;
 	margin-top: 15px;
 }
 
@@ -22,6 +22,15 @@ a {
 	float: right;
 }
 
-.navbar-inverse{
+.navbar{
 	background: #EEE url("/images/grey.jpg")
+	color: black;
+}
+
+.navbar.navbar-game{
+	color: black;
+}
+
+.form-control{
+	margin-top: 8px;
 }
