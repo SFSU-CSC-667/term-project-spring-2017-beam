@@ -1,5 +1,6 @@
 extends layout
   
+block content
   ul.dropdown-menu
     p= user_info.display_name + '#' + user_info.id
     if (user_info.registered)
@@ -10,8 +11,7 @@ extends layout
     else
       li.dropdown-menu-item
         a(href='#log off' style={color: 'red'}) Log Off 
-   
-block content
+     
        
   h1 User Listing
 
