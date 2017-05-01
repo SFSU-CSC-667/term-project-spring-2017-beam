@@ -37,6 +37,7 @@ function checkAuth(req, res, next) {
         if (!result) {
             res.clearCookie('user_secret');
             res.clearCookie('user_id');
+            res.clearCookie('display_name');
             return res.status(403).json();
         } else {
             next();
@@ -44,9 +45,21 @@ function checkAuth(req, res, next) {
 }
 
 
+
+function loginFunction (req, res) {
+
+}
+
+function logoutFunction (req, res) {
+     res.clearCookie('user_secret');
+     res.clearCookie('user_id');
+     res.clearCookie('display_name');
+     res.render ('logout', {message: 'Logged out'})
+}
 router.use(createTempUserIfNeeded);
 router.use(checkAuth);
-
+router.get( '/login/:email/:password', loginFunction)
+router.get( '/logout', logoutFunction)
 router.get( '/', ( request, response ) => {
 
 
