@@ -8,7 +8,12 @@ const broadcast = require( '../src/broadcast' )
 router.get( '/', ( request, response ) => {
   User.all()
     .then( users => {
-      response.render( 'index', { users , user_info.id: 3, user_info.registered: false, user_info.display_name: 'Mike'})
+      const user_info = {
+      	id: 3,
+      	registered: false,
+      	display_name: 'Mike',
+      }
+      response.render( 'index', { users , user_info})
     })
 })
 
