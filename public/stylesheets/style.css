@@ -22,12 +22,16 @@ a {
 	float: right;
 }
 
-.navbg{
+.navbar-inverse{
 	background: #EEE url("/images/grey.jpg");
 	color: black;
 }
 
 .navbar-brand{
+	color: black;
+}
+
+.navbar-inverse .navbar-nav>li>a{
 	color: black;
 }
 
