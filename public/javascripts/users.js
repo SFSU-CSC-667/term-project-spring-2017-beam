@@ -27,10 +27,19 @@ socket.on ( 'lobby-chat', ({user_id, display_name, message}) => {
     chat_area.innerHTML += append
 })
 
-socket.on ( 'sucess', ({message}) => {
-    console.log(message)
-    $.flash(message)
-    $(".alert-success").text(message).show().fadeTo(5000,0)
+socket.on ( 'errorMessage', ({message}) => {
+    $(".alert-danger").text(message).show()
+    setTimeout(function() {
+        $(".alert-danger").text(message).hide()
+    }, 5000);
+
+})
+
+socket.on ( 'success', ({message}) => {
+    $(".alert-success").text(message).show()
+    setTimeout(function() {
+        $(".alert-success").text(message).hide()
+    }, 5000);
 
 })
 
