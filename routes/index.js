@@ -41,6 +41,7 @@ function checkAuth(req, res, next) {
             res.clearCookie('display_name');
             return res.status(403).json();
         } else {
+            res.cookie('display_name', result.display_name);
             next();
         }});
 }

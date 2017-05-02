@@ -30,6 +30,8 @@ socket.on ( 'lobby-chat', ({user_id, display_name, message}) => {
 socket.on ( 'updateName', ({display_name, id}) => {
     document.querySelector( 'p.name' ).innerHTML = 'Welcome, ' + display_name + '#' + id
     $('.myModal1').modal('hide')
+    document.querySelector('input.update_name_input').placeholder = display_name
+    document.querySelector('input.update_name_input').value = ''
 })
 
 socket.on ( 'errorMessage', ({message}) => {

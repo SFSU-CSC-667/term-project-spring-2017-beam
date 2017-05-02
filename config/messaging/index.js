@@ -12,15 +12,15 @@ const init = ( app, server ) => {
 
   io.on( 'connection', socket => {
     console.log( 'client connected' )
-    const test = socket.handshake.headers.cookie || socket.request.headers.cookie
+    socket.cookies = cookie.parse(socket.handshake.headers.cookie
+         || socket.request.headers.cookie)
 
     socket.on( 'disconnect', data => {
       console.log( 'client disconnected' )
     })
 
     socket.on( 'lobby-chat', ({message}) => {
-        const cookies = cookie.parse(socket.handshake.headers.cookie
-                || socket.request.headers.cookie)
+        const cookies = socket.cookies
         Room.insertMessage(0, cookies.user_id, message)
         .then( _ => io.emit('lobby-chat', {user_id: cookies.user_id, display_name: cookies.display_name, message: message}))
     })
@@ -46,8 +46,7 @@ const init = ( app, server ) => {
     })
 
   socket.on( 'signup', data => {
-        const cookies = cookie.parse(socket.handshake.headers.cookie
-                || socket.request.headers.cookie)
+        const cookies = socket.cookies
         User.checkIfRegistered(cookies.user_id, data.username)
         .then ( result => {
             if (result.length > 0) {
@@ -63,13 +62,20 @@ const init = ( app, server ) => {
     })
 
     socket.on( 'display_name_update', ({display_name}) => {
-        const cookies = cookie.parse(socket.handshake.headers.cookie
-                || socket.request.headers.cookie)
+        const cookies = socket.cookies
         User.updateDisplayName(display_name, cookies.user_id)
         .then( result => {
             if (result.length == 0) {
                 socket.emit( 'errorMessage', {message: 'An error has occurred'})
             } else {
+                socket.cookies.display_name = result.display_name
+
+                /*if (socket.handshake.headers.cookie) {
+                    socket.handshake.headers.cookie = result.display_name
+                }
+                if (socket.request.headers.cookie) {
+                    socket.request.headers.cookie = result.display_name
+                }*/
                 socket.emit ( 'updateName', {display_name: result.display_name, id: result.id})
             }
         })
