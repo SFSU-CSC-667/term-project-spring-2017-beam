@@ -32,6 +32,12 @@ document.addEventListener('DOMContentLoaded', function() {
     socket.emit( 'data', {email: input})
   })
 
+  document.querySelector( 'button.chat_input_button' ).addEventListener( 'click', event => {
+    event.preventDefault()
+    event.stopPropagation()
+    console.log('test');
+  })
+
   document.querySelector( 'a.signup' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
