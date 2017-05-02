@@ -36,7 +36,7 @@ html
                 |  Log Out
           else
             li
-              a.login(href='#register', data-toggle='modal', data-target='.bs-modal-sm')
+              a.login(href='#register', data-toggle='modal', data-target='#myModal')
                 span.glyphicon.glyphicon-log-in
                 |  Sign In/Register
 
@@ -125,7 +125,7 @@ html
                 a(href='#update', data-toggle='tab') Change Username
           .modal-body
             #myTabContent.tab-content
-              #change.tab-pane.fade.active.in
+              .tab-pane.fade.active.in
                 form.form-horizontal.update_name_form
                   fieldset
                     .control-group
