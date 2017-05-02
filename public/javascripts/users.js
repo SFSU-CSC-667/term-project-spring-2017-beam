@@ -77,4 +77,12 @@ document.addEventListener('DOMContentLoaded', function() {
     socket.emit( 'login', {email: email, password: password})
   })
 
+  document.querySelector( 'button.login_button' ).addEventListener( 'click', event => {
+    event.preventDefault()
+    event.stopPropagation()
+    const email = document.querySelector('input.email_input').value
+    const password = document.querySelector('input.password_input').value
+    socket.emit( 'login', {email: email, password: password})
+  })
+
 })
