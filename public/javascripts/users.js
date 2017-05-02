@@ -43,12 +43,6 @@ socket.on ( 'success', ({message}) => {
 
 })
 
-function doLogin (event) {
-    const username = document.querySelector('input.username_input').value
-    const password = document.querySelector('input.password_input').value
-    socket.emit( 'login', {username: username, password: password})
-}
-
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.data' ).addEventListener( 'click', event => {
     event.preventDefault()
@@ -67,36 +61,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
   })
 
-  document.querySelector( 'a.signup' ).addEventListener( 'click', event => {
+  document.querySelector( 'form.login_form' ).addEventListener( 'submit', event => {
     event.preventDefault()
     event.stopPropagation()
-    const username = document.querySelector('input.username_input').value
-    const password = document.querySelector('input.password_input').value
+    const username = document.querySelector('input.username_login_input').value
+    const password = document.querySelector('input.password_login_input').value
+    socket.emit( 'login', {username: username, password: password})
+  })
+
+
+  document.querySelector( 'form.signup_form' ).addEventListener( 'submit', event => {
+    event.preventDefault()
+    event.stopPropagation()
+    const username = document.querySelector('input.username_signup_input').value
+    const password = document.querySelector('input.password_signup_input').value
     socket.emit( 'signup', {username: username, password: password})
   })
-
-  document.querySelector( 'a.login' ).addEventListener( 'click', event => {
-    event.preventDefault()
-    event.stopPropagation()
-    doLogin()
-  })
-
-  document.querySelector( 'button.login_button' ).addEventListener( 'click', event => {
-   event.preventDefault()
-    event.stopPropagation()
-    doLogin()
-  })
-
-  $("input.password_input").on('keyup', function (e) {
-     if (e.keyCode == 13) {
-         doLogin()
-     }
-  });
-
-$("input.username_input").on('keyup', function (e) {
-     if (e.keyCode == 13) {
-         doLogin()
-     }
-  });
 
 })

@@ -89,6 +89,19 @@ function indexFunction (request, response ) {
     })
 }
 
+function index2Function (request, response ) {
+
+
+  const userPromise = User.all()
+  const roomsPromise = Room.allActive()
+  const userInfo = User.findById(request.cookies.user_id)
+
+  Promise.all([userPromise,roomsPromise, userInfo])
+    .then( values  => {
+       response.render( 'index2', { users: values[0] , user_info: values[2], rooms_info: values[1]})
+    })
+}
+
 function logoutFunction (req, res) {
      res.clearCookie('user_secret');
      res.clearCookie('user_id');
@@ -100,6 +113,7 @@ router.use(checkAuth);
 router.get( '/login/:username/:password', loginFunction)
 router.get( '/logout', logoutFunction)
 router.get( '/', indexFunction)
+router.get( '/2', index2Function)
 
 router.get( '/rooms', ( request, response ) => {
 
