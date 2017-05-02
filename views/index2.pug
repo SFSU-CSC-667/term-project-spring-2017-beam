@@ -1,25 +1,129 @@
-extends layout
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='/javascripts/users.js')
+  body
+    .alert.alert-success(role='alert')
+      button.close(type='button', data-dismiss='alert', aria-label='Close')
+        span(aria-hidden='true') &times;
+      |  You have been signed in successfully!
+    .alert.alert-danger(role='alert')
+      button.close(type='button', data-dismiss='alert', aria-label='Close')
+        span(aria-hidden='true') &times;
+      |  You have been a failure!
 
-block content
-  h1 User Listing
+    nav.navbar.navbar-inverse
+      .container-fluid
+        .navbar-header
+          a.navbar-brand(href='#lobby') Liar's Dice
+        ul.nav.navbar-nav.navbar-right
+          li
+            p.name= 'Welcome, ' + user_info.display_name + '#' + user_info.id
+          if(user_info.registered)
+            li
+              a.logout(href='/logout')
+                span.glyphicon.glyphicon-log-out
+                |  Log Out
+          else
+                li
+                  input.username_input.form-control(placeholder='username')
+                li
+                  input.password_input.form-control(placeholder='password' type='password')
+                li
+                  a.login(href='#login')
+                    span.glyphicon.glyphicon-log-in
+                    |  Login
+                li
+                  a.signup(href='#signup')
+                    span.glyphicon.glyphicon-user
+                    |  Sign Up
+                  button.login_button.btn.navbar-right(style='display: none;') Send
+                li
+                  button.btn.btn-primary.btn-lg(href='#register', data-toggle='modal', data-target='.bs-modal-sm') Sign In/Register
 
-  a.create-user(href='#') Create User
+    .container#user-listing
+      h1   User Listing
 
-  table
-    thead
-      tr
-        th Id
-        th Email
-        th Dog Count
-        th registered
-        th id
-        th display_name
-    tbody
-      each user in users
-        tr
-          td= user.id
-          td= user.email
-          td= 0
-          //td(class=`dog-count-${user.id}`) = user.dogCount || 0
-          td= user_info.registered
-          td= user_info.display_name + '#' + user_info.id
+      a.data(href='#') Send Data 
+
+      table
+        thead
+          tr
+            th Room 
+            th Leader 
+        tbody
+         each room in rooms_info
+            tr
+              td 
+                a(href='/room/'+room.id+'/enter')= room.name + '#' + room.id
+              td= room.master_user_display_name + '#' + room.master_user_id
+      br
+      br
+    .container#lobby-chat
+      h1    Lobby Chat
+      form
+        .form-group
+          input.room_id(type='hidden' value='0')            
+          ul.chat_area
+            td
+              p.message= 'Hello'
+          input.chat_input_text.form-control(placeholder='Enter chat message here')
+          br
+          button.chat_input_button.btn.navbar-right(type='submit') Send
+
+    #myModal.modal.fade.bs-modal-sm(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel', aria-hidden='true')
+      .modal-dialog.modal-sm
+        .modal-content
+          br
+          .bs-example.bs-example-tabs
+            ul#myTab.nav.nav-tabs
+              li.active
+                a(href='#login', data-toggle='tab') Sign In
+              li
+                a(href='#register', data-toggle='tab') Register
+          .modal-body
+            #myTabContent.tab-content
+              #login.tab-pane.fade.active.in
+                form.form-horizontal
+                  fieldset
+                    .control-group
+                      label.control-label(for='userid') Username:
+                      .controls
+                        input.form-control.username_input_signin(required='', name='username_input', type='text', placeholder='username')
+                    .control-group
+                      label.control-label(for='passwordinput') Password:
+                      .controls
+                        input.form-control(required='', name='password_input', type='password', placeholder='********')
+                        br
+                    .control-group
+                      label.control-label(for='login')
+                      .controls
+                        button#login.btn.btn-success.login_button(name='login') Sign In
+              #register.tab-pane.fade
+                form.form-horizontal
+                  fieldset
+                    .control-group
+                      label.control-label(for='userid') Username:
+                      .controls
+                        input#user_name.form-control(name='user_name', type='text', placeholder='username', required='')
+                    .control-group
+                      label.control-label(for='password') Password:
+                      .controls
+                        input#password.form-control(name='password', type='password', placeholder='********', required='')
+                        |  
+                        em 1-8 Characters
+                    .control-group
+                      label.control-label(for='confirmregister')
+                      .controls
+                        button#confirmregister.btn.btn-success.register_button(name='confirmregister') Register
+          .modal-footer
+            center
+              button.btn.btn-default(type='button', data-dismiss='modal') Close
