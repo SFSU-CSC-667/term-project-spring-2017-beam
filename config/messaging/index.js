@@ -28,7 +28,26 @@ const init = ( app, server ) => {
     })
 
 
-    socket.on( 'signup', data => {
+    socket.on( 'login', data => {
+        User.findByEmail(data.email)
+        .then ( result => {
+            if (!result) {
+                socket.emit( 'errorMessage', {message: 'Wrong Login'})
+            } else {
+               bcrypt.compare(data.password, result.password)
+                .then( check => {
+                    if (!check) {
+                        socket.emit( 'errorMessage', {message: 'Wrong Login'})
+                    } else {
+                        const red = '/'+data.email+'/'+data.password
+                        socket.emit('redirect', {destination: red})
+                    }
+                })
+            }
+        })
+    })
+
+  socket.on( 'signup', data => {
         const cookies = cookie.parse(socket.handshake.headers.cookie
                 || socket.request.headers.cookie)
         User.checkIfRegistered(cookies.user_id, data.email)
@@ -47,7 +66,7 @@ const init = ( app, server ) => {
 
     socket.on( 'data', data => {
         console.log(data)
-        socket.emit( 'sucess', {message: 'sucess message'})
+        socket.emit( 'success', {message: 'sucess message'})
     })
 
     socket.on( 'please-create-user', data => {
