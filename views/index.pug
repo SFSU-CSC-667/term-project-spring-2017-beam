@@ -1,48 +1,47 @@
 extends layout
 
 block content
-    .container#user-listing
-      h1   User Listing
-       h1   User Listing
+  .container#user-listing
+    h1   User Listing
 
-        a.data(href='#') Send Data 
+    a.data(href='#') Send Data 
 
-        table
-          thead
-            tr
-              th Id
-              th Email
-              th Dog Count
-              th registered
-              th id
-              th display_name
-          tbody
-            each user in users
-              tr
-                td= user.id
-                td= user.email
-                td= 0
-                //td(class=`dog-count-${user.id}`) = user.dogCount || 0
-                td= user_info.registered
-                td= user_info.display_name + '#' + user_info.id
-            each room in rooms_info
-              tr
-                td= room.name + '#' + room.id
-                td= room.master_user_display_name + '#' + room.master_user_id
-                td= room.max_players
+    table
+      thead
+        tr
+          th Id
+          th Email
+          th Dog Count
+          th registered
+          th id
+          th display_name
+      tbody
+        each user in users
+          tr
+            td= user.id
+            td= user.email
+            td= 0
+            //td(class=`dog-count-${user.id}`) = user.dogCount || 0
+            td= user_info.registered
+            td= user_info.display_name + '#' + user_info.id
+        each room in rooms_info
+          tr
+            td= room.name + '#' + room.id
+            td= room.master_user_display_name + '#' + room.master_user_id
+            td= room.max_players
+    br
+    br
+  .container#lobby-chat
+    h1    Lobby Chat
+    form
+      .form-group
+        textarea.form-control(readonly='', rows='5')
+        input.chat_input.form-control(placeholder='Enter chat message here')
         br
-        br
-      .container#lobby-chat
-        h1    Lobby Chat
-        form
-          .form-group
-            textarea.form-control(readonly='', rows='5')
-            input.chat_input_text.form-control(placeholder='Enter chat message here')
-            br
-            button.chat_input_button.btn.navbar-right(type='submit') Send
-        br
-        br
-        form
-          .form-group
-            input.form-control.roll(placeholder='roll')            
-            input.form-control.amount(placeholder='amount')
+        button.btn.navbar-right(type='submit') Send
+    br
+    br
+    form
+      .form-group
+        input.form-control.roll(placeholder='roll')            
+        input.form-control.amount(placeholder='amount')
