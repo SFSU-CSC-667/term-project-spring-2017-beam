@@ -50,7 +50,5 @@ a {
   z-index: 1000000;
   width: auto;
   display: none;
-}
-span {
-	text-align: center;
+  text-align: center;
 }
