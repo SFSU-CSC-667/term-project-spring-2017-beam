@@ -19,6 +19,10 @@ socket.on( 'redirect', ({destination}) => {
   window.location.href = destination
 })
 
+socket.on ( 'lobby-chat', ({user_id, display_name, message}) => {
+    console.log(message)
+})
+
 socket.on ( 'sucess', ({message}) => {
     console.log(message)
 })
@@ -35,7 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'button.chat_input_button' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
-    console.log('test');
+    const input = document.querySelector('input.chat_input_text').value
+    socket.emit( 'lobby-chat', {message: input})
+
   })
 
   document.querySelector( 'a.signup' ).addEventListener( 'click', event => {

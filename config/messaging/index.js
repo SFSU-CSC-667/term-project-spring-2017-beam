@@ -19,13 +19,22 @@ const init = ( app, server ) => {
       console.log( 'client disconnected' )
     })
 
+    socket.on( 'lobby-chat', ({message}) => {
+        console.log(message)
+        const cookies = cookie.parse(socket.handshake.headers.cookie
+                || socket.request.headers.cookie)
+        Room.insertMessage(0, cookies.user_id, message)
+        .then( _ => io.emit('lobby-chat', {user_id: cookies.user_id, display_name: cookies.display_name, message: message}))
+    })
+
+
     socket.on( 'signup', data => {
         const cookies = cookie.parse(socket.handshake.headers.cookie
                 || socket.request.headers.cookie)
         User.checkIfRegistered(cookies.user_id, data.email)
         .then ( result => {
             if (result.length > 0) {
-                socket.emit( 'error', {message: 'Email in use or ID already registered'})
+                socket.emit( 'errorMessage', {message: 'Email in use or ID already registered'})
             } else {
                const hash = bcrypt.hash(data.password, 10)
                 .then( hash => {
