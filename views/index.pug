@@ -91,18 +91,17 @@ html
                       label.control-label(for='passwordinput') Password:
                       .controls
                         input.form-control.input-medium.password_login_input(required='', name='password_login_input', type='password', placeholder='********')
-                        br
                     .control-group
                       label.control-label(for='login')
                       .controls
                         button.btn.btn-success.login_button Log In
-              .tab-pane.fade
-                form#signup.form-horizontal.signup_form
+              #signup.tab-pane.fade
+                form.form-horizontal.signup_form
                   fieldset
                     .control-group
                       label.control-label(for='userid') Username:
                       .controls
-                        input.form-control(type='text', placeholder='username', required='')
+                        input.form-control.input-large.username_signup_input(type='text', placeholder='username', required='')
                     .control-group
                       label.control-label Password:
                       .controls
