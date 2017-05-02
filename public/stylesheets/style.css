@@ -8,6 +8,16 @@ a {
 	color: black !important;
 }
 
+td {
+    padding-right: 40px !important;
+}
+
+.chat_area {
+    height: 300px;
+    overflow: scroll;
+    padding-left: 0px;
+}
+
 .name {
 	color: black;
 	margin-top: 15px;

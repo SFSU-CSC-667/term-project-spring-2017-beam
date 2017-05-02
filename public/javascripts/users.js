@@ -25,6 +25,7 @@ socket.on ( 'lobby-chat', ({user_id, display_name, message}) => {
     const chat_area = document.querySelector ( 'ul.chat_area' )
     const append = `<td>${print}<br></td>`
     chat_area.innerHTML += append
+    chat_area.scrollTop = chat_area.scrollHeight
 })
 
 socket.on ( 'updateName', ({display_name, id}) => {

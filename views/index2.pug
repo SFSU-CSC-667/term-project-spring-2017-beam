@@ -23,7 +23,7 @@ html
     nav.navbar.navbar-inverse
       .container-fluid
         .navbar-header
-          a.navbar-brand(href='#lobby') Liar's Dice
+          a.navbar-brand(href='/') Liar's Dice
         ul.nav.navbar-nav.navbar-right
           li
             p.name= 'Welcome, ' + user_info.display_name + '#' + user_info.id
@@ -50,12 +50,17 @@ html
           tr
             th Room 
             th Leader 
+            th Status
         tbody
          each room in rooms_info
             tr
               td 
                 a(href='/room/'+room.id+'/enter')= room.name + '#' + room.id
               td= room.master_user_display_name + '#' + room.master_user_id
+              if (room.started)
+                td In Progress
+              else
+                td Waiting
       br
       br
     .container#lobby-chat
@@ -65,7 +70,6 @@ html
           input.room_id(type='hidden' value='0')            
           ul.chat_area
             td
-              p.message= 'Hello'
           input.chat_input_text.form-control(placeholder='Enter chat message here')
           br
           button.chat_input_button.btn.navbar-right(type='submit') Send
