@@ -12,6 +12,7 @@ a {
 	color: black;
 	margin-top: 15px;
 	margin-right: 8px;
+	margin-bottom: 0px;
 	}
 
 #user-listing{
@@ -51,4 +52,12 @@ a {
   width: auto;
   display: none;
   text-align: center;
+}
+
+#change{
+	font-size: xx-small;
+	margin-top: -5px;
+	padding: 0px;
+	margin-left: 70px;
+	height: 10px;
 }
