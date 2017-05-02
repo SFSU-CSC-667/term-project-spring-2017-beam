@@ -1,47 +1,82 @@
-extends layout
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='/javascripts/users.js')
+  body
+    nav.navbar.navbar-inverse
+      .container-fluid
+        .navbar-header
+          a.navbar-brand(href='#lobby') Liar's Dice
+        ul.nav.navbar-nav.navbar-right
+          li
+            p.name= 'Welcome, ' + user_info.display_name + '#' + user_info.id
+          if(user_info.registered)
+            li
+              a.logout(href='/logout')
+                span.glyphicon.glyphicon-log-out
+                |  Log Out
+          else
+            li
+              input.email_input.form-control(placeholder='email')
+            li
+              input.password_input.form-control(placeholder='password' type='password')
+            li
+              a.signup(href='#signup')
+                span.glyphicon.glyphicon-user
+                |  Sign Up
+            li
+              a.login(href='#login')
+                span.glyphicon.glyphicon-log-in
+                |  Login
+    .container#user-listing
+      h1   User Listing
 
-block content
-  .container#user-listing
-    h1   User Listing
+      a.data(href='#') Send Data 
 
-    a.data(href='#') Send Data 
-
-    table
-      thead
-        tr
-          th Id
-          th Email
-          th Dog Count
-          th registered
-          th id
-          th display_name
-      tbody
-        each user in users
+      table
+        thead
           tr
-            td= user.id
-            td= user.email
-            td= 0
-            //td(class=`dog-count-${user.id}`) = user.dogCount || 0
-            td= user_info.registered
-            td= user_info.display_name + '#' + user_info.id
-        each room in rooms_info
-          tr
-            td= room.name + '#' + room.id
-            td= room.master_user_display_name + '#' + room.master_user_id
-            td= room.max_players
-    br
-    br
-  .container#lobby-chat
-    h1    Lobby Chat
-    form
-      .form-group
-        textarea.form-control(readonly='', rows='5')
-        input.chat_input.form-control(placeholder='Enter chat message here')
-        br
-        button.btn.navbar-right(type='submit') Send
-    br
-    br
-    form
-      .form-group
-        input.form-control.roll(placeholder='roll')            
-        input.form-control.amount(placeholder='amount')
+            th Id
+            th Email
+            th Dog Count
+            th registered
+            th id
+            th display_name
+        tbody
+          each user in users
+            tr
+              td= user.id
+              td= user.email
+              td= 0
+              //td(class=`dog-count-${user.id}`) = user.dogCount || 0
+              td= user_info.registered
+              td= user_info.display_name + '#' + user_info.id
+          each room in rooms_info
+            tr
+              td= room.name + '#' + room.id
+              td= room.master_user_display_name + '#' + room.master_user_id
+              td= room.max_players
+      br
+      br
+    .container#lobby-chat
+      h1    Lobby Chat
+      form
+        .form-group
+          textarea.form-control(readonly='', rows='5')
+          input.chat_input.form-control(placeholder='Enter chat message here')
+          br
+          button.btn.navbar-right(type='submit') Send
+      br
+      br
+      form
+        .form-group
+          input.form-control.roll(placeholder='roll')            
+          input.form-control.amount(placeholder='amount')
