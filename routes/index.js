@@ -113,7 +113,7 @@ router.use(checkAuth);
 router.get( '/login/:username/:password', loginFunction)
 router.get( '/logout', logoutFunction)
 router.get( '/', indexFunction)
-router.get( '/2', indexFunction)
+router.get( '/2', index2Function)
 
 router.get( '/rooms', ( request, response ) => {
 
