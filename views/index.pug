@@ -53,26 +53,14 @@ html
       table
         thead
           tr
-            th Id
-            th Email
-            th Dog Count
-            th registered
-            th id
-            th display_name
+            th Room 
+            th Leader 
         tbody
-          each user in users
+         each room in rooms_info
             tr
-              td= user.id
-              td= user.email
-              td= 0
-              //td(class=`dog-count-${user.id}`) = user.dogCount || 0
-              td= user_info.registered
-              td= user_info.display_name + '#' + user_info.id
-          each room in rooms_info
-            tr
-              td= room.name + '#' + room.id
+              td 
+                a(href='/room/'+room.id+'/enter')= room.name + '#' + room.id
               td= room.master_user_display_name + '#' + room.master_user_id
-              td= room.max_players
       br
       br
     .container#lobby-chat

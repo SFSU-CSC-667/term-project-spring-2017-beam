@@ -31,7 +31,7 @@ const init = ( app, server ) => {
     socket.on( 'login', data => {
         User.findByEmail(data.email)
         .then ( result => {
-            if (!result) {
+            if (!result || data.email.length == 0) {
                 socket.emit( 'errorMessage', {message: 'Wrong Login'})
             } else {
                bcrypt.compare(data.password, result.password)
@@ -39,7 +39,7 @@ const init = ( app, server ) => {
                     if (!check) {
                         socket.emit( 'errorMessage', {message: 'Wrong Login'})
                     } else {
-                        const red = '/'+data.email+'/'+data.password
+                        const red = 'login/'+data.email+'/'+data.password
                         socket.emit('redirect', {destination: red})
                     }
                 })

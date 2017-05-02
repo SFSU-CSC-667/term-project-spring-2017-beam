@@ -23,7 +23,7 @@ socket.on ( 'lobby-chat', ({user_id, display_name, message}) => {
     const print = display_name + '#' + user_id+ ': ' + message
     console.log(print)
     const chat_area = document.querySelector ( 'ul.chat_area' )
-    const append = `<td>${print}</td>`
+    const append = `<td>${print}<br></td>`
     chat_area.innerHTML += append
 })
 
@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     event.preventDefault()
     event.stopPropagation()
     const input = document.querySelector('input.chat_input_text').value
+    document.querySelector('input.chat_input_text').value=''
     socket.emit( 'lobby-chat', {message: input})
 
   })
@@ -73,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
     event.stopPropagation()
     const email = document.querySelector('input.email_input').value
     const password = document.querySelector('input.password_input').value
-    window.location.href = 'login/' + email + '/' + password
+    socket.emit( 'login', {email: email, password: password})
   })
 
 })
