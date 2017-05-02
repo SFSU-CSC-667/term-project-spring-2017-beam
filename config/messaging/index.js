@@ -62,9 +62,24 @@ const init = ( app, server ) => {
         })
     })
 
-    socket.on( 'data', data => {
+    socket.on( 'display_name_update', ({display_name}) => {
+        const cookies = cookie.parse(socket.handshake.headers.cookie
+                || socket.request.headers.cookie)
+        User.updateDisplayName(display_name, cookies.user_id)
+        .then( result => {
+            if (result.length == 0) {
+                socket.emit( 'errorMessage', {message: 'An error has occurred'})
+            } else {
+                socket.emit ( 'updateName', {display_name: result.display_name, id: result.id})
+            }
+        })
+        //socket.emit( 'success', {message: 'success message'})
+    })
+
+     socket.on( 'data', data => {
         console.log(data)
         //socket.emit( 'success', {message: 'success message'})
+                socket.emit ( 'updateName', {display_name: 'thisisatest', id: '3'})
     })
   })
 }

@@ -27,6 +27,11 @@ socket.on ( 'lobby-chat', ({user_id, display_name, message}) => {
     chat_area.innerHTML += append
 })
 
+socket.on ( 'updateName', ({display_name, id}) => {
+    document.querySelector( 'p.name' ).innerHTML = 'Welcome, ' + display_name + '#' + id
+    $('.myModal1').modal('hide')
+})
+
 socket.on ( 'errorMessage', ({message}) => {
     $(".alert-danger").text(message).show()
     setTimeout(function() {
@@ -76,6 +81,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const username = document.querySelector('input.username_signup_input').value
     const password = document.querySelector('input.password_signup_input').value
     socket.emit( 'signup', {username: username, password: password})
+  })
+
+  document.querySelector( 'form.update_name_form' ).addEventListener( 'submit', event => {
+    event.preventDefault()
+    event.stopPropagation()
+    const display_name = document.querySelector('input.update_name_input').value
+    socket.emit( 'display_name_update', {display_name: display_name})
   })
 
 })

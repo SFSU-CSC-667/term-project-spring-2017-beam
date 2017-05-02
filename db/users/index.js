@@ -17,5 +17,5 @@ module.exports = {
   checkIfRegistered: (id, username) => db.any( CHECK_IF_REGISTERED, [id, username] ),
   register: (password, username, id) => db.none( REGISTER, [password, username, id] ),
   findByUsername: username => db.oneOrNone( FIND_BY_USERNAME, username ),
-  updateDisplayName: (display_name, id) => db.oneOrNone( FIND_BY_USERNAME, [display_name, id] ),
+  updateDisplayName: (display_name, id) => db.oneOrNone( UPDATE_DISPLAY_NAME, [display_name, id] ),
 }
