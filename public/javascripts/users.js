@@ -20,7 +20,8 @@ socket.on( 'redirect', ({destination}) => {
 })
 
 socket.on ( 'lobby-chat', ({user_id, display_name, message}) => {
-    console.log(message)
+    const print = display_name + '#' + user_id+ ': ' + message
+    console.log(print)
 })
 
 socket.on ( 'sucess', ({message}) => {
