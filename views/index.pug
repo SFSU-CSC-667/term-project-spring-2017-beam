@@ -70,7 +70,9 @@ html
       h1    Lobby Chat
       form
         .form-group
-          textarea.chat_area.form-control(readonly='', rows='5', value='hello there\nhello\nhello')
+          ul.chat_area
+            li
+              p.message= 'Hello'
           input.chat_input_text.form-control(placeholder='Enter chat message here')
           br
           button.chat_input_button.btn.navbar-right(type='submit') Send
