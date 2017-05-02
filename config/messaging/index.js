@@ -30,7 +30,7 @@ const init = ( app, server ) => {
         User.findByUsername(data.username)
         .then ( result => {
             if (!result || data.username.length == 0) {
-                socket.emit( 'errorMessage', {message: 'Wrong login, did you want to register instead?'})
+                socket.emit( 'errorMessage', {message: 'Wrong login/password combination'})
             } else {
                bcrypt.compare(data.password, result.password)
                 .then( check => {
@@ -51,7 +51,7 @@ const init = ( app, server ) => {
         User.checkIfRegistered(cookies.user_id, data.username)
         .then ( result => {
             if (result.length > 0) {
-                socket.emit( 'errorMessage', {message: 'username already registered'})
+                socket.emit( 'errorMessage', {message: 'Username already registered'})
             } else {
                const hash = bcrypt.hash(data.password, 10)
                 .then( hash => {
@@ -64,12 +64,7 @@ const init = ( app, server ) => {
 
     socket.on( 'data', data => {
         console.log(data)
-        socket.emit( 'success', {message: 'sucess message'})
-    })
-
-    socket.on( 'please-create-user', data => {
-      User.create( data.username )
-        .then( user => broadcast( io, 'user-created', user ))
+        //socket.emit( 'success', {message: 'success message'})
     })
   })
 }
