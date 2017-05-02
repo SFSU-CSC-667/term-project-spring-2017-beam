@@ -27,6 +27,8 @@ html
         ul.nav.navbar-nav.navbar-right
           li
             p.name= 'Welcome, ' + user_info.display_name + '#' + user_info.id
+            a.change#change(href='#change', data-toggle='modal', data-target='#myModal1')
+                |  Change Name
           if(user_info.registered)
             li
               a.logout(href='/logout')
@@ -113,3 +115,27 @@ html
           .modal-footer
             center
               button.btn.btn-default(type='button', data-dismiss='modal') Close
+    #myModal1.modal.fade.bs-modal-sm.myModal1(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel', aria-hidden='true')
+      .modal-dialog.modal-sm
+        .modal-content
+          br
+          .bs-example.bs-example-tabs
+            ul#myTab.nav.nav-tabs
+              li.active
+                a(href='#update', data-toggle='tab') Change Username
+          .modal-body
+            #myTabContent.tab-content
+              #change.tab-pane.fade.active.in
+                form.form-horizontal.update_name_form
+                  fieldset
+                    .control-group
+                      .controls
+                        input.form-control.update_name_input(required='', name='update_name_input', type='text', value='old username')
+                    .control-group
+                      label.control-label(for='update')
+                      .controls
+                        button.btn.btn-success.login_button Submit
+              .modal-footer
+                center
+                  button.btn.btn-default.change_name_close_button(type='button', data-dismiss='modal') Close
+
