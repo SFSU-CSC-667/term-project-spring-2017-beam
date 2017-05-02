@@ -33,10 +33,8 @@ html
                 span.glyphicon.glyphicon-log-out
                 |  Log Out
           else
-            form
-              .form-group
                 li
-                  input.email_input.form-control(placeholder='email')
+                  input.username_input.form-control(placeholder='username')
                 li
                   input.password_input.form-control(placeholder='password' type='password')
                 li
@@ -47,7 +45,7 @@ html
                   a.signup(href='#signup')
                     span.glyphicon.glyphicon-user
                     |  Sign Up
-                  button.login_button.btn.navbar-right(type='hidden') Send
+                  button.login_button.btn.navbar-right(style='display: none;') Send
     .container#user-listing
       h1   User Listing
 

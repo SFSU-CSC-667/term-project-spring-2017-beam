@@ -48,7 +48,7 @@ function checkAuth(req, res, next) {
 
 
 function loginFunction (req, res) {
-    User.findByEmail(req.params.email)
+    User.findByUsername(req.params.username)
     .then( result => {
         if (!result) {
             res.render ('logout', {message: 'Bad Login'})
@@ -97,7 +97,7 @@ function logoutFunction (req, res) {
 }
 router.use(createTempUserIfNeeded);
 router.use(checkAuth);
-router.get( '/login/:email/:password', loginFunction)
+router.get( '/login/:username/:password', loginFunction)
 router.get( '/logout', logoutFunction)
 router.get( '/', indexFunction)
 
@@ -119,7 +119,7 @@ router.get( '/rooms', ( request, response ) => {
 
 
 router.post( '/test', ( request, response ) => {
-  User.create( faker.internet.email() )
+  User.create( faker.internet.username() )
     .then( user => broadcast( request.app.get( 'io' ), 'user-created', user ))
     .then( _ => response.send('done'))
 })

@@ -1,13 +1,13 @@
 const socket = io()
 
-socket.on( 'user-created', ({ id, email, dogCount }) => {
-  console.log( id, email )
+socket.on( 'user-created', ({ id, username, dogCount }) => {
+  console.log( id, username )
 
   const tbody = document.querySelector( 'tbody' )
   const row = `
     <tr>
       <td>${id}</td>
-      <td>${email}</td>
+      <td>${username}</td>
       <td>${dogCount || 0}</td>
     </tr>
   `
@@ -43,13 +43,19 @@ socket.on ( 'success', ({message}) => {
 
 })
 
+function doLogin (event) {
+    const username = document.querySelector('input.username_input').value
+    const password = document.querySelector('input.password_input').value
+    socket.emit( 'login', {username: username, password: password})
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.data' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
     const input = 'lolmepops'
 
-    socket.emit( 'data', {email: input})
+    socket.emit( 'data', {username: input})
   })
 
   document.querySelector( 'button.chat_input_button' ).addEventListener( 'click', event => {
@@ -64,25 +70,33 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.signup' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
-    const email = document.querySelector('input.email_input').value
+    const username = document.querySelector('input.username_input').value
     const password = document.querySelector('input.password_input').value
-    socket.emit( 'signup', {email: email, password: password})
+    socket.emit( 'signup', {username: username, password: password})
   })
 
   document.querySelector( 'a.login' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
-    const email = document.querySelector('input.email_input').value
-    const password = document.querySelector('input.password_input').value
-    socket.emit( 'login', {email: email, password: password})
+    doLogin()
   })
 
   document.querySelector( 'button.login_button' ).addEventListener( 'click', event => {
-    event.preventDefault()
+   event.preventDefault()
     event.stopPropagation()
-    const email = document.querySelector('input.email_input').value
-    const password = document.querySelector('input.password_input').value
-    socket.emit( 'login', {email: email, password: password})
+    doLogin()
   })
+
+  $("input.password_input").on('keyup', function (e) {
+     if (e.keyCode == 13) {
+         doLogin()
+     }
+  });
+
+$("input.username_input").on('keyup', function (e) {
+     if (e.keyCode == 13) {
+         doLogin()
+     }
+  });
 
 })

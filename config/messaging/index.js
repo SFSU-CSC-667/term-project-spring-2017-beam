@@ -13,14 +13,12 @@ const init = ( app, server ) => {
   io.on( 'connection', socket => {
     console.log( 'client connected' )
     const test = socket.handshake.headers.cookie || socket.request.headers.cookie
-    console.log(test)
 
     socket.on( 'disconnect', data => {
       console.log( 'client disconnected' )
     })
 
     socket.on( 'lobby-chat', ({message}) => {
-        console.log(message)
         const cookies = cookie.parse(socket.handshake.headers.cookie
                 || socket.request.headers.cookie)
         Room.insertMessage(0, cookies.user_id, message)
@@ -29,17 +27,17 @@ const init = ( app, server ) => {
 
 
     socket.on( 'login', data => {
-        User.findByEmail(data.email)
+        User.findByUsername(data.username)
         .then ( result => {
-            if (!result || data.email.length == 0) {
-                socket.emit( 'errorMessage', {message: 'Wrong Login'})
+            if (!result || data.username.length == 0) {
+                socket.emit( 'errorMessage', {message: 'Wrong login, did you want to register instead?'})
             } else {
                bcrypt.compare(data.password, result.password)
                 .then( check => {
                     if (!check) {
-                        socket.emit( 'errorMessage', {message: 'Wrong Login'})
+                        socket.emit( 'errorMessage', {message: 'Wrong Login, did you want to register instead?'})
                     } else {
-                        const red = 'login/'+data.email+'/'+data.password
+                        const red = 'login/'+data.username+'/'+data.password
                         socket.emit('redirect', {destination: red})
                     }
                 })
@@ -50,14 +48,14 @@ const init = ( app, server ) => {
   socket.on( 'signup', data => {
         const cookies = cookie.parse(socket.handshake.headers.cookie
                 || socket.request.headers.cookie)
-        User.checkIfRegistered(cookies.user_id, data.email)
+        User.checkIfRegistered(cookies.user_id, data.username)
         .then ( result => {
             if (result.length > 0) {
-                socket.emit( 'errorMessage', {message: 'Email in use or ID already registered'})
+                socket.emit( 'errorMessage', {message: 'username already registered'})
             } else {
                const hash = bcrypt.hash(data.password, 10)
                 .then( hash => {
-                    User.register(hash, data.email, cookies.user_id)
+                    User.register(hash, data.username, cookies.user_id)
                     .then ( _ => socket.emit( 'redirect', {destination: '/'}) )
                 })
             }
@@ -70,7 +68,7 @@ const init = ( app, server ) => {
     })
 
     socket.on( 'please-create-user', data => {
-      User.create( data.email )
+      User.create( data.username )
         .then( user => broadcast( io, 'user-created', user ))
     })
   })
