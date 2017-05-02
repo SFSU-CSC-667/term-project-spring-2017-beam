@@ -11,6 +11,19 @@ html
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/users.js')
   body
+    .alert.alert-success(role='alert')
+    button.close(type='button', data-dismiss='alert', aria-label='Close')
+      span(aria-hidden='true') &times;
+    |  
+    Success!
+    |  You have been signed in successfully!
+  .alert.alert-danger(role='alert')
+    button.close(type='button', data-dismiss='alert', aria-label='Close')
+      span(aria-hidden='true') &times;
+    |  
+    Failed!
+    |  You have been a failure!
+
     nav.navbar.navbar-inverse
       .container-fluid
         .navbar-header
@@ -70,8 +83,9 @@ html
       h1    Lobby Chat
       form
         .form-group
+          input.room_id(type='hidden' value='0')            
           ul.chat_area
-            li
+            td
               p.message= 'Hello'
           input.chat_input_text.form-control(placeholder='Enter chat message here')
           br

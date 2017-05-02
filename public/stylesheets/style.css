@@ -40,3 +40,9 @@ a {
 	margin-top: 8px;
 	border-color: ghostwhite !important;
 }
+
+.alert{
+  position: fixed;
+  width: 100%;
+  display: none;
+}
