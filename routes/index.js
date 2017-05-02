@@ -2,6 +2,7 @@ const express = require('express')
 const faker = require( 'faker' )
 const router = express.Router()
 const debug = true;
+const bcrypt = require('bcrypt')
 
 const { User, Room } = require( '../db' )
 const broadcast = require( '../src/broadcast' )
@@ -47,20 +48,35 @@ function checkAuth(req, res, next) {
 
 
 function loginFunction (req, res) {
+    User.findByEmail(req.params.email)
+    .then( result => {
+        if (!result) {
+            res.render ('logout', {message: 'Bad Login'})
+        } else {
+            bcrypt.compare(req.params.password, result.password)
+            .then (check => {
+               if (!check) {
+                  res.render ('logout', {message: 'Bad Login'})
+               } else {
+                  req.cookies.display_name = result.display_name
+                  req.cookies.user_secret = result.secret
+                  req.cookies.user_id = result.id
+                  res.cookie('display_name', result.display_name);
+                  res.cookie('user_secret', result.secret);
+                  res.cookie('user_id', result.id);
+                  res.redirect('/')
+                  return;
+               }
+            })
+
+        }
+    })
+
+    
 
 }
 
-function logoutFunction (req, res) {
-     res.clearCookie('user_secret');
-     res.clearCookie('user_id');
-     res.clearCookie('display_name');
-     res.render ('logout', {message: 'Logged out'})
-}
-router.use(createTempUserIfNeeded);
-router.use(checkAuth);
-router.get( '/login/:email/:password', loginFunction)
-router.get( '/logout', logoutFunction)
-router.get( '/', ( request, response ) => {
+function indexFunction (request, response ) {
 
 
   const userPromise = User.all()
@@ -71,7 +87,19 @@ router.get( '/', ( request, response ) => {
     .then( values  => {
        response.render( 'index', { users: values[0] , user_info: values[2], rooms_info: values[1]})
     })
-})
+}
+
+function logoutFunction (req, res) {
+     res.clearCookie('user_secret');
+     res.clearCookie('user_id');
+     res.clearCookie('display_name');
+     res.redirect('/')
+}
+router.use(createTempUserIfNeeded);
+router.use(checkAuth);
+router.get( '/login/:email/:password', loginFunction)
+router.get( '/logout', logoutFunction)
+router.get( '/', indexFunction)
 
 router.get( '/rooms', ( request, response ) => {
 

@@ -38,6 +38,7 @@ const init = ( app, server ) => {
 
     socket.on( 'data', data => {
         console.log(data)
+        socket.emit( 'sucess', {message: 'sucess message'})
     })
 
     socket.on( 'please-create-user', data => {

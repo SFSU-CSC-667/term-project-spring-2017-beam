@@ -19,6 +19,10 @@ socket.on( 'redirect', ({destination}) => {
   window.location.href = destination
 })
 
+socket.on ( 'sucess', ({message}) => {
+    console.log(message)
+})
+
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.data' ).addEventListener( 'click', event => {
     event.preventDefault()
@@ -31,10 +35,17 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.signup' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
-
-
-    const email = document.querySelector('email_input').value
-    const password = document.querySelector('password_input').value
+    const email = document.querySelector('input.email_input').value
+    const password = document.querySelector('input.password_input').value
     socket.emit( 'signup', {email: email, password: password})
   })
+
+  document.querySelector( 'a.login' ).addEventListener( 'click', event => {
+    event.preventDefault()
+    event.stopPropagation()
+    const email = document.querySelector('input.email_input').value
+    const password = document.querySelector('input.password_input').value
+    window.location.href = 'login/' + email + '/' + password
+  })
+
 })

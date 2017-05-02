@@ -6,7 +6,7 @@ const AUTH = `SELECT id, display_name FROM users WHERE id=$1 AND secret=$2`
 const CREATE = `INSERT INTO users (display_name, secret, registered) VALUES ('Guest', $1, false) RETURNING id, secret, display_name`
 const CHECK_IF_REGISTERED = `SELECT id, display_name FROM users WHERE (id=$1 AND registered=true) OR email=$2`
 const REGISTER = `UPDATE users SET password=$1, email=$2, registered=true WHERE id=$3`
-const FIND_BY_EMAIL = `SELECT id, display_name, password FROM users WHERE email=$1`
+const FIND_BY_EMAIL = `SELECT id, display_name, password, secret FROM users WHERE email=$1`
 const UPDATE_DISPLAY_NAME = `UPDATE users SET display_name=$1 WHERE id=$2 RETURNING id, display_name`
 
 module.exports = {
