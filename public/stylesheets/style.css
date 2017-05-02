@@ -43,6 +43,8 @@ a {
 
 .alert{
   position: fixed;
-  width: 100%;
+  right:50px;
+  left: 50px;
+  width: auto;
   display: none;
 }
