@@ -15,6 +15,10 @@ socket.on( 'user-created', ({ id, email, dogCount }) => {
   tbody.innerHTML += row
 })
 
+socket.on( 'redirect', ({destination}) => {
+  window.location.href = destination
+})
+
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.data' ).addEventListener( 'click', event => {
     event.preventDefault()

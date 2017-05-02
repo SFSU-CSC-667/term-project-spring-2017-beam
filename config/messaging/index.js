@@ -22,16 +22,15 @@ const init = ( app, server ) => {
     socket.on( 'signup', data => {
         const cookies = cookie.parse(socket.handshake.headers.cookie
                 || socket.request.headers.cookie)
-        User.checkIfRegistered(cookies.user_id, data.email) 
-        .then ( result => { 
+        User.checkIfRegistered(cookies.user_id, data.email)
+        .then ( result => {
             if (result.length > 0) {
                 socket.emit( 'error', {message: 'Email in use or ID already registered'})
             } else {
                const hash = bcrypt.hash(data.password, 10)
                 .then( hash => {
                     User.register(hash, data.email, cookies.user_id)
-                    socket.emit( 'success', {message: 'Registration successful!'})
-
+                    .then ( _ => socket.emit( 'redirect', {destination: '/'}) )
                 })
             }
         })
