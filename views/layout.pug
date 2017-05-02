@@ -11,5 +11,29 @@ html
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/users.js')
   body
-    block content
+    nav.navbar.navbar-inverse
+      .container-fluid
+        .navbar-header
+          a.navbar-brand(href='#lobby') Liar's Dice
+        ul.nav.navbar-nav.navbar-right
+          li
+            p.name= 'Welcome, ' + user_info.display_name + '#' + user_info.id
+          if(user_info.registered)
+            li
+              a.logout(href='/logout')
+                span.glyphicon.glyphicon-log-out
+                |  Log Out
+          else
+            li
+              input.email_input.form-control(placeholder='email')
+            li
+              input.password_input.form-control(placeholder='password' type='password')
+            li
+              a.signup(href='#signup')
+                span.glyphicon.glyphicon-user
+                |  Sign Up
+            li
+              a.login(href='#login')
+                span.glyphicon.glyphicon-log-in
+                |  Login
 
