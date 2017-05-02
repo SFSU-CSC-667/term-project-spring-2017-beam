@@ -51,3 +51,6 @@ a {
   width: auto;
   display: none;
 }
+span {
+	text-align: center;
+}
