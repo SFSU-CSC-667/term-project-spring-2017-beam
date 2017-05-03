@@ -19,8 +19,14 @@ socket.on( 'redirect', ({destination}) => {
   window.location.href = destination
 })
 
-socket.on ( 'lobby-chat', ({user_id, display_name, message}) => {
-    const print = display_name + '#' + user_id+ ': ' + message
+socket.on('lobby-update', data => {
+    console.log(data)
+    const rooms_position = document.querySelector( 'tbody.rooms_list')
+    rooms_position.innerHTML = ''
+})
+
+socket.on ( 'chat', ({user_id, display_name, message}) => {
+    const print = '<strong>' + display_name + '#' + user_id+ '</strong>: ' + message
     console.log(print)
     const chat_area = document.querySelector ( 'ul.chat_area' )
     const append = `<td>${print}<br></td>`
@@ -51,13 +57,20 @@ socket.on ( 'success', ({message}) => {
 
 })
 
+socket.on ('connect', () => {
+  socket.emit( 'room_subscribe', room)
+})
+
+
 document.addEventListener('DOMContentLoaded', function() {
+
+
   document.querySelector( 'a.data' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
     const input = 'lolmepops'
-
-    socket.emit( 'data', {username: input})
+    socket.emit( 'data', room)
+    //socket.emit( 'data', {username: input})
   })
 
   document.querySelector( 'button.chat_input_button' ).addEventListener( 'click', event => {
@@ -65,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
     event.stopPropagation()
     const input = document.querySelector('input.chat_input_text').value
     document.querySelector('input.chat_input_text').value=''
-    socket.emit( 'lobby-chat', {message: input})
+    socket.emit( 'chat', {room_id: room.room_id, message: input})
 
   })
 

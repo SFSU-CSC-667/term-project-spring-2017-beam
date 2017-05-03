@@ -19,10 +19,14 @@ const init = ( app, server ) => {
       console.log( 'client disconnected' )
     })
 
-    socket.on( 'lobby-chat', ({message}) => {
+    socket.on('room_subscribe', ({room_id}) => {
+        socket.join(room_id)
+    })
+
+    socket.on( 'chat', ({room_id, message}) => {
         const cookies = socket.cookies
         Room.insertMessage(0, cookies.user_id, message)
-        .then( _ => io.emit('lobby-chat', {user_id: cookies.user_id, display_name: cookies.display_name, message: message}))
+        .then( _ => io.to(room_id).emit('chat', {user_id: cookies.user_id, display_name: cookies.display_name, message: message}))
     })
 
 
@@ -85,7 +89,11 @@ const init = ( app, server ) => {
      socket.on( 'data', data => {
         console.log(data)
         //socket.emit( 'success', {message: 'success message'})
-                socket.emit ( 'updateName', {display_name: 'thisisatest', id: '3'})
+        Room.allActive().
+        then ( result => {
+            io.to('0').emit('lobby-update', result)
+            console.log(result)
+        })
     })
   })
 }

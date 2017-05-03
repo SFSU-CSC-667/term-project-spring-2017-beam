@@ -14,7 +14,8 @@ td {
 
 .chat_area {
     height: 300px;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-wrap: break-word;
     padding-left: 0px;
 }
 
@@ -30,7 +31,7 @@ td {
 	float: left
 }
 
-#lobby-chat{
+#chat_container{
 	width: 30%;
 	float: right;
 }

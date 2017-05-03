@@ -10,6 +10,8 @@ html
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/users.js')
+    script.
+          const room = {room_id: '1'}
   body
     .alert.alert-success(role='alert')
       button.close(type='button', data-dismiss='alert', aria-label='Close')
@@ -63,14 +65,14 @@ html
                 td Waiting
       br
       br
-    .container#lobby-chat
-      h1    Lobby Chat
+    .container#chat_container
+      h1.chat_title    Chat
       form
         .form-group
           input.room_id(type='hidden' value='0')            
           ul.chat_area
             td
-          input.chat_input_text.form-control(placeholder='Enter chat message here')
+          input.chat_input_text.form-control(placeholder='Enter chat message here', maxlength='140')
           br
           button.chat_input_button.btn.navbar-right(type='submit') Send
 
