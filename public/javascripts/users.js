@@ -23,22 +23,26 @@ socket.on('lobby-update', data => {
     console.log(data)
     const rooms_position = document.querySelector( 'tbody.rooms_list')
     rooms_position.innerHTML = ''
-    forEach(room in data) {
-      var row = 
+    for(row in data) {
+      console.log(row)
+      console.log(data[row].id)
+      var rowHTML = 
       `
       <tr>
         <td>
-          <a href="/room/`+room.id+ `/enter">`+room.name + `#` + room.id+`</a>
+          <a href="/room/`+data[row].id+ `/enter">`+data[row].name + `#` + data[row].id+`</a>
         </td>
         <td>
-          `room.master_user_display_name+ `#` + room.master_user_id`
+          `+data[row].master_user_display_name+ `#` + data[row].master_user_id+`
         </td>
-        <td>
-          if (room.started) In Progress
-          else Waiting
+        <td>`
+          if (data[row].started) rowHTML += `In Progress`
+          else rowHTML += `Waiting`
+          rowHTML+=`
         </td>
       <tr>
       `
+      rooms_position.innerHTML += rowHTML
     }
 })
 

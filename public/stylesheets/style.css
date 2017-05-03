@@ -8,7 +8,7 @@ a {
 	color: black !important;
 }
 
-td {
+td,th {
     padding-right: 40px !important;
 }
 
