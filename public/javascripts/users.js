@@ -23,6 +23,23 @@ socket.on('lobby-update', data => {
     console.log(data)
     const rooms_position = document.querySelector( 'tbody.rooms_list')
     rooms_position.innerHTML = ''
+    forEach(room in data) {
+      var row = 
+      `
+      <tr>
+        <td>
+          <a href="/room/`+room.id+ `/enter">`+room.name + `#` + room.id+`</a>
+        </td>
+        <td>
+          `room.master_user_display_name+ `#` + room.master_user_id`
+        </td>
+        <td>
+          if (room.started) In Progress
+          else Waiting
+        </td>
+      <tr>
+      `
+    }
 })
 
 socket.on ( 'chat', ({user_id, display_name, message}) => {
