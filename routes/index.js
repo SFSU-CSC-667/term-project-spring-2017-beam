@@ -80,13 +80,23 @@ function loginFunction (req, res) {
 function indexFunction (request, response ) {
 
 
-  const userPromise = User.all()
   const roomsPromise = Room.allActive()
   const userInfo = User.findById(request.cookies.user_id)
 
-  Promise.all([userPromise,roomsPromise, userInfo])
+  Promise.all([roomsPromise, userInfo])
     .then( values  => {
-       response.render( 'index', { users: values[0] , user_info: values[2], rooms_info: values[1]})
+       response.render( 'index', {user_info: values[1], rooms_info: values[0]})
+    })
+}
+
+function roomFunction (request, response ) {
+
+
+  const userInfo = User.findById(request.cookies.user_id)
+
+  Promise.all([userInfo])
+    .then( values  => {
+       response.render( 'room', { user_info: values[0], room_id:request.params.room_id})
     })
 }
 
@@ -114,6 +124,7 @@ router.use(checkAuth);
 router.get( '/login/:username/:password', loginFunction)
 router.get( '/logout', logoutFunction)
 router.get( '/', indexFunction)
+router.get( '/room/:room_id', roomFunction)
 router.get( '/2', index2Function)
 
 router.get( '/rooms', ( request, response ) => {

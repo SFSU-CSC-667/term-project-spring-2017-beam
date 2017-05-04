@@ -19,18 +19,39 @@ socket.on( 'redirect', ({destination}) => {
   window.location.href = destination
 })
 
-socket.on('lobby-update', data => {
-    console.log(data)
+socket.on('room-update', data => {
     const rooms_position = document.querySelector( 'tbody.rooms_list')
     rooms_position.innerHTML = ''
     for(row in data) {
-      console.log(row)
-      console.log(data[row].id)
       var rowHTML = 
       `
       <tr>
         <td>
-          <a href="/room/`+data[row].id+ `/enter">`+data[row].name + `#` + data[row].id+`</a>
+          <a href="/room/`+data[row].id+ `">`+data[row].name + `#` + data[row].id+`</a>
+        </td>
+        <td>
+          `+data[row].master_user_display_name+ `#` + data[row].master_user_id+`
+        </td>
+        <td>`
+          if (data[row].started) rowHTML += `In Progress`
+          else rowHTML += `Waiting`
+          rowHTML+=`
+        </td>
+      <tr>
+      `
+      rooms_position.innerHTML += rowHTML
+    }
+})
+
+socket.on('lobby-update', data => {
+    const rooms_position = document.querySelector( 'tbody.rooms_list')
+    rooms_position.innerHTML = ''
+    for(row in data) {
+      var rowHTML = 
+      `
+      <tr>
+        <td>
+          <a href="/room/`+data[row].id+ `">`+data[row].name + `#` + data[row].id+`</a>
         </td>
         <td>
           `+data[row].master_user_display_name+ `#` + data[row].master_user_id+`
@@ -48,7 +69,6 @@ socket.on('lobby-update', data => {
 
 socket.on ( 'chat', ({user_id, display_name, message}) => {
     const print = '<strong>' + display_name + '#' + user_id+ '</strong>: ' + message
-    console.log(print)
     const chat_area = document.querySelector ( 'ul.chat_area' )
     const append = `<td>${print}<br></td>`
     chat_area.innerHTML += append

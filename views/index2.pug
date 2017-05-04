@@ -11,7 +11,7 @@ html
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/users.js')
     script.
-          const room = {room_id: '1'}
+          const room = {room_id: '0'}
   body
     .alert.alert-success(role='alert')
       button.close(type='button', data-dismiss='alert', aria-label='Close')
@@ -43,7 +43,7 @@ html
                 |  Sign In/Register
 
     .container#user-listing
-      h1   User Listing
+      h1  Available Rooms 
 
       a.data(href='#') Send Data 
 
@@ -53,11 +53,11 @@ html
             th Room 
             th Leader 
             th Status
-        tbody
+        tbody.rooms_list
          each room in rooms_info
             tr
               td 
-                a(href='/room/'+room.id+'/enter')= room.name + '#' + room.id
+                a(href='/room/'+room.id)= room.name + '#' + room.id
               td= room.master_user_display_name + '#' + room.master_user_id
               if (room.started)
                 td In Progress

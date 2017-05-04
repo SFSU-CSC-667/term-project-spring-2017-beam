@@ -28,41 +28,22 @@ html
           a.navbar-brand(href='/') Liar's Dice
         ul.nav.navbar-nav.navbar-right
           li
-            p.name= 'Welcome, ' + user_info.display_name + '#' + user_info.id
+            p.name= 'Playing as ' + user_info.display_name + '#' + user_info.id
             a.change#change(href='#update_modal', data-toggle='modal', data-target='#myModal1')
                 |  Change Name
-          if(user_info.registered)
-            li
-              a.logout(href='/logout')
-                span.glyphicon.glyphicon-log-out
-                |  Log Out
-          else
-            li
-              a.login(href='#register', data-toggle='modal', data-target='#myModal')
-                span.glyphicon.glyphicon-log-in
-                |  Sign In/Register
 
     .container#user-listing
-      h1  Available Rooms 
+      h1.room_title Title
 
       a.data(href='#') Send Data 
 
       table
         thead
           tr
-            th Room 
-            th Leader 
-            th Status
-        tbody.rooms_list
-         each room in rooms_info
-            tr
-              td 
-                a(href='/room/'+room.id)= room.name + '#' + room.id
-              td= room.master_user_display_name + '#' + room.master_user_id
-              if (room.started)
-                td In Progress
-              else
-                td Waiting
+            th.check_header Leader
+            th Player
+            th dices
+        tbody.room_into
       br
       br
     .container#chat_container
