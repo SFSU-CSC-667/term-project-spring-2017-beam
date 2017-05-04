@@ -58,7 +58,7 @@ html
          each room in rooms_info
             tr
               td 
-                a(href='/room/'+room.id)= room.name + '#' + room.id
+                a(href='/room/'+room.id)= room.name
               td= room.master_user_display_name + '#' + room.master_user_id
               if (room.started)
                 td In Progress
