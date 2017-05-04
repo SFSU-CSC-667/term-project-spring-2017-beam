@@ -10,8 +10,7 @@ html
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/users.js')
-    script.
-          const room = {room_id: room_id}
+    script= 'const room = {room_id: ' + room_id + '}'
   body
     .alert.alert-success(role='alert')
       button.close(type='button', data-dismiss='alert', aria-label='Close')
