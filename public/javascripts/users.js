@@ -1,5 +1,37 @@
 const socket = io()
 
+const activateButtons = function(){
+  console.log("activate")
+  if (document.querySelector( 'button.start_game_button' )){
+    document.querySelector( 'button.start_game_button' ).addEventListener( 'click', event => {
+      event.preventDefault()
+      event.stopPropagation()
+      socket.emit( 'start_game', {room_id: 'room.room_id'})
+    })
+  }
+  if (document.querySelector( 'button.end_game_button' )){
+    document.querySelector( 'button.end_game_button' ).addEventListener( 'click', event => {
+      event.preventDefault()
+      event.stopPropagation()
+      socket.emit( 'end_game', {room_id: 'room.room_id'})
+    })
+  }
+  if (document.querySelector( 'button.enter_game_button' )){
+    document.querySelector( 'button.enter_game_button' ).addEventListener( 'click', event => {
+      event.preventDefault()
+      console.log("enter")
+      event.stopPropagation()
+      socket.emit( 'enter_game', {room_id: 'room.room_id'})
+    })
+  }
+  else if (document.querySelector( 'button.liar_game_button' )){
+    document.querySelector( 'button.liar_game_button' ).addEventListener( 'click', event => {
+      event.preventDefault()
+      event.stopPropagation()
+      socket.emit( 'liar', {room_id: 'room.room_id'})
+    })
+  }
+}
 socket.on( 'user-created', ({ id, username, dogCount }) => {
   console.log( id, username )
 
@@ -21,6 +53,7 @@ socket.on( 'redirect', ({destination}) => {
 
 socket.on('room-update', data => {
     console.log(data)
+    console.log('lol')
     const title_bar = document.querySelector ('h1.room_title')
     title_bar.innerHTML = data[0].name
     if (data[0].started == null) {
@@ -70,6 +103,7 @@ socket.on('room-update', data => {
       `
       status.innerHTML += rowHTML
     }
+    activateButtons();
 })
 
 socket.on('lobby-update', data => {
@@ -144,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.data' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
-    socket.emit( 'data', {room_id: '5', roll: '7', amount: '0'})
+    socket.emit( 'data2', room.room_id)
     //socket.emit( 'data', {username: input})
   })
 
@@ -187,5 +221,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const display_name = document.querySelector('input.update_name_input').value
     socket.emit( 'display-name-update', {display_name: display_name})
   })
-
+  
+  activateButtons();
 })
