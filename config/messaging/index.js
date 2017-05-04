@@ -19,16 +19,23 @@ const init = ( app, server ) => {
       console.log( 'client disconnected' )
     })
 
-    socket.on('room_subscribe', room_id => {
+   socket.on('room-subscribe', room_id => {
         socket.join(room_id)
         if (room_id > 0) {
             Room.inGameStatus(room_id)
             .then( result => {
-                console.log(result)
+                socket.emit('room-update', result)
             })
         }
     })
 
+    socket.on('data', room_id => {
+        Room.inGameStatus('1')
+        .then( result => {
+            socket.emit('room-update', result)
+        })
+    })
+ 
     socket.on( 'chat', ({room_id, message}) => {
         const cookies = socket.cookies
         Room.insertMessage(0, cookies.user_id, message)
@@ -36,7 +43,7 @@ const init = ( app, server ) => {
     })
 
 
-    socket.on( 'create_room', ({room_name}) => {
+    socket.on( 'create-room', ({room_name}) => {
         const cookies = socket.cookies
         console.log(room_name)
     })
@@ -46,12 +53,12 @@ const init = ( app, server ) => {
         User.findByUsername(data.username)
         .then ( result => {
             if (!result || data.username.length == 0) {
-                socket.emit( 'errorMessage', {message: 'Wrong login/password combination'})
+                socket.emit( 'error-message', {message: 'Wrong login/password combination'})
             } else {
                bcrypt.compare(data.password, result.password)
                 .then( check => {
                     if (!check) {
-                        socket.emit( 'errorMessage', {message: 'Wrong Login, did you want to register instead?'})
+                        socket.emit( 'error-message', {message: 'Wrong Login, did you want to register instead?'})
                     } else {
                         const red = 'login/'+data.username+'/'+data.password
                         socket.emit('redirect', {destination: red})
@@ -66,7 +73,7 @@ const init = ( app, server ) => {
         User.checkIfRegistered(cookies.user_id, data.username)
         .then ( result => {
             if (result.length > 0) {
-                socket.emit( 'errorMessage', {message: 'Username already registered'})
+                socket.emit( 'error-message', {message: 'Username already registered'})
             } else {
                const hash = bcrypt.hash(data.password, 10)
                 .then( hash => {
@@ -77,12 +84,12 @@ const init = ( app, server ) => {
         })
     })
 
-    socket.on( 'display_name_update', ({display_name}) => {
+    socket.on( 'display-name-update', ({display_name}) => {
         const cookies = socket.cookies
         User.updateDisplayName(display_name, cookies.user_id)
         .then( result => {
             if (result.length == 0) {
-                socket.emit( 'errorMessage', {message: 'An error has occurred'})
+                socket.emit( 'error-message', {message: 'An error has occurred'})
             } else {
                 socket.cookies.display_name = result.display_name
 
@@ -92,13 +99,13 @@ const init = ( app, server ) => {
                 if (socket.request.headers.cookie) {
                     socket.request.headers.cookie = result.display_name
                 }*/
-                socket.emit ( 'updateName', {display_name: result.display_name, id: result.id})
+                socket.emit ( 'update-name', {display_name: result.display_name, id: result.id})
             }
         })
         //socket.emit( 'success', {message: 'success message'})
     })
 
-     socket.on( 'data', data => {
+/*     socket.on( 'data', data => {
         console.log(data)
         //socket.emit( 'success', {message: 'success message'})
         Room.allActive().
@@ -106,7 +113,7 @@ const init = ( app, server ) => {
             io.to('0').emit('lobby-update', result)
             console.log(result)
         })
-    })
+    })*/
   })
 }
 

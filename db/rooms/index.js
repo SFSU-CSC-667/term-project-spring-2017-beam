@@ -20,7 +20,7 @@ const ADD_USER_ROLL = `INSERT INTO user_rolls VALUES ($1, $2, $3, $4) ON CONFLIC
 const ADD_ROUND_ROLL = `INSERT INTO round_rolls VALUES ($1, $2, true, $3) ON CONFLICT (room_id, round) DO UPDATE SET dice = $3`
 const INSERT_MOVE = `INSERT INTO moves (room_id, user_id, round, roll, amount, time) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP)`
 const INSERT_MESSAGE = `INSERT INTO chat_messages VALUES ($1, $2, CURRENT_TIMESTAMP, $3)`
-const IN_GAME_STATUS = `SELECT room_users.*, rooms.started, rooms.name, rooms.master_user_id, users.display_name, 5-(SELECT COUNT (*) FROM moves WHERE room_id=$1 AND roll=9 AND moves.user_id = room_users.user_id) AS dice_amount FROM room_users INNER JOIN users ON room_users.user_id = users.id INNER JOIN rooms ON rooms.id = room_users.room_id WHERE room_users.room_id=$1`
+const IN_GAME_STATUS = `SELECT room_users.*, rooms.user_id_order, rooms.started, rooms.name, rooms.master_user_id, users.display_name, 5-(SELECT COUNT (*) FROM moves WHERE room_id=$1 AND roll=9 AND moves.user_id = room_users.user_id) AS dice_amount FROM room_users INNER JOIN users ON room_users.user_id = users.id INNER JOIN rooms ON rooms.id = room_users.room_id WHERE room_users.room_id=$1`
 
 module.exports = {
   allActive: () => db.any( ALL_ACTIVE ),

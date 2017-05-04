@@ -20,27 +20,8 @@ socket.on( 'redirect', ({destination}) => {
 })
 
 socket.on('room-update', data => {
-    const rooms_position = document.querySelector( 'tbody.rooms_list')
-    rooms_position.innerHTML = ''
-    for(row in data) {
-      var rowHTML = 
-      `
-      <tr>
-        <td>
-          <a href="/room/`+data[row].id+ `">`+data[row].name+`</a>
-        </td>
-        <td>
-          `+data[row].master_user_display_name+ `#` + data[row].master_user_id+`
-        </td>
-        <td>`
-          if (data[row].started) rowHTML += `In Progress`
-          else rowHTML += `Waiting`
-          rowHTML+=`
-        </td>
-      <tr>
-      `
-      rooms_position.innerHTML += rowHTML
-    }
+    console.log(data)
+
 })
 
 socket.on('lobby-update', data => {
@@ -75,14 +56,14 @@ socket.on ( 'chat', ({user_id, display_name, message}) => {
     chat_area.scrollTop = chat_area.scrollHeight
 })
 
-socket.on ( 'updateName', ({display_name, id}) => {
+socket.on ( 'update-name', ({display_name, id}) => {
     document.querySelector( 'p.name' ).innerHTML = 'Welcome, ' + display_name + '#' + id
     $('.myModal1').modal('hide')
     document.querySelector('input.update_name_input').placeholder = display_name
     document.querySelector('input.update_name_input').value = ''
 })
 
-socket.on ( 'errorMessage', ({message}) => {
+socket.on ( 'error-message', ({message}) => {
     $(".alert-danger").text(message).show()
     setTimeout(function() {
         $(".alert-danger").text(message).hide()
@@ -99,7 +80,7 @@ socket.on ( 'success', ({message}) => {
 })
 
 socket.on ('connect', () => {
-  socket.emit( 'room_subscribe', room.room_id)
+  socket.emit( 'room-subscribe', room.room_id)
 })
 
 
@@ -127,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
     event.preventDefault()
     event.stopPropagation()
     const room_name = document.querySelector('input.room_name_input').value
-    socket.emit( 'create_room', {room_name: room_name})
+    socket.emit( 'create-room', {room_name: room_name})
   })
 
   document.querySelector( 'form.login_form' ).addEventListener( 'submit', event => {
@@ -151,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
     event.preventDefault()
     event.stopPropagation()
     const display_name = document.querySelector('input.update_name_input').value
-    socket.emit( 'display_name_update', {display_name: display_name})
+    socket.emit( 'display-name-update', {display_name: display_name})
   })
 
 })
