@@ -25,19 +25,23 @@ socket.on('room-update', data => {
     status.innerHTML = ''
     for(row in data) {
       document.querySelector('h1.room_title').value = data[row].room_id
-    
+      if(data[row].started != null)
+        document.querySelector('th.check_header').value = 'Current Turn'
       var rowHTML = 
       `
       <tr>
         <td>`
-          if (data[row].user_id == data[row].master_user_id) rowHTML += `X`
+          if (data[row].user_id == data[row].master_user_id && data[row].started == null) rowHTML += `X`
+          else if (data[row].user_id == data[row].user_id_order[0] && data[row].started != null) rowHTML += `X`
           rowHTML+=`
         </td>
         <td>
           `+data[row].display_name+ `#` + data[row].user_id+`
         </td>
-        <td>
-          ?, ?, ?, ?, ?
+        <td>`
+          for (int i = 0; i< data[row].dice_amount)
+            rowHTML+=`? `
+          rowHTML+=`
         </td>
       <tr>
       `
