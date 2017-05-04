@@ -45,7 +45,11 @@ const init = ( app, server ) => {
 
     socket.on( 'create-room', ({room_name}) => {
         const cookies = socket.cookies
-        console.log(room_name)
+        Room.createRoom(cookies.user_id, room_name, 5, [parseInt(cookies.user_id)])
+        .then( result => {
+            Room.insertUser(result.id, cookies.user_id)
+            .then( _ => socket.emit('redirect', {destination: '/room/' + result.id}))
+        })
     })
 
 
