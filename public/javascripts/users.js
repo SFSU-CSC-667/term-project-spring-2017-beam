@@ -27,7 +27,7 @@ socket.on('room-update', data => {
       `
       <tr>
         <td>
-          <a href="/room/`+data[row].id+ `">`+data[row].name + `#` + data[row].id+`</a>
+          <a href="/room/`+data[row].id+ `">`+data[row].name+`</a>
         </td>
         <td>
           `+data[row].master_user_display_name+ `#` + data[row].master_user_id+`
