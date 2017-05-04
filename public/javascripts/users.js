@@ -144,8 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.data' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
-    const input = 'lolmepops'
-    socket.emit( 'data', room.room_id)
+    socket.emit( 'data', {room_id: '5', roll: '7', amount: '0'})
     //socket.emit( 'data', {username: input})
   })
 

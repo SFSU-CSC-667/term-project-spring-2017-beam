@@ -48,10 +48,21 @@ const init = ( app, server ) => {
         })
     })
 
-    socket.on('data', room_id => {
-        Room.getUserRoll(4, 2)
-        .then ( user_roll => {
-            io.to(secretsById[7]).emit('user-roll', {room_id: '3', roll: user_roll.dice})
+    socket.on('data', ({room_id, roll, amount}) => {
+        if (!room_id || !roll || !amount || room_id < 1) {
+            socket.emit('error-message', {message: 'Invalid action'})
+            return;
+        }
+        Room.findById(room_id)
+        .then( result => {
+            if (!result) {
+                socket.emit('error-message', {message: 'This room doesnt exist anymore'})
+                setTimeout(function() {
+                   socket.emit('redirect', {destination: '/'})
+                }, 5000)
+                return;
+            }
+
         })
     })
  
