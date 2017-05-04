@@ -99,7 +99,7 @@ socket.on ( 'success', ({message}) => {
 })
 
 socket.on ('connect', () => {
-  socket.emit( 'room_subscribe', room)
+  socket.emit( 'room_subscribe', room.room_id)
 })
 
 
