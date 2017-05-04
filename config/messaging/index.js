@@ -36,6 +36,12 @@ const init = ( app, server ) => {
     })
 
 
+    socket.on( 'create_room', ({room_name}) => {
+        const cookies = socket.cookies
+        console.log(room_name)
+    })
+
+
     socket.on( 'login', data => {
         User.findByUsername(data.username)
         .then ( result => {

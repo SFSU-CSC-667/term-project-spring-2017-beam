@@ -123,6 +123,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   })
 
+  document.querySelector( 'form.room_name_form' ).addEventListener( 'submit', event => {
+    event.preventDefault()
+    event.stopPropagation()
+    const room_name = document.querySelector('input.room_name_input').value
+    socket.emit( 'create_room', {room_name: room_name})
+  })
+
   document.querySelector( 'form.login_form' ).addEventListener( 'submit', event => {
     event.preventDefault()
     event.stopPropagation()
