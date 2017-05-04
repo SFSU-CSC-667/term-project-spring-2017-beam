@@ -1,4 +1,4 @@
-const socket = io()
+const socket = io();console.log('test')
 
 socket.on( 'user-created', ({ id, username, dogCount }) => {
   console.log( id, username )
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.data' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
-    socket.emit( 'data', {room_id: '5', roll: '7', amount: '0'})
+    socket.emit( 'data2', room.room_id)
     //socket.emit( 'data', {username: input})
   })
 

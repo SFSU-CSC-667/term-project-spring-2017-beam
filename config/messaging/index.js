@@ -48,6 +48,25 @@ const init = ( app, server ) => {
         })
     })
 
+socket.on('data2', room_id => {
+       console.log('data2 called')
+       if (room_id > 0) {
+            Room.inGameStatus(room_id)
+            .then( result => {
+                console.log('about to emit')
+                socket.emit('room-update', result)
+                if (result[0].started) {
+                    if (result[0].user_id_order.indexOf(parseInt(socket.cookies.user_id)) > -1) {
+                        Room.getUserRoll(room_id, socket.cookies.user_id)
+                        .then ( user_roll => {
+                            socket.emit('user-roll', {room_id: room_id, roll: user_roll.dice})
+                        })
+                    }
+                }
+            })
+        }
+
+    })
     socket.on('data', ({room_id, roll, amount}) => {
         if (!room_id || !roll || !amount || room_id < 1) {
             socket.emit('error-message', {message: 'Invalid action'})
@@ -55,13 +74,26 @@ const init = ( app, server ) => {
         }
         Room.findById(room_id)
         .then( result => {
-            if (!result) {
+            if (!result || result.ended) {
                 socket.emit('error-message', {message: 'This room doesnt exist anymore'})
                 setTimeout(function() {
                    socket.emit('redirect', {destination: '/'})
                 }, 5000)
                 return;
             }
+            if (socket.cookies.user_id != result.master_user_id) {
+                socket.emit('error-message', {message: 'Only the leader may start a game'})
+                return;
+            }
+            if (result.user_id_order.length < 2) {
+                socket.emit('error-message', {message: 'You need at least 2 players to start a game'})
+                return;
+            }
+            Room.insertMove(room_id, socket.cookies.user_id, 0, 0, 0)
+            .then ( _ => {
+                rollDice(room_id, result.user_id_order)
+            })
+
 
         })
     })
