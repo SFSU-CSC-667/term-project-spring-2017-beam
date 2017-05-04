@@ -21,6 +21,25 @@ socket.on( 'redirect', ({destination}) => {
 
 socket.on('room-update', data => {
     console.log(data)
+    const title_bar = document.querySelector ('h1.room_title')
+    title_bar.innerHTML = data[0].name
+    if (data[0].started == null) {
+        if (data[0].master_user_id == user.user_id && data[0].user_id_order.length > 1) {
+            title_bar.innerHTML += " start game button"
+        }
+        if (data[0].user_id_order.indexOf(parseInt(user.user_id)) > -1) {
+            title_bar.innerHTML += " leave game button"
+        } else {
+            title_bar.innerHTML += " enter game button"
+        }
+    } else if (data[0].user_id_order.length > 1) {
+        if (last_move.roll > 0 && last_move.roll < 7 && data[0].user_id_order[0] == user.user_id) {
+            title_bar.innerHTML += " liar! button"
+        }
+
+    }
+
+
     const status = document.querySelector( 'tbody.room_info')
     status.innerHTML = ''
     for(row in data) {

@@ -10,8 +10,8 @@ html
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/users.js')
-    script= `const room = {room_id: '` + room_id + `'}`
-    script= `var user = {user_id: '` + user_info.id + `', dices: ['?','?','2','?','?']}`
+    script= `const room = {room_id: '` + parseInt(room_id) + `'}`
+    script= `var user = {user_id: '` + parseInt(user_info.id) + `', dices: ['?','?','2','?','?']}`
     script= `var last_move = {roll: 0, amount: 0}`
   body
     .alert.alert-success(role='alert')
