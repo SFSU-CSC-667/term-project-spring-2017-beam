@@ -96,7 +96,7 @@ function roomFunction (request, response ) {
 
   Promise.all([userInfo])
     .then( values  => {
-       response.render( 'room', { user_info: values[0], room_id:request.params.room_id})
+       response.render( 'room', { user_info: values[0], room_id: request.params.room_id})
     })
 }
 
