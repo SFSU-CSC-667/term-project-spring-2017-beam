@@ -83,5 +83,5 @@ td,th {
 
 .chat_input_button{
 	margin: 2px;
-	margin-bottom: 10px;
+	margin-bottom: 10px !important;
 }
