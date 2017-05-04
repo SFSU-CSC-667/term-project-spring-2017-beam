@@ -34,6 +34,9 @@ td,th {
 #chat_container{
 	width: 30%;
 	float: right;
+	border-style: solid;
+	border-width: thin;
+	border-radius: 5px;
 }
 
 .navbar-inverse{
@@ -76,4 +79,9 @@ td,th {
 
 .new_game_button{
 	margin-left: 40px;
+}
+
+.chat_input_button{
+	margin: 2px;
+	margin-bottom: 10px;
 }
