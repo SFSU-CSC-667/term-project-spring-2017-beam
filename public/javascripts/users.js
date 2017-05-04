@@ -25,16 +25,16 @@ socket.on('room-update', data => {
     title_bar.innerHTML = data[0].name
     if (data[0].started == null) {
         if (data[0].master_user_id == user.user_id && data[0].user_id_order.length > 1) {
-            title_bar.innerHTML += " start game button"
+           title_bar.innerHTML += " <button class='start_game_button btn'>start game</button>"
         }
         if (data[0].user_id_order.indexOf(parseInt(user.user_id)) > -1) {
-            title_bar.innerHTML += " leave game button"
+            title_bar.innerHTML += " <button class='leave_game_button btn'>leave game</button>"
         } else {
-            title_bar.innerHTML += " enter game button"
+            title_bar.innerHTML += " <button class='enter_game_button btn'>enter game</button>"
         }
     } else if (data[0].user_id_order.length > 1) {
         if (last_move.roll > 0 && last_move.roll < 7 && data[0].user_id_order[0] == user.user_id) {
-            title_bar.innerHTML += " liar! button"
+            title_bar.innerHTML += " <button class='liar_game_button btn'>Liar!</button>"
         }
 
     }
