@@ -4,6 +4,7 @@ const { User, Room } = require( '../../db' )
 const broadcast = require( '../../src/broadcast' )
 const cookie = require('cookie')
 const bcrypt = require('bcrypt')
+var secretsById = []
 
 const init = ( app, server ) => {
   const io = socketIo( server )
@@ -14,7 +15,9 @@ const init = ( app, server ) => {
     console.log( 'client connected' )
     socket.cookies = cookie.parse(socket.handshake.headers.cookie
          || socket.request.headers.cookie)
-
+    socket.join(socket.cookies.user_secret)
+    
+    secretsById[socket.cookies.user_id] = socket.cookies.user_secret
     socket.on( 'disconnect', data => {
       console.log( 'client disconnected' )
     })
@@ -25,21 +28,36 @@ const init = ( app, server ) => {
             Room.inGameStatus(room_id)
             .then( result => {
                 socket.emit('room-update', result)
+                if (result[0].started) {
+                    if (result[0].user_id_order.indexOf(parseInt(socket.cookies.user_id)) > -1) {
+                        Room.getUserRoll(room_id, socket.cookies.user_id)
+                        .then ( user_roll => {
+                            socket.emit('user-roll', {room_id: room_id, roll: user_roll.dice})
+                        })
+                    }
+                }
             })
         }
+        Room.getPastChat(room_id)
+        .then( result => {
+            if (result) {
+                for (row in result) {
+                    socket.emit('chat', {user_id: result[result.length-1-row].user_id, display_name: result[result.length-1-row].display_name, message: result[result.length-1-row].message})
+                }
+            }
+        })
     })
 
     socket.on('data', room_id => {
-        Room.inGameStatus('3')
-        .then( result => {
-            console.log(result)
-            socket.emit('room-update', result)
+        Room.getUserRoll(4, 2)
+        .then ( user_roll => {
+            io.to(secretsById[7]).emit('user-roll', {room_id: '3', roll: user_roll.dice})
         })
     })
  
     socket.on( 'chat', ({room_id, message}) => {
         const cookies = socket.cookies
-        Room.insertMessage(0, cookies.user_id, message)
+        Room.insertMessage(room_id, cookies.user_id, message)
         .then( _ => io.to(room_id).emit('chat', {user_id: cookies.user_id, display_name: cookies.display_name, message: message}))
     })
 

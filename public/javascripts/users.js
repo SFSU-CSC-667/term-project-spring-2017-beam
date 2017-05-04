@@ -39,7 +39,11 @@ socket.on('room-update', data => {
           `+data[row].display_name+ `#` + data[row].user_id+`
         </td>
         <td>`
-          for (int i = 0; i< data[row].dice_amount)
+          if (data[row].user_id == user.user_id)
+            for (dice in user.dices)
+            rowHTML+= user.dices[dice] + ` `
+          else
+            for (var i = 0; i< data[row].dice_amount; i++)
             rowHTML+=`? `
           rowHTML+=`
         </td>
@@ -71,6 +75,12 @@ socket.on('lobby-update', data => {
       `
       rooms_position.innerHTML += rowHTML
     }
+})
+
+socket.on ( 'user-roll', ({room_id, roll}) => {
+    if (room.room_id == room_id) 
+        user.dices = roll
+    console.log(user.dices)
 })
 
 socket.on ( 'chat', ({user_id, display_name, message}) => {
@@ -129,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   })
 
-  document.querySelector( 'form.room_name_form' ).addEventListener( 'submit', event => {
+  if (document.querySelector( 'form.room_name_form'))  document.querySelector( 'form.room_name_form' ).addEventListener( 'submit', event => {
     event.preventDefault()
     event.stopPropagation()
     const room_name = document.querySelector('input.room_name_input').value
