@@ -20,8 +20,28 @@ socket.on( 'redirect', ({destination}) => {
 })
 
 socket.on('room-update', data => {
-    console.log(data)
-
+    const status = document.querySelector( 'tbody.room_info')
+    status.innerHTML = ''
+    for(row in data) {
+      document.querySelector('h1.room_title').value = data[row].room_id
+    
+      var rowHTML = 
+      `
+      <tr>
+        <td>`
+          if (data[row].user_id == data[row].master_user_id) rowHTML += `X`
+          rowHTML+=`
+        </td>
+        <td>
+          `+data[row].display_name+ `#` + data[row].user_id+`
+        </td>
+        <td>
+          ?, ?, ?, ?, ?
+        </td>
+      <tr>
+      `
+      status.innerHTML += rowHTML
+    }
 })
 
 socket.on('lobby-update', data => {
