@@ -19,8 +19,14 @@ const init = ( app, server ) => {
       console.log( 'client disconnected' )
     })
 
-    socket.on('room_subscribe', ({room_id}) => {
+    socket.on('room_subscribe', room_id => {
         socket.join(room_id)
+        if (room_id > 0) {
+            Room.inGameStatus(room_id)
+            .then( result => {
+                console.log(result)
+            })
+        }
     })
 
     socket.on( 'chat', ({room_id, message}) => {

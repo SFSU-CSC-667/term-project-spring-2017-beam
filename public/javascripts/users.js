@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
     event.preventDefault()
     event.stopPropagation()
     const input = 'lolmepops'
-    socket.emit( 'data', room)
+    socket.emit( 'data', room.room_id)
     //socket.emit( 'data', {username: input})
   })
 
