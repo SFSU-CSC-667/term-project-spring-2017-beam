@@ -44,7 +44,8 @@ html
 
     .container#user-listing
       h1  Available Rooms 
-
+        button.new_game_button.btn.navbar-right(href='#new_room_modal', data-toggle='modal', data-target='#myModal2') Create a New Game
+      
       a.data(href='#') Send Data 
 
       table
@@ -57,7 +58,7 @@ html
          each room in rooms_info
             tr
               td 
-                a(href='/room/'+room.id)= room.name + '#' + room.id
+                a(href='/room/'+room.id)= room.name
               td= room.master_user_display_name + '#' + room.master_user_id
               if (room.started)
                 td In Progress
@@ -74,7 +75,7 @@ html
             td
           input.chat_input_text.form-control(placeholder='Enter chat message here', maxlength='140')
           br
-          button.chat_input_button.btn.navbar-right(type='submit') Send
+          button.chat_input_button.btn(type='submit') Send
 
     #myModal.modal.fade.bs-modal-sm(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel', aria-hidden='true')
       .modal-dialog.modal-sm
@@ -140,7 +141,32 @@ html
                     .control-group
                       label.control-label(for='update')
                       .controls
-                        button.btn.btn-success.login_button Submit
+                        button.btn.btn-success.update_button Submit
+              .modal-footer
+                center
+                  button.btn.btn-default.change_name_close_button(type='button', data-dismiss='modal') Close
+
+
+    #myModal2.modal.fade.bs-modal-sm.myModal2(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel', aria-hidden='true')
+      .modal-dialog.modal-sm
+        .modal-content
+          br
+          .bs-example.bs-example-tabs
+            ul#myTab.nav.nav-tabs
+              li.active
+                a(href='#new_room', data-toggle='tab') Create a Room
+          .modal-body
+            #myTabContent.tab-content
+              #new_room_modal.tab-pane.fade.active.in
+                form.form-horizontal.room_name_form
+                  fieldset
+                    .control-group
+                      .controls
+                        input.form-control.room_name_input(required='', name='room_name_input', type='text', placeholder='Enter room name')
+                    .control-group
+                      label.control-label(for='new_room')
+                      .controls
+                        button.btn.btn-success.new_room_button Submit
               .modal-footer
                 center
                   button.btn.btn-default.change_name_close_button(type='button', data-dismiss='modal') Close
