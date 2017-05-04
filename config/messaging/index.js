@@ -30,8 +30,9 @@ const init = ( app, server ) => {
     })
 
     socket.on('data', room_id => {
-        Room.inGameStatus('1')
+        Room.inGameStatus('3')
         .then( result => {
+            console.log(result)
             socket.emit('room-update', result)
         })
     })

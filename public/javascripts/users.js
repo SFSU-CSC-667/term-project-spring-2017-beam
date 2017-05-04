@@ -20,6 +20,7 @@ socket.on( 'redirect', ({destination}) => {
 })
 
 socket.on('room-update', data => {
+    console.log(data)
     const status = document.querySelector( 'tbody.room_info')
     status.innerHTML = ''
     for(row in data) {
