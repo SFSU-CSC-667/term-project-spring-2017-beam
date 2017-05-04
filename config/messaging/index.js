@@ -9,6 +9,20 @@ var secretsById = []
 const init = ( app, server ) => {
   const io = socketIo( server )
 
+  function rollDice(room_id, user_id_order) {
+    console.log('rolling dices')
+  }
+
+  function enterGame (room_id,user_id,user_id_order) {
+
+  }
+  function updateLobby() {
+      Room.allActive().
+      then ( result => {
+        io.to('0').emit('lobby-update', result)
+      })
+  }
+
   app.set( 'io', io )
 
   io.on( 'connection', socket => {
@@ -53,7 +67,6 @@ socket.on('data2', room_id => {
        if (room_id > 0) {
             Room.inGameStatus(room_id)
             .then( result => {
-                console.log('about to emit')
                 socket.emit('room-update', result)
                 if (result[0].started) {
                     if (result[0].user_id_order.indexOf(parseInt(socket.cookies.user_id)) > -1) {
@@ -67,7 +80,83 @@ socket.on('data2', room_id => {
         }
 
     })
-    socket.on('data', ({room_id, roll, amount}) => {
+
+    socket.on('data', room_id => {
+        console.log('data, room_id: ' + room_id)
+        rollDice (room_id, [])
+    })
+
+    socket.on('leave-game', ({room_id}) => {
+        console.log('leaving')
+        if (!room_id || room_id < 1) {
+            socket.emit('error-message', {message: 'Invalid action'})
+            return;
+        }
+        Room.findById(room_id)
+        .then( result => {
+            if (!result || result.started) {
+                socket.emit('error-message', {message: 'You cant leave this room'})
+            }
+            const arrayIndex = result.user_id_order.indexOf(parseInt(socket.cookies.user_id)) 
+            if (arrayIndex == -1) {
+                socket.emit('error-message', {message: 'Youre not in this room'})
+                return;
+            }
+            if (result.user_id_order.length == 1) {
+                io.to(room_id).emit('redirect', {destination: '/'})
+                Room.closeRoom(room_id)
+                .then( _ => updateLobby())
+                return
+            }
+            result.user_id_order.splice(arrayIndex, 1)
+            const promise1 = Room.updateUserIdOrder(room_id, result.user_id_order)
+            const promise2 = Room.removeUser(room_id, socket.cookies.user_id)
+            var promise3 = promise2
+            if (arrayIndex == 0) {
+                promise3 = Room.updateMasterUserId(room_id, result.user_id_order[0])
+            }
+            Promise.all([promise1, promise2, promise3])
+            .then ( _ => {
+              Room.inGameStatus(room_id)
+              .then( room_update => {
+                io.to(room_id).emit('room-update', room_update)
+              })
+
+
+            })
+        })
+    })
+
+    socket.on('enter-game', ({room_id}) => {
+        if (!room_id || room_id < 1) {
+            socket.emit('error-message', {message: 'Invalid action'})
+            return;
+        }
+        Room.findById(room_id)
+        .then( result => {
+            if (!result || result.started) {
+                socket.emit('error-message', {message: 'You cant enter this room'})
+            }
+            if (result.user_id_order.indexOf(parseInt(socket.cookies.user_id)) > -1) {
+                socket.emit('error-message', {message: 'Already in this room'})
+                return;
+            }
+            result.user_id_order.push(socket.cookies.user_id)
+            const promise1 = Room.updateUserIdOrder(room_id, result.user_id_order)
+            const promise2 = Room.insertUser(room_id, socket.cookies.user_id)
+            Promise.all([promise1, promise2])
+            .then ( _ => {
+              Room.inGameStatus(room_id)
+              .then( room_update => {
+                io.to(room_id).emit('room-update', room_update)
+              })
+
+
+            })
+        })
+    })
+
+    socket.on('start-game', ({room_id, roll, amount}) => {
         if (!room_id || !roll || !amount || room_id < 1) {
             socket.emit('error-message', {message: 'Invalid action'})
             return;
@@ -110,7 +199,10 @@ socket.on('data2', room_id => {
         Room.createRoom(cookies.user_id, room_name, 5, [parseInt(cookies.user_id)])
         .then( result => {
             Room.insertUser(result.id, cookies.user_id)
-            .then( _ => socket.emit('redirect', {destination: '/room/' + result.id}))
+            .then( _ => { 
+                socket.emit('redirect', {destination: '/room/' + result.id})
+                updateLobby()
+            })
         })
     })
 

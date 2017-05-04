@@ -6,14 +6,14 @@ const activateButtons = function(){
     document.querySelector( 'button.start_game_button' ).addEventListener( 'click', event => {
       event.preventDefault()
       event.stopPropagation()
-      socket.emit( 'start_game', {room_id: 'room.room_id'})
+      socket.emit( 'start-game', {room_id: room.room_id})
     })
   }
-  if (document.querySelector( 'button.end_game_button' )){
-    document.querySelector( 'button.end_game_button' ).addEventListener( 'click', event => {
+  if (document.querySelector( 'button.leave_game_button' )){
+    document.querySelector( 'button.leave_game_button' ).addEventListener( 'click', event => {
       event.preventDefault()
       event.stopPropagation()
-      socket.emit( 'end_game', {room_id: 'room.room_id'})
+      socket.emit( 'leave-game', {room_id: room.room_id})
     })
   }
   if (document.querySelector( 'button.enter_game_button' )){
@@ -21,14 +21,14 @@ const activateButtons = function(){
       event.preventDefault()
       console.log("enter")
       event.stopPropagation()
-      socket.emit( 'enter_game', {room_id: 'room.room_id'})
+      socket.emit( 'enter-game', {room_id: room.room_id})
     })
   }
   else if (document.querySelector( 'button.liar_game_button' )){
     document.querySelector( 'button.liar_game_button' ).addEventListener( 'click', event => {
       event.preventDefault()
       event.stopPropagation()
-      socket.emit( 'liar', {room_id: 'room.room_id'})
+      socket.emit( 'liar', {room_id: room.room_id})
     })
   }
 }
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.data' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
-    socket.emit( 'data2', room.room_id)
+    socket.emit( 'data', room.room_id)
     //socket.emit( 'data', {username: input})
   })
 
