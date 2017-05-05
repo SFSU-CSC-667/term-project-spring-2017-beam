@@ -232,7 +232,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function customRadio(radioName){
   var radioButton = $('input[name="'+ radioName +'"]');
   $(radioButton).each(function(){
-    $(this).wrap( "<span class='custom-radio'></span>" );
     if($(this).is(':checked')){
       $(this).parent().addClass("selected");
     }
