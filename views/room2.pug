@@ -14,6 +14,8 @@ html
     script= `const room = {room_id: '` + parseInt(room_id) + `'}`
     script= `var user = {user_id: '` + parseInt(user_info.id) + `', dices: ['?','?','?','?','?']}`
     script= `var last_move = {roll: 0, amount: 0}`
+    script=$('#amount').bootstrapNumber();
+
   body
     .alert.alert-success(role='alert')
       button.close(type='button', data-dismiss='alert', aria-label='Close')
@@ -84,7 +86,7 @@ html
                   span.input-group-btn
                     button.btn.btn-default(type='button') -
                   |  
-                  input#after.form-control(type='text', value='1', min='1', max='10000' style='text-align: center;')
+                  input#amount.form-control(type='text', value='1', min='1', max='10000' style='text-align: center;')
                   |  
                   span.input-group-btn
                     button.btn.btn-default(type='button') +
