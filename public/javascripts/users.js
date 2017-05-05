@@ -130,10 +130,13 @@ socket.on('lobby-update', data => {
     }
 })
 
+socket.on ( 'last-move', recentMove => {
+    last_move = recentMove
+})
+
 socket.on ( 'user-roll', ({room_id, roll}) => {
     if (room.room_id == room_id) 
         user.dices = roll
-    console.log(user.dices)
 })
 
 socket.on ( 'chat', ({user_id, display_name, message}) => {
