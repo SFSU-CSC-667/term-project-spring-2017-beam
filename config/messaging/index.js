@@ -38,9 +38,6 @@ const init = ( app, server ) => {
     })
   }
 
-  function enterGame (room_id,user_id,user_id_order) {
-
-  }
   function updateLobby() {
       Room.allActive().
       then ( result => {
@@ -69,6 +66,10 @@ const init = ( app, server ) => {
                 socket.emit('room-update', result)
                 if (result[0].started) {
                     if (result[0].user_id_order.indexOf(parseInt(socket.cookies.user_id)) > -1) {
+                        Room.getLastMove(room_id)
+                        .then (lastMove => { 
+                            socket.emit('last-move', {roll: lastMove.roll, amount: lastMove.amount})
+                        })
                         Room.getUserRoll(room_id, socket.cookies.user_id)
                         .then ( user_roll => {
                             socket.emit('user-roll', {room_id: room_id, roll: user_roll.dice})
@@ -181,7 +182,58 @@ socket.on('data2', room_id => {
         })
     })
 
-    socket.on('start-game', ({room_id}) => {
+   socket.on('make-move', ({room_id, roll, amount}) => {
+        if (!room_id || room_id < 1 || !roll || !amount || roll < 1 || roll > 6 || amount < 1) {
+            socket.emit('error-message', {message: 'Invalid action'})
+            return;
+        }
+        Room.findById(room_id)
+        .then( result => {
+            if (!result || result.ended) {
+                socket.emit('error-message', {message: 'This room doesnt exist anymore'})
+                setTimeout(function() {
+                   socket.emit('redirect', {destination: '/'})
+                }, 5000)
+                return;
+            }
+            if (!result.started) {
+                socket.emit('error-message', {message: 'Game not in progress'})
+                return;
+            }
+            if (result.user_id_order[0] != socket.cookies.user_id) {
+                socket.emit('error-message', {message: 'This is not your turn'})
+                return;
+            }
+            Room.getLastMove(room_id)
+            .then (lastMove => {
+              if (amount < lastMove.amount || (amount == lastMove.amount && roll <= lastMove.roll)) {
+                socket.emit('error-message', {message: 'Illegal move. Either pick the same amount with a bigger roll or a larger amount with any roll'})
+                return;
+              }
+              var promises = []
+              var wildcards = true
+              if (lastMove.roll == 0) {
+                  lastMove.round += 1
+                  if (roll == 1) {
+                      promises.push(Room.setNoWildcards(room_id, lsatMove.round))
+                  }
+              }
+              promises.push(Room.insertMove(room_id, socket.cookies.user_id, lastMove.round, roll, amount))
+              result.user_id_order.push(result.user_id_order.shift())
+              promises.push(Room.updateUserIdOrder(room_id, result.user_id_order))
+              
+              Promise.all(promises)
+              .then ( _ => {
+                  io.to(room_id).emit('last-move', {roll: roll, amount: amount})
+                  io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: 'Player ' + socket.cookies.display_name + '#' + socket.cookies.user_id + ' called amount ' + amount + ' and roll ' + roll})
+                  return Room.inGameStatus(room_id)
+              }).then( room_update =>  io.to(room_id).emit('room-update', room_update))
+            })
+
+
+        })
+    })
+ socket.on('start-game', ({room_id}) => {
         if (!room_id || room_id < 1) {
             socket.emit('error-message', {message: 'Invalid action'})
             return;
@@ -215,7 +267,7 @@ socket.on('data2', room_id => {
 
         })
     })
- 
+  
     socket.on( 'chat', ({room_id, message}) => {
         const cookies = socket.cookies
         Room.insertMessage(room_id, cookies.user_id, message)
