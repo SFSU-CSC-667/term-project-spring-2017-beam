@@ -89,6 +89,17 @@ function indexFunction (request, response ) {
     })
 }
 
+function room2Function (request, response ) {
+
+
+  const userInfo = User.findById(request.cookies.user_id)
+
+  Promise.all([userInfo])
+    .then( values  => {
+       response.render( 'room2', { user_info: values[0], room_id: request.params.room_id})
+    })
+}
+
 function roomFunction (request, response ) {
 
 
@@ -124,6 +135,7 @@ router.use(checkAuth);
 router.get( '/login/:username/:password', loginFunction)
 router.get( '/logout', logoutFunction)
 router.get( '/', indexFunction)
+router.get( '/room2/:room_id', room2Function)
 router.get( '/room/:room_id', roomFunction)
 router.get( '/2', index2Function)
 

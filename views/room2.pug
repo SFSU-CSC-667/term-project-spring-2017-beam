@@ -1,0 +1,129 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='/javascripts/users.js')
+    script= `const room = {room_id: '` + parseInt(room_id) + `'}`
+    script= `var user = {user_id: '` + parseInt(user_info.id) + `', dices: ['?','?','?','?','?']}`
+    script= `var last_move = {roll: 0, amount: 0}`
+  body
+    .alert.alert-success(role='alert')
+      button.close(type='button', data-dismiss='alert', aria-label='Close')
+        span(aria-hidden='true') &times;
+      |  You have been signed in successfully!
+    .alert.alert-danger(role='alert')
+      button.close(type='button', data-dismiss='alert', aria-label='Close')
+        span(aria-hidden='true') &times;
+      |  You have been a failure!
+
+    nav.navbar.navbar-inverse
+      .container-fluid
+        .navbar-header
+          a.navbar-brand(href='/') Liar's Dice
+        ul.nav.navbar-nav.navbar-right
+          li
+            p.name= 'Playing as ' + user_info.display_name + '#' + user_info.id
+            a.change#change(href='#update_modal', data-toggle='modal', data-target='#myModal1')
+                |  Change Name
+
+    .container#user-listing
+      h1.room_title Title
+
+      a.data(href='#') Send Data 
+
+      table
+        thead
+          tr
+            th.check_header Leader
+            th Player
+            th dices
+        tbody.room_info
+      br
+      br
+    .container#chat_container
+      h1.chat_title    Chat
+      form
+        .form-group
+          input.room_id(type='hidden' value='0')            
+          ul.chat_area
+            td
+          input.chat_input_text.form-control(placeholder='Enter chat message here', maxlength='140')
+          br
+          button.chat_input_button.btn(type='submit') Send
+
+    #myModal.modal.fade.bs-modal-sm(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel', aria-hidden='true')
+      .modal-dialog.modal-sm
+        .modal-content
+          br
+          .bs-example.bs-example-tabs
+            ul#myTab.nav.nav-tabs
+              li.active
+                a(href='#login', data-toggle='tab') Login
+              li
+                a(href='#signup', data-toggle='tab') Sign Up
+          .modal-body
+            #myTabContent.tab-content
+              #login.tab-pane.fade.active.in
+                form.form-horizontal.login_form
+                  fieldset
+                    .control-group
+                      label.control-label(for='userid') Username:
+                      .controls
+                        input.form-control.username_login_input(required='', name='username_login_input', type='text', placeholder='username')
+                    .control-group
+                      label.control-label(for='passwordinput') Password:
+                      .controls
+                        input.form-control.input-medium.password_login_input(required='', name='password_login_input', type='password', placeholder='********')
+                    .control-group
+                      label.control-label(for='login')
+                      .controls
+                        button.btn.btn-success.login_button Log In
+              #signup.tab-pane.fade
+                form.form-horizontal.signup_form
+                  fieldset
+                    .control-group
+                      label.control-label(for='userid') Username:
+                      .controls
+                        input.form-control.input-large.username_signup_input(type='text', placeholder='username', required='')
+                    .control-group
+                      label.control-label Password:
+                      .controls
+                        input.form-control.input-large.password_signup_input(type='password', placeholder='********', required='')
+                    .control-group
+                      label.control-label(for='signup')
+                      .controls
+                        button.btn.btn-success.signup_button(name='signup') Signup
+          .modal-footer
+            center
+              button.btn.btn-default(type='button', data-dismiss='modal') Close
+    #myModal1.modal.fade.bs-modal-sm.myModal1(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel', aria-hidden='true')
+      .modal-dialog.modal-sm
+        .modal-content
+          br
+          .bs-example.bs-example-tabs
+            ul#myTab.nav.nav-tabs
+              li.active
+                a(href='#update', data-toggle='tab') Change Username
+          .modal-body
+            #myTabContent.tab-content
+              #update_modal.tab-pane.fade.active.in
+                form.form-horizontal.update_name_form
+                  fieldset
+                    .control-group
+                      .controls
+                        input.form-control.update_name_input(required='', name='update_name_input', type='text', placeholder=user_info.display_name)
+                    .control-group
+                      label.control-label(for='update')
+                      .controls
+                        button.btn.btn-success.login_button Submit
+              .modal-footer
+                center
+                  button.btn.btn-default.change_name_close_button(type='button', data-dismiss='modal') Close
+
