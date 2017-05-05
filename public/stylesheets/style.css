@@ -86,3 +86,87 @@ td,th {
 	margin-bottom: 10px !important;
 	float: right !important;
 }
+
+
+.custom-radio{
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	position: relative;
+	z-index: 1;
+	top: 3px;
+}
+/*die 1*/
+.custom-radio#die1{
+	background: url("/images/1.png") no-repeat;
+}
+.custom-radio#die1:hover{            
+	background: url("/images/1-hover.png") no-repeat;
+}
+.custom-radio.selected#die1{
+	background: url("/images/1-selected.png") no-repeat;
+}
+/*die 2*/
+.custom-radio#die2{
+	background: url("/images/2.png") no-repeat;
+}
+.custom-radio#die1:hover{            
+	background: url("/images/2-hover.png") no-repeat;
+}
+.custom-radio.selected#die1{
+	background: url("/images/2-selected.png") no-repeat;
+}
+/*die 3*/
+.custom-radio#die3{
+	background: url("/images/3.png") no-repeat;
+}
+.custom-radio#die1:hover{            
+	background: url("/images/3-hover.png") no-repeat;
+}
+.custom-radio.selected#die1{
+	background: url("/images/3-selected.png") no-repeat;
+}
+/*die 4*/
+.custom-radio#die4{
+	background: url("/images/4.png") no-repeat;
+}
+.custom-radio#die4:hover{            
+	background: url("/images/4-hover.png") no-repeat;
+}
+.custom-radio.selected#die4{
+	background: url("/images/4-selected.png") no-repeat;
+}
+/*die 5*/
+.custom-radio#die5{
+	background: url("/images/5.png") no-repeat;
+}
+.custom-radio#die5:hover{            
+	background: url("/images/5-hover.png") no-repeat;
+}
+.custom-radio.selected#die5{
+	background: url("/images/5-selected.png") no-repeat;
+}
+/*die 6*/
+.custom-radio#die6{
+	background: url("/images/6.png") no-repeat;
+}
+.custom-radio#die6:hover{            
+	background: url("/images/6-hover.png") no-repeat;
+}
+.custom-radio.selected#die6{
+	background: url("/images/6-selected.png") no-repeat;
+}
+.custom-radio input[type="radio"]{
+	margin: 1px;
+	position: absolute;
+	z-index: 2;            
+	cursor: pointer;
+	outline: none;
+	opacity: 0;
+	/* CSS hacks for older browsers */
+	_noFocusLine: expression(this.hideFocus=true); 
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	-khtml-opacity: 0;
+	-moz-opacity: 0;
+}
