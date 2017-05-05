@@ -77,15 +77,14 @@ html
               input.custom-radio#die(type='radio' name='die' value='6')      
               img(src='/images/6.png')      
           br
-          input.form-control.bfh-number.amount(type='text' data-min='5' data-max='25' data-wrap='true')
-            .input-group
-              span.input-group-btn
-                button.btn.btn-default(type='button') -
-              |  
-              input#after.form-control(type='text', value='1', min='1', style='text-align: center;')
-              |  
-              span.input-group-btn
-                button.btn.btn-default(type='button') +
+          .input-group
+            span.input-group-btn
+              button.btn.btn-default(type='button') -
+            |  
+            input#after.form-control(type='text', value='1', min='1', style='text-align: center;')
+            |  
+            span.input-group-btn
+              button.btn.btn-default(type='button') +
 
 
     .container#chat_container
