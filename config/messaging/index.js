@@ -209,7 +209,7 @@ socket.on('data2', room_id => {
                 return;
               }
               io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: 'Player ' + socket.cookies.display_name + '#' + socket.cookies.user_id + ' called ' + lastMove.display_name + '#' + lastMove.user_id + ' a liar!'})
-              io.to(room_id).emit('last-move', {roll: parseInt('0'), amount: parseInt('0')})
+              io.to(room_id).emit('last-move', {roll: parseInt('0'), amount: parseInt('0'), has_wildcards: true, display_name: socket.cookies.display_name, user_id: socket.cookies.user_id})
               Room.allRoundRolls(room_id, lastMove.round)
               .then ( allRolls => {
                 for (let thisAllRoll of allRolls) {
@@ -311,6 +311,7 @@ socket.on('data2', room_id => {
               if (lastMove.roll == 0) {
                   lastMove.round += 1
                   if (roll == 1) {
+                      lastMove.has_wildcards = false
                       io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: 'Player ' + socket.cookies.display_name + '#' + socket.cookies.user_id + ' called roll 1 on the first move of the round, there will be no wildcards!'})
                       promises.push(Room.setNoWildcards(room_id, lastMove.round))
                   }
@@ -321,7 +322,7 @@ socket.on('data2', room_id => {
               
               Promise.all(promises)
               .then ( _ => {
-                  io.to(room_id).emit('last-move', {roll: roll, amount: amount})
+                  io.to(room_id).emit('last-move', {roll: roll, amount: amount, has_wildcards: lastMove.has_wildcards, display_name: socket.cookies.display_name, user_id: socket.cookies.user_id})
                   io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: 'Player ' + socket.cookies.display_name + '#' + socket.cookies.user_id + ' called amount ' + amount + ' and roll ' + roll})
                   return Room.inGameStatus(room_id)
               }).then( room_update =>  io.to(room_id).emit('room-update', room_update))
@@ -339,10 +340,7 @@ socket.on('data2', room_id => {
         Room.findById(room_id)
         .then( result => {
             if (!result || result.ended) {
-                socket.emit('error-message', {message: 'This room doesnt exist anymore'})
-                setTimeout(function() {
-                   socket.emit('redirect', {destination: '/'})
-                }, 5000)
+                socket.emit('error-message', {message: 'This room is not active'})
                 return;
             }
             if (socket.cookies.user_id != result.master_user_id) {

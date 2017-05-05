@@ -1,12 +1,19 @@
 const socket = io()
 const updateLastDice = function(has_wildcards,playerString) {
     var last_dice_html = `<strong>Wildcards this round:</strong> `
-    if (has_wildcards) {
+    if (last_move.roll == 0) {
+        last_dice_html += `?`
+    } else if (has_wildcards) {
         last_dice_html += `Yes`
     } else {
         last_dice_html += `No`
     }
-    last_dice_html += `<br><br><strong>Last Player: </strong>` + playerString + `<br><strong>Amount: </strong>` + last_move.amount + `<br> <strong>Roll</strong>: <img src="/images/` + last_move.roll + `.png">`
+    last_dice_html += `<br><br><strong>Last move by: </strong>` + playerString + `<br>`
+    if (last_move.roll == 0) {
+        last_dice_html += `<strong> Action: </strong>Called liar!`
+    } else {
+        last_dice_html += `<strong>Amount: </strong>` + last_move.amount + `<br> <strong>Roll</strong>: <img src="/images/` + last_move.roll + `.png">`
+    }
     document.querySelector('div.last_dice').innerHTML = last_dice_html
 }
 const playerDicesHTML = function(){
@@ -76,7 +83,6 @@ socket.on( 'redirect', ({destination}) => {
 
 socket.on('room-update', data => {
     document.querySelector('div.liar_button').innerHTML = ''
-    document.querySelector('div.last_dice').innerHTML = ''
     const title_bar = document.querySelector ('h1.room_title')
     title_bar.innerHTML = data[0].name
     if (data[0].started == null) {
