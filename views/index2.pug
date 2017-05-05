@@ -44,7 +44,7 @@ html
 
     .container#user-listing
       h1  Available Rooms 
-        button.new_game_button.btn.navbar-right(href='#new_room_modal', data-toggle='modal', data-target='#myModal2') Create a New Game
+      button.new_game_button.btn.navbar-right(href='#new_room_modal', data-toggle='modal', data-target='#myModal2') Create a New Game
       
       a.data(href='#') Send Data 
 
@@ -66,6 +66,19 @@ html
                 td Waiting
       br
       br
+    .container#bid_container
+      h1    Bid
+      form
+        .form-group
+          input.custom-radio#die1(type='radio' value='1')            
+          input.custom-radio#die2(type='radio' value='2')            
+          input.custom-radio#die3(type='radio' value='3')            
+          input.custom-radio#die4(type='radio' value='4')            
+          input.custom-radio#die5(type='radio' value='5')            
+          input.custom-radio#die6(type='radio' value='6')
+          br
+          button.chat_input_button.btn(type='submit') Send
+
     .container#chat_container
       h1.chat_title    Chat
       form
