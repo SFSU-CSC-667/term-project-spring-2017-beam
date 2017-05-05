@@ -224,25 +224,3 @@ document.addEventListener('DOMContentLoaded', function() {
   
   activateButtons();
 })
-
-
-function customRadio(radioName){
-  var radioButton = $('input[name="'+ radioName +'"]');
-  $(radioButton).each(function(){
-    $(this).wrap( "<span class='custom-radio'></span>" );
-    if($(this).is(':checked')){
-      $(this).parent().addClass("selected");
-    }
-  });
-  $(radioButton).click(function(){
-    if($(this).is(':checked')){
-      $(this).parent().addClass("selected");
-    }
-    $(radioButton).not(this).each(function(){
-      $(this).parent().removeClass("selected");
-    });
-  });
-}
-$(document).ready(function (){
-    customRadio("die");
-})
