@@ -81,11 +81,10 @@ html
               img(src='/images/6.png')      
           br
           h5 Amount
-          form
-            fieldset
-              .form-group
-                .input-group.num-picker
+          .input-group.num-picker
                   input#amount.form-control(type='text', value='1', min='1', max='10000' style='text-align: center;')
+
+          button.roll_button.btn(type='submit') Submit
 
     .container#chat_container
       h1.chat_title    Chat
