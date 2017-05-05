@@ -14,7 +14,7 @@ html
     script= `const room = {room_id: '` + parseInt(room_id) + `'}`
     script= `var user = {user_id: '` + parseInt(user_info.id) + `', dices: ['?','?','?','?','?']}`
     script= `var last_move = {roll: 0, amount: 0}`
-    script=$('#amount').bootstrapNumber();
+    script= `$('#amount').bootstrapNumber()`
 
   body
     .alert.alert-success(role='alert')
