@@ -47,6 +47,37 @@ html
         tbody.room_info
       br
       br
+    .container#bid_container
+      h1    Bid
+      form
+        .form-group
+          label
+            span.custom-radio
+              input.custom-radio#die(type='radio' name='die' value='1')      
+              img(src='/images/1.png')      
+          label
+            span.custom-radio
+              input.custom-radio#die(type='radio' name='die' value='2')       
+              img(src='/images/2.png')                 
+          label
+            span.custom-radio
+              input.custom-radio#die(type='radio' name='die' value='3')        
+              img(src='/images/3.png')                
+          label
+            span.custom-radio
+              input.custom-radio#die(type='radio' name='die' value='4')        
+              img(src='/images/4.png')                
+          label
+            span.custom-radio
+              input.custom-radio#die(type='radio' name='die' value='5')         
+              img(src='/images/5.png')               
+          label
+            span.custom-radio
+              input.custom-radio#die(type='radio' name='die' value='6')      
+              img(src='/images/6.png')      
+          br
+          button.chat_input_button.btn(type='submit') Send
+
     .container#chat_container
       h1.chat_title    Chat
       form
