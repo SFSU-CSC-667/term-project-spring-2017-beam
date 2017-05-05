@@ -1,18 +1,25 @@
 {
-  "name": "test-app",
+  "name": "blargit",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "supervisor ./bin/www"
+    "start": "supervisor ./bin/www",
+    "start:dev": "DEBUG=blargit:* nodemon ./bin/www"
   },
   "dependencies": {
-    "body-parser": "~1.17.1",
+    "angular2-number-picker": "^0.8.8",
+    "body-parser": "~1.16.0",
     "cookie-parser": "~1.4.3",
-    "debug": "~2.6.3",
-    "express": "~4.15.2",
-    "jade": "~1.11.0",
-    "morgan": "~1.8.1",
-    "pg": "^6.1.5",
-    "serve-favicon": "~2.4.2"
+    "debug": "~2.6.0",
+    "express": "~4.14.1",
+    "faker": "^4.1.0",
+    "morgan": "~1.7.0",
+    "pg-promise": "^5.6.7",
+    "pug": "~2.0.0-beta10",
+    "serve-favicon": "~2.3.2",
+    "socket.io": "^1.7.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }

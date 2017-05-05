@@ -5,8 +5,9 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('test-app:server');
+var debug = require('debug')('blargit:server');
 var http = require('http');
+const Socket = require( '../config/messaging' )
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +21,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+Socket.init( app, server )
 
 /**
  * Listen on provided port, on all network interfaces.

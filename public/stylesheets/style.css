@@ -1,8 +1,171 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	padding: 50px;
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+        position: relative
 }
 
 a {
-  color: #00B7FF;
+	color: black !important;
 }
+
+td,th {
+    padding-right: 40px !important;
+}
+
+@keyframes bid_flash {
+  from { background-color: lightyellow; }
+  to { background-color: inherit; }
+}
+.bid_flash {
+  animation:         bid_flash 3s infinite; /* IE 10+ */
+}
+
+.minusz {
+    z-index: -1 !important;
+    visibility: hidden;
+    display: none;
+}
+@keyframes green_flash {
+  from { background-color: green; }
+  to { background-color: inherit; }
+}
+.green_flash {
+  animation:         green_flash 3s infinite; /* IE 10+ */
+}
+
+.chat_area {
+    height: 300px;
+    overflow-y: scroll;
+    overflow-wrap: break-word;
+    padding-left: 0px;
+}
+
+.highlighted_row {
+    background-color: green;
+}
+.name {
+	color: black;
+	margin-top: 15px;
+	margin-right: 8px;
+	margin-bottom: 0px;
+	}
+
+#user-listing{
+	width: auto;
+	float: left
+}
+
+#chat_container{
+	width: 35%;
+	float: right;
+	border-style: solid;
+	border-width: thin;
+	border-radius: 5px;
+}
+
+.navbar-inverse{
+	background: #EEE url("/images/grey.jpg");
+	color: black;
+}
+
+.navbar-brand{
+	color: black !important;
+}
+
+.navbar-inverse .navbar-nav>li>a{
+	color: black !important;
+}
+
+.form-control{
+	margin-top: 8px;
+	border-color: ghostwhite !important;
+}
+
+.alert{
+  position: fixed;
+  right:50px;
+  left: 50px;
+  height: -50px;
+  z-index: 1000000;
+  width: auto;
+  display: none;
+  text-align: center;
+}
+
+#change{
+	font-size: xx-small;
+	margin-top: -5px;
+	padding: 0px;
+	margin-left: 70px;
+	height: 10px;
+}
+
+
+.new_game_button{
+	margin-left: 40px;
+}
+
+.chat_input_button{
+	margin: 2px;
+	margin-bottom: 10px !important;
+	float: right !important;
+}
+
+img{
+        margin: 3px;
+	width: 30px;
+}
+
+.custom-radio{
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	position: relative;
+	z-index: 1;
+	top: 3px;
+}
+#roll_container{
+	width: 20%;
+	float: left;
+	margin-left: 1%;
+}
+
+.custom-radio input[type="radio"]{
+	margin: 1px;
+	position: absolute;
+	z-index: 2;            
+	cursor: pointer;
+	outline: none;
+	opacity: 0;
+	
+	_noFocusLine: expression(this.hideFocus=true); 
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	-khtml-opacity: 0;
+	-moz-opacity: 0;
+}
+
+#die{ 
+  visibility: hidden;
+  position: absolute; 
+}
+#die + img{ 
+  cursor:pointer;
+  border:2px solid transparent;
+}
+#die:checked + img{
+  border:2px solid #f00;
+  border-radius: 5px;
+}
+
+#amount{
+	margin: 0px;
+}
+
+.num-picker{
+	min-width: 100px;
+	max-width: 88%;
+}
+
+td img {
+    width: 26px;
