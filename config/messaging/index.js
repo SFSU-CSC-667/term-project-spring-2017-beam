@@ -189,6 +189,8 @@ socket.on('data2', room_id => {
             return;
         }
         var loser = ''
+        var winnerWithName = ''
+        var loserWithName = ''
         Room.findById(room_id)
         .then( result => {
             if (!result || result.ended) {
@@ -232,22 +234,21 @@ socket.on('data2', room_id => {
                     realAmount += count[1] || 0;
                     io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: (count[1] || 0) + ' wildcards were added for a total of ' + realAmount})
                   }
-                  var winnerWithName
-                  var loserWithName
                   if (lastMove.amount > realAmount) {
                     loser = lastMove.user_id;
                     winnerWithName = socket.cookies.display_name + '#' + socket.cookies.user_id
                     loserWithName = lastMove.display_name + '#' + lastMove.user_id
-                    io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: loserWithName + ' is a liar and lost a dice!'})
+                    io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: loserWithName + ' is a liar and lost a die!'})
                   } else {
                     winnerWithName = lastMove.display_name + '#' + lastMove.user_id
                     loserWithName = socket.cookies.display_name + '#' + socket.cookies.user_id
-                    io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: lastMove.display_name + '#' + lastMove.user_id + ' is not a liar! ' + loserWithName + ' lost a dice!'})
+                    io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: lastMove.display_name + '#' + lastMove.user_id + ' is not a liar! ' + loserWithName + ' lost a die!'})
                     loser = socket.cookies.user_id;
                     result.user_id_order.unshift(result.user_id_order.pop());
                   }
                   return Room.getPlayerLostDiceAmount(room_id, loser)
-                }).then( losses => {
+                }).then( ({losses}) => {
+                  console.log(losses)
                   if (losses == 4) {
                       result.user_id_order.splice(result.user_id_order.indexOf(loser), 1)
                       io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: loserWithName + ' lost all dices and got eliminated!'})
@@ -280,11 +281,15 @@ socket.on('data2', room_id => {
         }
         Room.findById(room_id)
         .then( result => {
-            if (!result || result.ended) {
+            if (!result) {
                 socket.emit('error-message', {message: 'This room doesnt exist anymore'})
                 setTimeout(function() {
                    socket.emit('redirect', {destination: '/'})
                 }, 5000)
+                return;
+            }
+            if (result.ended) {
+                socket.emit('error-message', {message: 'Game ended'})
                 return;
             }
             if (!result.started) {

@@ -24,7 +24,7 @@ const IN_GAME_STATUS = `SELECT room_users.*, rooms.user_id_order, rooms.started,
 const GET_PAST_CHAT = `SELECT chat_messages.*, users.display_name FROM chat_messages,users WHERE room_id=$1 AND chat_messages.user_id = users.id ORDER BY time DESC LIMIT 10`
 const GET_USER_ROLL = `SELECT * FROM user_rolls WHERE room_id = $1 AND user_id = $2 ORDER BY round DESC LIMIT 1`
 const START_ROOM = `UPDATE rooms SET started=CURRENT_TIMESTAMP WHERE id=$1`
-const END_ROOM = `UPDATE rooms SET started=CURRENT_TIMESTAMP WHERE id=$1`
+const END_ROOM = `UPDATE rooms SET ended=CURRENT_TIMESTAMP WHERE id=$1`
 const ALL_ROUND_ROLLS = `SELECT user_rolls.*, users.display_name FROM user_rolls,users WHERE user_rolls.user_id=users.id AND room_id=$1 AND round=$2 ORDER BY user_rolls.ctid`
 
 module.exports = {
