@@ -50,10 +50,10 @@ html
         tbody.room_info
       br
       br
-    .container#bid_container
+    .container#roll_container
       h1    Bid
       h5 Roll
-      form
+      form.roll_form
         .form-group
           label
             span.custom-radio
@@ -82,7 +82,7 @@ html
           br
           h5 Amount
           .input-group.num-picker
-                  input#amount.form-control(type='text', value='1', min='1', max='10000' style='text-align: center;')
+                  input#amount.roll_amount.form-control(type='text', value='1', min='1', max='10000' style='text-align: center;')
           br
           button.roll_button.btn(type='submit') Submit
 

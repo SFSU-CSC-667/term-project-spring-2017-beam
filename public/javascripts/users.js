@@ -24,13 +24,22 @@ const activateButtons = function(){
       socket.emit( 'enter-game', {room_id: room.room_id})
     })
   }
-  else if (document.querySelector( 'button.liar_game_button' )){
+  if (document.querySelector( 'button.liar_game_button' )){
     document.querySelector( 'button.liar_game_button' ).addEventListener( 'click', event => {
       event.preventDefault()
       event.stopPropagation()
       socket.emit( 'liar', {room_id: room.room_id})
     })
   }
+  //here
+  if (document.querySelector( 'form.roll_form'))  document.querySelector( 'form.roll_form' ).addEventListener( 'submit', event => {
+    event.preventDefault()
+    event.stopPropagation()
+    const roll_die = document.querySelector('input[name=die]:checked').value
+    const roll_amount = document.querySelector('input.roll_amount').value
+    console.log(roll_die)
+    console.log(roll_amount)
+  })
 }
 socket.on( 'user-created', ({ id, username, dogCount }) => {
   console.log( id, username )
