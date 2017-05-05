@@ -53,7 +53,7 @@ html
         .form-group
           label
             span.custom-radio
-              input.custom-radio#die(type='radio' name='die' value='1')      
+              input.custom-radio.die#die(type='radio' name='die' value='1')      
               img(src='/images/1.png')      
           label
             span.custom-radio
@@ -76,6 +76,7 @@ html
               input.custom-radio#die(type='radio' name='die' value='6')      
               img(src='/images/6.png')      
           br
+          input.form-control.bfh-number.amount(type='text' data-min='5' data-max='25' data-wrap='true')
           button.btn(type='submit') Send
 
     .container#chat_container
