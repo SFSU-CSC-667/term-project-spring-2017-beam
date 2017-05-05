@@ -107,11 +107,6 @@ socket.on('data2', room_id => {
 
     })
 
-    socket.on('data', room_id => {
-        console.log('data, room_id: ' + room_id)
-
-
-    })
 
     socket.on('leave-game', ({room_id}) => {
         if (!room_id || room_id < 1) {
