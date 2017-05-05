@@ -10,6 +10,7 @@ html
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/users.js')
+    script(src="_so/js?//stackoverflow.com/questions/17541614/use-thumbnail-image-instead-of-radio-button" id="so")
     script.
           const room = {room_id: '0'}
   body
@@ -70,12 +71,24 @@ html
       h1    Bid
       form
         .form-group
-          input.custom-radio#die1(type='radio' name='die' value='1')            
-          input.custom-radio#die2(type='radio' name='die' value='2')            
-          input.custom-radio#die3(type='radio' name='die' value='3')            
-          input.custom-radio#die4(type='radio' name='die' value='4')            
-          input.custom-radio#die5(type='radio' name='die' value='5')            
-          input.custom-radio#die6(type='radio' name='die' value='6')
+          label
+            input.custom-radio#die(type='radio' name='die' value='1')      
+            img(src='/images/1.png')      
+          label
+            input.custom-radio#die(type='radio' name='die' value='2')       
+            img(src='/images/2.png')                 
+          label
+            input.custom-radio#die(type='radio' name='die' value='3')        
+            img(src='/images/3.png')                
+          label
+            input.custom-radio#die(type='radio' name='die' value='4')        
+            img(src='/images/4.png')                
+          label
+            input.custom-radio#die(type='radio' name='die' value='5')         
+            img(src='/images/5.png')               
+          label
+            input.custom-radio#die(type='radio' name='die' value='6')      
+            img(src='/images/6.png')      
           br
           button.chat_input_button.btn(type='submit') Send
 
