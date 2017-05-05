@@ -1,7 +1,6 @@
 const db = require( '../connection' )
 
-const ALL_ACTIVE = `SELECT rooms.*, users.display_name AS master_user_display_name FROM rooms,users
-                    WHERE rooms.id > 0 AND rooms.ended IS NULL AND rooms.master_user_id = users.id ORDER BY rooms.started DESC, rooms.created`
+const ALL_ACTIVE = `SELECT rooms.*, users.display_name AS master_user_display_name FROM rooms,users WHERE rooms.id > 0 AND rooms.ended IS NULL AND rooms.master_user_id = users.id ORDER BY rooms.started DESC, rooms.created`
 const FIND_BY_ID = `SELECT * FROM rooms WHERE id = $1`
 const CHECK_IF_IN_GAME = `SELECT * FROM room_users WHERE room_id=$1 and user_id=$2`
 const UPDATE_USER_ID_ORDER = `UPDATE rooms SET user_id_order = $2 WHERE id=$1`

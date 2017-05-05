@@ -18,15 +18,15 @@ const init = ( app, server ) => {
         for (let user_id of user_id_order) {
             Room.getPlayerLostDiceAmount(room_id, user_id)
             .then (({losses}) => {
-                const numDices = 5-losses
-                dices = []
-                for (var i = 0; i < numDices; i++) {
+                const numdice = 5-losses
+                dice = []
+                for (var i = 0; i < numdice; i++) {
                   var tmp = Math.ceil(Math.random()*6);
-                  dices.push(tmp);
+                  dice.push(tmp);
                   total.push(tmp);
                 }
-                io.to(secretsById[user_id]).emit('user-roll', {room_id: room_id, roll: dices})
-                promises.push(Room.addUserRoll(room_id, user_id, thisRound, dices))
+                io.to(secretsById[user_id]).emit('user-roll', {room_id: room_id, roll: dice})
+                promises.push(Room.addUserRoll(room_id, user_id, thisRound, dice))
                 if (promises.length == user_id_order.length)
                   Promise.all(promises)
                   .then ( _ => Room.addRoundRoll(room_id, thisRound, total) )
@@ -114,7 +114,6 @@ socket.on('data2', room_id => {
     })
 
     socket.on('leave-game', ({room_id}) => {
-        console.log('leaving')
         if (!room_id || room_id < 1) {
             socket.emit('error-message', {message: 'Invalid action'})
             return;
@@ -248,10 +247,9 @@ socket.on('data2', room_id => {
                   }
                   return Room.getPlayerLostDiceAmount(room_id, loser)
                 }).then( ({losses}) => {
-                  console.log(losses)
                   if (losses == 4) {
                       result.user_id_order.splice(result.user_id_order.indexOf(loser), 1)
-                      io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: loserWithName + ' lost all dices and got eliminated!'})
+                      io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: loserWithName + ' lost all dice and got eliminated!'})
                   }
                   var promises = []
                   promises.push(Room.insertMove(room_id, socket.cookies.user_id, lastMove.round, 8, 0))
@@ -260,6 +258,11 @@ socket.on('data2', room_id => {
                   promises.push(Room.updateUserIdOrder(room_id, result.user_id_order))
                   if (result.user_id_order.length == 1) {
                       promises.push(Room.endRoom(room_id))
+                      Room.inGameStatus(room_id)
+                      .then( room_update => {
+                        io.to(room_id).emit('room-update', room_update)
+                      })
+
                       Promise.all(promises)
                       .then ( _ => io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: winnerWithName + ' won the game!'}))
                   } else {
@@ -275,9 +278,11 @@ socket.on('data2', room_id => {
     })
 
     socket.on('make-move', ({room_id, roll, amount}) => {
-        if (!room_id || room_id < 1 || !roll || !amount || roll < 1 || roll > 6 || amount < 1) {
-            socket.emit('error-message', {message: 'Invalid action'})
+        if (roll == -5) {
+            socket.emit('error-message', {message: 'Please select a die'})
             return;
+        }
+        if (!room_id || room_id < 1 || !roll || !amount || roll < 1 || roll > 6 || amount < 1) {
         }
         Room.findById(room_id)
         .then( result => {

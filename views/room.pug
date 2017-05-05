@@ -7,13 +7,15 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+    script(src='http://code.jquery.com/jquery-1.11.1.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/bootstrap-number-input.js')
     script(src='/javascripts/users.js')
     script= `const room = {room_id: '` + parseInt(room_id) + `'}`
-    script= `var user = {user_id: '` + parseInt(user_info.id) + `', dices: ['?','?','?','?','?']}`
+    script= `var user = {user_id: '` + parseInt(user_info.id) + `', dices: ['secret','secret','secret','secret','secret']}`
     script= `var last_move = {roll: 0, amount: 0}`
+
   body
     .alert.alert-success(role='alert')
       button.close(type='button', data-dismiss='alert', aria-label='Close')
@@ -44,10 +46,46 @@ html
           tr
             th.check_header Leader
             th Player
-            th dices
+            th Dice
         tbody.room_info
       br
       br
+    .container#roll_container
+      h1    Bid
+      h5 Roll
+      form.roll_form
+        .form-group
+          label
+            span.custom-radio
+              input.custom-radio.die#die(type='radio' name='die' value='1')      
+              img(src='/images/1.png')      
+          label
+            span.custom-radio
+              input.custom-radio#die(type='radio' name='die' value='2')       
+              img(src='/images/2.png')                 
+          label
+            span.custom-radio
+              input.custom-radio#die(type='radio' name='die' value='3')        
+              img(src='/images/3.png')                
+          label
+            span.custom-radio
+              input.custom-radio#die(type='radio' name='die' value='4')        
+              img(src='/images/4.png')                
+          label
+            span.custom-radio
+              input.custom-radio#die(type='radio' name='die' value='5')         
+              img(src='/images/5.png')               
+          label
+            span.custom-radio
+              input.custom-radio#die(type='radio' name='die' value='6')      
+              img(src='/images/6.png')      
+          br
+          h5 Amount
+          .input-group.num-picker
+                  input#amount.roll_amount.form-control(type='text', value='1', min='1', max='10000' style='text-align: center;')
+          br
+          button.roll_button.btn(type='submit') Submit
+
     .container#chat_container
       h1.chat_title    Chat
       form
@@ -128,3 +166,4 @@ html
                 center
                   button.btn.btn-default.change_name_close_button(type='button', data-dismiss='modal') Close
 
+    script= `$('#amount').bootstrapNumber()`

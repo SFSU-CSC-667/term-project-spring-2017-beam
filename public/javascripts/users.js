@@ -3,7 +3,7 @@ const socket = io()
 const playerDicesHTML = function(){
     var result = ''
     for (dice in user.dices)
-      result+= user.dices[dice] + ` `
+      result+= `<img src="/images/` + user.dices[dice] + `.png"> `
     return result
 }
 const activateButtons = function(){
@@ -110,7 +110,8 @@ socket.on('room-update', data => {
           } else {
            rowHTML+= `<td>`
            for (var i = 0; i< data[row].dice_amount; i++) {
-            rowHTML+=`? `
+            rowHTML+= `<img src="/images/secret.png"> `
+
            }
           }
           rowHTML+=`
