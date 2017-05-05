@@ -10,7 +10,32 @@ const init = ( app, server ) => {
   const io = socketIo( server )
 
   function rollDice(room_id, user_id_order) {
-    console.log('rolling dices')
+    var total = []
+    var promises = []
+    Room.getLastMove(room_id)
+    .then (lastMove => {
+        const thisRound = lastMove.round+1
+        for (let user_id of user_id_order) {
+            Room.getPlayerLostDiceAmount(room_id, user_id)
+            .then (({losses}) => {
+                const numDices = 5-losses
+                dices = []
+                for (var i = 0; i < numDices; i++) {
+                  var tmp = Math.ceil(Math.random()*6);
+                  dices.push(tmp);
+                  total.push(tmp);
+                }
+                io.to(secretsById[user_id]).emit('user-roll', {room_id: room_id, roll: dices})
+                promises.push(Room.addUserRoll(room_id, user_id, thisRound, dices))
+                if (promises.length == user_id_order.length)
+                  Promise.all(promises)
+                  .then ( _ => Room.addRoundRoll(room_id, thisRound, total) )
+                  .then ( _ =>  Room.startRoom(room_id)  )
+                  .then( _ =>  Room.inGameStatus(room_id) )
+                  .then( room_update =>  io.to(room_id).emit('room-update', room_update))
+            })
+        }
+    })
   }
 
   function enterGame (room_id,user_id,user_id_order) {
@@ -117,12 +142,12 @@ socket.on('data2', room_id => {
             }
             Promise.all([promise1, promise2, promise3])
             .then ( _ => {
-              Room.inGameStatus(room_id)
+             Room.inGameStatus(room_id)
               .then( room_update => {
                 io.to(room_id).emit('room-update', room_update)
               })
 
-
+ 
             })
         })
     })
@@ -156,8 +181,8 @@ socket.on('data2', room_id => {
         })
     })
 
-    socket.on('start-game', ({room_id, roll, amount}) => {
-        if (!room_id || !roll || !amount || room_id < 1) {
+    socket.on('start-game', ({room_id}) => {
+        if (!room_id || room_id < 1) {
             socket.emit('error-message', {message: 'Invalid action'})
             return;
         }
@@ -176,6 +201,10 @@ socket.on('data2', room_id => {
             }
             if (result.user_id_order.length < 2) {
                 socket.emit('error-message', {message: 'You need at least 2 players to start a game'})
+                return;
+            }
+            if (result.started) {
+                socket.emit('error-message', {message: 'Game already in progress'})
                 return;
             }
             Room.insertMove(room_id, socket.cookies.user_id, 0, 0, 0)

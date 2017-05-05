@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector( 'a.data' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
-    socket.emit( 'data', room.room_id)
+    socket.emit( 'start-game', {room_id: room.room_id})
     //socket.emit( 'data', {username: input})
   })
 

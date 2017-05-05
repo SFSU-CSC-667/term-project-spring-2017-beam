@@ -23,6 +23,8 @@ const INSERT_MESSAGE = `INSERT INTO chat_messages VALUES ($1, $2, CURRENT_TIMEST
 const IN_GAME_STATUS = `SELECT room_users.*, rooms.user_id_order, rooms.started, rooms.name, rooms.master_user_id, users.display_name, 5-(SELECT COUNT (*) FROM moves WHERE room_id=$1 AND roll=9 AND moves.user_id = room_users.user_id) AS dice_amount FROM room_users INNER JOIN users ON room_users.user_id = users.id INNER JOIN rooms ON rooms.id = room_users.room_id WHERE room_users.room_id=$1 ORDER BY room_users.ctid`
 const GET_PAST_CHAT = `SELECT chat_messages.*, users.display_name FROM chat_messages,users WHERE room_id=$1 AND chat_messages.user_id = users.id ORDER BY time DESC LIMIT 10`
 const GET_USER_ROLL = `SELECT * FROM user_rolls WHERE room_id = $1 AND user_id = $2 ORDER BY round DESC LIMIT 1`
+const START_ROOM = `UPDATE rooms SET started=CURRENT_TIMESTAMP WHERE id=$1`
+const END_ROOM = `UPDATE rooms SET started=CURRENT_TIMESTAMP WHERE id=$1`
 
 module.exports = {
   allActive: () => db.any( ALL_ACTIVE ),
@@ -39,13 +41,15 @@ module.exports = {
   getRoundRoll: id => db.one(GET_ROUND_ROLL, id),
   getLastEndedRound: id => db.one(GET_LAST_ENDED_ROUND, id),
   getPlayerLostDiceAmount: (id, user_id) => db.one(GET_PLAYER_LOST_DICE_AMOUNT, [id, user_id]),
-  addUserRoll: (id, user_id, round, dices) => db.none(ADD_USER_ROLL, [id, user_id, thisRound, dices]),
+  addUserRoll: (id, user_id, round, dices) => db.none(ADD_USER_ROLL, [id, user_id, round, dices]),
   addRoundRoll: (id, round, dices) => db.none(ADD_ROUND_ROLL, [id, round, dices]),
   insertMove: (id, user_id, round, roll, amount) => db.none(INSERT_MOVE, [id, user_id, round, roll, amount]),
   insertMessage: (id, user_id, message) => db.none(INSERT_MESSAGE, [id, user_id, message]),
   inGameStatus: id => db.any( IN_GAME_STATUS, id ),
   getPastChat: id => db.any( GET_PAST_CHAT, id ),
   getUserRoll: (id, user_id) => db.one(GET_USER_ROLL, [id, user_id]),
+  startRoom: id => db.none(START_ROOM, id),
+  endRoom: id => db.none(END_ROOM, id),
 
 
 }
