@@ -87,10 +87,13 @@ td,th {
 	float: right !important;
 }
 
+img{
+	width: 30px;
+}
 
 .custom-radio{
-	width: 16px;
-	height: 16px;
+	width: 30px;
+	height: 30px;
 	display: inline-block;
 	position: relative;
 	z-index: 1;
@@ -169,4 +172,16 @@ td,th {
 	filter: alpha(opacity=0);
 	-khtml-opacity: 0;
 	-moz-opacity: 0;
+}
+
+#die{ /* HIDE RADIO */
+  visibility: hidden; /* Makes input not-clickable */
+  position: absolute; /* Remove input from document flow */
+}
+#die + img{ /* IMAGE STYLES */
+  cursor:pointer;
+  border:2px solid transparent;
+}
+#die:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
+  border:2px solid #f00;
 }
