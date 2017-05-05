@@ -12,6 +12,27 @@ td,th {
     padding-right: 40px !important;
 }
 
+@keyframes bid_flash {
+  from { background-color: lightyellow; }
+  to { background-color: inherit; }
+}
+.bid_flash {
+  animation:         bid_flash 3s infinite; /* IE 10+ */
+}
+
+.minusz {
+    z-index: -1 !important;
+    visibility: hidden;
+    display: none;
+}
+@keyframes green_flash {
+  from { background-color: green; }
+  to { background-color: inherit; }
+}
+.green_flash {
+  animation:         green_flash 3s infinite; /* IE 10+ */
+}
+
 .chat_area {
     height: 300px;
     overflow-y: scroll;
@@ -19,6 +40,9 @@ td,th {
     padding-left: 0px;
 }
 
+.highlighted_row {
+    background-color: green;
+}
 .name {
 	color: black;
 	margin-top: 15px;

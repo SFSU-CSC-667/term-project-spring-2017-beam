@@ -49,10 +49,10 @@ html
         tbody.room_info
       br
       br
-    .container#roll_container
-      h1    Bid
-      h5 Roll
+    .container.roll_container.minusz#roll_container
       form.roll_form
+        h1    Bid
+        h5 Roll
         .form-group
           label
             span.custom-radio
@@ -83,7 +83,12 @@ html
           .input-group.num-picker
                   input#amount.roll_amount.form-control(type='text', value='1', min='1', max='10000' style='text-align: center;')
           br
-          button.roll_button.btn(type='submit') Submit
+          button.roll_button.btn(type='submit') Call 
+          .container.liar_button
+          br
+          br
+          .container.last_dice
+
 
     .container#chat_container
       h1.chat_title    Chat

@@ -1,5 +1,14 @@
 const socket = io()
-
+const updateLastDice = function(has_wildcards,playerString) {
+    var last_dice_html = `<strong>Wildcards this round:</strong> `
+    if (has_wildcards) {
+        last_dice_html += `Yes`
+    } else {
+        last_dice_html += `No`
+    }
+    last_dice_html += `<br><br><strong>Last Player: </strong>` + playerString + `<br><strong>Amount: </strong>` + last_move.amount + `<br> <strong>Roll</strong>: <img src="/images/` + last_move.roll + `.png">`
+    document.querySelector('div.last_dice').innerHTML = last_dice_html
+}
 const playerDicesHTML = function(){
     var result = ''
     for (dice in user.dices)
@@ -66,6 +75,8 @@ socket.on( 'redirect', ({destination}) => {
 })
 
 socket.on('room-update', data => {
+    document.querySelector('div.liar_button').innerHTML = ''
+    document.querySelector('div.last_dice').innerHTML = ''
     const title_bar = document.querySelector ('h1.room_title')
     title_bar.innerHTML = data[0].name
     if (data[0].started == null) {
@@ -79,9 +90,18 @@ socket.on('room-update', data => {
         }
     } else if (data[0].user_id_order.length > 1) {
         if (last_move.roll > 0 && last_move.roll < 7 && data[0].user_id_order[0] == user.user_id) {
-            title_bar.innerHTML += " <button class='liar_game_button btn'>Liar!</button>"
+            document.querySelector('div.liar_button').innerHTML = " <button class='liar_game_button btn'>Liar!</button>"
         }
-        document.querySelector('th.check_header').innerHTML = 'Current Turn'
+        if (data[0].user_id_order.indexOf(parseInt(user.user_id)) > -1) {
+            document.querySelector('div.roll_container').classList.remove('minusz')
+        }
+        if (data[0].user_id_order[0] == user.user_id) {
+            document.querySelector('form.roll_form').classList.add('bid_flash')
+            document.querySelector ( 'ul.chat_area' ).innerHTML += `<td><strong>Game: </strong>It is your turn!<br></td>`
+        } else {
+            document.querySelector('form.roll_form').classList.remove('bid_flash')
+        }
+        document.querySelector('th.check_header').innerHTML = ''
 
     }
 
@@ -94,10 +114,10 @@ socket.on('room-update', data => {
         document.querySelector('th.check_header').value = 'Current Turn'
       var rowHTML = 
       `
-      <tr>
-        <td>`
-          if (data[row].user_id == data[row].master_user_id && data[row].started == null) rowHTML += `X`
-          else if (data[row].user_id == data[row].user_id_order[0] && data[row].started != null) rowHTML += `X`
+      <tr`
+          if (data[row].user_id == data[row].master_user_id && data[row].started == null) rowHTML += `><td>X`
+          else if (data[row].user_id == data[row].user_id_order[0] && data[row].started != null) rowHTML += ` class="green_flash"><td>`
+          else rowHTML += `><td>`
           rowHTML+=`
         </td>
         <td>
@@ -148,7 +168,12 @@ socket.on('lobby-update', data => {
 })
 
 socket.on ( 'last-move', recentMove => {
+    if (last_move.roll == 0 && recentMove.roll != 0 && document.querySelector( 'form.bid_flash' )) {
+       document.querySelector('div.liar_button').innerHTML = " <button class='liar_game_button btn'>Liar!</button>"
+    }
+    activateButtons()
     last_move = recentMove
+    updateLastDice(recentMove.has_wildcards,recentMove.display_name + '#' + recentMove.user_id)
 })
 
 socket.on ( 'user-roll', ({room_id, roll}) => {
@@ -197,13 +222,6 @@ socket.on ('connect', () => {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-
-  document.querySelector( 'a.data' ).addEventListener( 'click', event => {
-    event.preventDefault()
-    event.stopPropagation()
-    socket.emit( 'data', room.room_id)
-    //socket.emit( 'data', {username: input})
-  })
 
   document.querySelector( 'button.chat_input_button' ).addEventListener( 'click', event => {
     event.preventDefault()

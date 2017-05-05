@@ -68,7 +68,7 @@ const init = ( app, server ) => {
                     if (result[0].user_id_order.indexOf(parseInt(socket.cookies.user_id)) > -1) {
                         Room.getLastMove(room_id)
                         .then (lastMove => { 
-                            socket.emit('last-move', {roll: lastMove.roll, amount: lastMove.amount})
+                            socket.emit('last-move', {roll: lastMove.roll, amount: lastMove.amount, has_wildcards: lastMove.has_wildcards, display_name: lastMove.display_name, user_id: lastMove.user_id})
                         })
                         Room.getUserRoll(room_id, socket.cookies.user_id)
                         .then ( user_roll => {
