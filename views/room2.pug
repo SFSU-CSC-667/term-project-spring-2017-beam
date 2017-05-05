@@ -7,6 +7,7 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+    script(src='http://code.jquery.com/jquery-1.11.1.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/bootstrap-number-input.js')
@@ -14,7 +15,6 @@ html
     script= `const room = {room_id: '` + parseInt(room_id) + `'}`
     script= `var user = {user_id: '` + parseInt(user_info.id) + `', dices: ['?','?','?','?','?']}`
     script= `var last_move = {roll: 0, amount: 0}`
-    script= `$('#amount').bootstrapNumber()`
 
   body
     .alert.alert-success(role='alert')
@@ -172,3 +172,4 @@ html
                 center
                   button.btn.btn-default.change_name_close_button(type='button', data-dismiss='modal') Close
 
+    script= `$('#amount').bootstrapNumber()`
