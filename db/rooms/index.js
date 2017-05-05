@@ -12,7 +12,7 @@ const CREATE_ROOM = `INSERT INTO rooms (master_user_id, name, max_players, creat
                       VALUES ($1, $2, $3, CURRENT_TIMESTAMP, $4) returning id`
 const CLOSE_ROOM = `UPDATE rooms SET started=CURRENT_TIMESTAMP, ended=CURRENT_TIMESTAMP WHERE id=$1`
 const SET_NO_WILDCARS = `UPDATE round_rolls SET has_wildcards = false WHERE room_id = $1 AND round = $2`
-const GET_LAST_MOVE = `SELECT * FROM moves WHERE room_id = $1 ORDER BY time DESC LIMIT 1`
+const GET_LAST_MOVE = `SELECT moves.*,users.display_name FROM moves,users WHERE room_id = $1 AND moves.user_id = users.id ORDER BY time DESC LIMIT 1`
 const GET_ROUND_ROLL = `SELECT * FROM round_rolls WHERE room_id = $1 ORDER BY round DESC LIMIT 1`
 const GET_LAST_ENDED_ROUND = `SELECT round FROM moves WHERE room_id = $1 AND roll = 0 ORDER BY round DESC LIMIT 1`
 const GET_PLAYER_LOST_DICE_AMOUNT = `SELECT COUNT (*) AS losses FROM moves WHERE room_id = $1 AND user_id = $2 AND roll = 9`
@@ -25,6 +25,7 @@ const GET_PAST_CHAT = `SELECT chat_messages.*, users.display_name FROM chat_mess
 const GET_USER_ROLL = `SELECT * FROM user_rolls WHERE room_id = $1 AND user_id = $2 ORDER BY round DESC LIMIT 1`
 const START_ROOM = `UPDATE rooms SET started=CURRENT_TIMESTAMP WHERE id=$1`
 const END_ROOM = `UPDATE rooms SET started=CURRENT_TIMESTAMP WHERE id=$1`
+const ALL_ROUND_ROLLS = `SELECT user_rolls.*, users.display_name FROM user_rolls,users WHERE user_rolls.user_id=users.id AND room_id=$1 AND round=$2 ORDER BY user_rolls.ctid`
 
 module.exports = {
   allActive: () => db.any( ALL_ACTIVE ),
@@ -50,6 +51,7 @@ module.exports = {
   getUserRoll: (id, user_id) => db.one(GET_USER_ROLL, [id, user_id]),
   startRoom: id => db.none(START_ROOM, id),
   endRoom: id => db.none(END_ROOM, id),
+  allRoundRolls: (id, round) => db.any(ALL_ROUND_ROLLS, [id, round]),
 
 
 }

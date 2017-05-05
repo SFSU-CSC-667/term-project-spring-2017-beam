@@ -109,7 +109,8 @@ socket.on('data2', room_id => {
 
     socket.on('data', room_id => {
         console.log('data, room_id: ' + room_id)
-        rollDice (room_id, [])
+
+
     })
 
     socket.on('leave-game', ({room_id}) => {
@@ -182,7 +183,96 @@ socket.on('data2', room_id => {
         })
     })
 
-   socket.on('make-move', ({room_id, roll, amount}) => {
+   socket.on('liar', ({room_id}) => {
+        if (!room_id || room_id < 1) {
+            socket.emit('error-message', {message: 'Invalid action'})
+            return;
+        }
+        Room.findById(room_id)
+        .then( result => {
+            if (!result || result.ended) {
+                socket.emit('error-message', {message: 'This room doesnt exist anymore'})
+                setTimeout(function() {
+                   socket.emit('redirect', {destination: '/'})
+                }, 5000)
+                return;
+            }
+            if (!result.started) {
+                socket.emit('error-message', {message: 'Game not in progress'})
+                return;
+            }
+            if (result.user_id_order[0] != socket.cookies.user_id) {
+                socket.emit('error-message', {message: 'This is not your turn'})
+                return;
+            }
+            Room.getLastMove(room_id)
+            .then (lastMove => {
+              if (lastMove.roll == 0) {
+                socket.emit('error-message', {message: 'You cant call Liar on the first move of a round!'})
+                return;
+              }
+              io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: 'Player ' + socket.cookies.display_name + '#' + socket.cookies.user_id + ' called ' + lastMove.display_name + '#' + lastMove.user_id + ' a liar!'})
+              Room.allRoundRolls(room_id, lastMove.round)
+              .then ( allRolls => {
+                for (let thisAllRoll of allRolls) {
+                   var toSend = 'Player ' + thisAllRoll.display_name + '#' + thisAllRoll.user_id + ' had: ' + thisAllRoll.dice
+                    io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: toSend})
+                }
+                return Room.getRoundRoll(room_id)
+              }).then ( roundRoll => {
+                  var count = {};
+                  roundRoll.dice.forEach(function(el){
+                    count[el] = count[el] + 1 || 1;
+                  });
+                  var realAmount = count[lastMove.roll] || 0;
+                    io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: 'There were ' + realAmount + ' rolls of ' + lastMove.roll})
+                  if (roundRoll.has_wildcards) {
+                    realAmount += count[1] || 0;
+                    io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: (count[1] || 0) + ' wildcars were added for a total of ' + realAmount})
+                  }
+                  var loser
+                  var winnerWithName
+                  var loserWithName
+                  if (lastMove.amount > realAmount) {
+                    loser = lastMove.user_id;
+                    winnerWithName = socket.cookies.display_name + '#' + socket.cookies.user_id
+                    loserWithName = lastMove.display_name + '#' + lastMove.user_id
+                    io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: loserWithName + ' is a liar and lost a dice!'})
+                  } else {
+                    winnerWithName = lastMove.display_name + '#' + lastMove.user_id
+                    loserWithName = socket.cookies.display_name + '#' + socket.cookies.user_id
+                    io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: lastMove.display_name + '#' + lastMove.user_id + ' is not a liar! ' + loserWithName + ' lost a dice!'})
+                    loser = socket.cookies.user_id;
+                    result.user_id_order.unshift(result.user_id_order.pop());
+                  }
+                  return Room.getPlayerLostDiceAmount(room_id, loser)
+                }).then( losses => {
+                  if (losses == 4) {
+                      result.user_id_order.splice(result.user_id_order.indexOf(loser), 1)
+                      io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: loserWithName + ' lost all dices and got eliminated!'})
+                  }
+                  var promises = []
+                  promises.push(Room.insertMove(room_id, socket.cookies.user_id, lastMove.round, 8, 0))
+                  promises.push(Room.insertMove(room_id, loser, lastMove.round, 9, 0))
+                  promises.push(Room.insertMove(room_id, socket.cookies.user_id, lastMove.round, 0, 0))
+                  promises.push(Room.updateUserIdOrder(room_id, socket.cookies.user_id_order))
+                  if (result.user_id_order.length == 1) {
+                      promises.push(Room.endRoom(room_id))
+                      Promise.all(promises)
+                      .then ( _ => io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: winnerWithName + ' won the game!'}))
+                  } else {
+                      Promise.all(promises)
+                      .then ( _ => rollDice(room_id, result.user_id_order))
+                  }
+                })
+
+            })
+
+
+        })
+    })
+
+    socket.on('make-move', ({room_id, roll, amount}) => {
         if (!room_id || room_id < 1 || !roll || !amount || roll < 1 || roll > 6 || amount < 1) {
             socket.emit('error-message', {message: 'Invalid action'})
             return;
@@ -215,6 +305,7 @@ socket.on('data2', room_id => {
               if (lastMove.roll == 0) {
                   lastMove.round += 1
                   if (roll == 1) {
+                      io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: 'Player ' + socket.cookies.display_name + '#' + socket.cookies.user_id + ' called roll 1 on the first move of the round, there will be no wildcards!'})
                       promises.push(Room.setNoWildcards(room_id, lsatMove.round))
                   }
               }
@@ -233,6 +324,7 @@ socket.on('data2', room_id => {
 
         })
     })
+
  socket.on('start-game', ({room_id}) => {
         if (!room_id || room_id < 1) {
             socket.emit('error-message', {message: 'Invalid action'})
