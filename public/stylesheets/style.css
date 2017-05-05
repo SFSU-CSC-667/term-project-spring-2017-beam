@@ -132,6 +132,12 @@ img{
   border:2px solid #f00;
   border-radius: 5px;
 }
+
 #amount{
 	margin: 0px;
+}
+
+.num-picker{
+	min-width: 100px;
+	max-width: 88%;
 }

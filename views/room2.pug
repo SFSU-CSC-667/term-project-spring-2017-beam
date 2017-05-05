@@ -52,6 +52,7 @@ html
       br
     .container#bid_container
       h1    Bid
+      h5 Select your die
       form
         .form-group
           label
@@ -79,10 +80,11 @@ html
               input.custom-radio#die(type='radio' name='die' value='6')      
               img(src='/images/6.png')      
           br
+          h5 Select amount
           form
             fieldset
               .form-group
-                .input-group
+                .input-group.num-picker
                   input#amount.form-control(type='text', value='1', min='1', max='10000' style='text-align: center;')
 
     .container#chat_container
