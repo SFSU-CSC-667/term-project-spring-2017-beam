@@ -1,7 +1,12 @@
-const socket = io();console.log('test')
+const socket = io()
 
+const playerDicesHTML = function(){
+    var result = ''
+    for (dice in user.dices)
+      result+= user.dices[dice] + ` `
+    return result
+}
 const activateButtons = function(){
-  console.log("activate")
   if (document.querySelector( 'button.start_game_button' )){
     document.querySelector( 'button.start_game_button' ).addEventListener( 'click', event => {
       event.preventDefault()
@@ -32,13 +37,13 @@ const activateButtons = function(){
     })
   }
   //here
-  if (document.querySelector( 'form.roll_form'))  document.querySelector( 'form.roll_form' ).addEventListener( 'submit', event => {
+  if (document.querySelector( 'button.roll_button'))  document.querySelector( 'button.roll_button' ).addEventListener( 'click', event => {
     event.preventDefault()
     event.stopPropagation()
-    const roll_die = document.querySelector('input[name=die]:checked').value
+    event.stopImmediatePropagation()
+    const roll_die = document.querySelector('input[name=die]:checked') ? document.querySelector('input[name=die]:checked').value : -5
     const roll_amount = document.querySelector('input.roll_amount').value
-    console.log(roll_die)
-    console.log(roll_amount)
+    socket.emit( 'make-move', {room_id: room.room_id, roll: roll_die, amount: roll_amount})
   })
 }
 socket.on( 'user-created', ({ id, username, dogCount }) => {
@@ -61,8 +66,6 @@ socket.on( 'redirect', ({destination}) => {
 })
 
 socket.on('room-update', data => {
-    console.log(data)
-    console.log('lol')
     const title_bar = document.querySelector ('h1.room_title')
     title_bar.innerHTML = data[0].name
     if (data[0].started == null) {
@@ -78,6 +81,7 @@ socket.on('room-update', data => {
         if (last_move.roll > 0 && last_move.roll < 7 && data[0].user_id_order[0] == user.user_id) {
             title_bar.innerHTML += " <button class='liar_game_button btn'>Liar!</button>"
         }
+        document.querySelector('th.check_header').innerHTML = 'Current Turn'
 
     }
 
@@ -98,14 +102,17 @@ socket.on('room-update', data => {
         </td>
         <td>
           `+data[row].display_name+ `#` + data[row].user_id+`
-        </td>
-        <td>`
-          if (data[row].user_id == user.user_id)
-            for (dice in user.dices)
-            rowHTML+= user.dices[dice] + ` `
-          else
-            for (var i = 0; i< data[row].dice_amount; i++)
+        </td>`
+        
+          if (data[row].user_id == user.user_id){
+            rowHTML+= `<td class="player_dice">`
+            rowHTML+= playerDicesHTML()
+          } else {
+           rowHTML+= `<td>`
+           for (var i = 0; i< data[row].dice_amount; i++) {
             rowHTML+=`? `
+           }
+          }
           rowHTML+=`
         </td>
       <tr>
@@ -146,10 +153,13 @@ socket.on ( 'last-move', recentMove => {
 socket.on ( 'user-roll', ({room_id, roll}) => {
     if (room.room_id == room_id) 
         user.dices = roll
+   if (document.querySelector( 'td.player_dice' )) document.querySelector( 'td.player_dice' ).innerHTML =  playerDicesHTML()
 })
 
 socket.on ( 'chat', ({user_id, display_name, message}) => {
-    const print = '<strong>' + display_name + '#' + user_id+ '</strong>: ' + message
+    var print = '<strong>' + display_name + '#' + user_id+ '</strong>: ' + message
+    if (user_id == 0)
+      print = '<strong>' + display_name + '</strong>: ' + message
     const chat_area = document.querySelector ( 'ul.chat_area' )
     const append = `<td>${print}<br></td>`
     chat_area.innerHTML += append

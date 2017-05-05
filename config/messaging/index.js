@@ -188,6 +188,7 @@ socket.on('data2', room_id => {
             socket.emit('error-message', {message: 'Invalid action'})
             return;
         }
+        var loser = ''
         Room.findById(room_id)
         .then( result => {
             if (!result || result.ended) {
@@ -212,6 +213,7 @@ socket.on('data2', room_id => {
                 return;
               }
               io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: 'Player ' + socket.cookies.display_name + '#' + socket.cookies.user_id + ' called ' + lastMove.display_name + '#' + lastMove.user_id + ' a liar!'})
+              io.to(room_id).emit('last-move', {roll: parseInt('0'), amount: parseInt('0')})
               Room.allRoundRolls(room_id, lastMove.round)
               .then ( allRolls => {
                 for (let thisAllRoll of allRolls) {
@@ -228,9 +230,8 @@ socket.on('data2', room_id => {
                     io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: 'There were ' + realAmount + ' rolls of ' + lastMove.roll})
                   if (roundRoll.has_wildcards) {
                     realAmount += count[1] || 0;
-                    io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: (count[1] || 0) + ' wildcars were added for a total of ' + realAmount})
+                    io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: (count[1] || 0) + ' wildcards were added for a total of ' + realAmount})
                   }
-                  var loser
                   var winnerWithName
                   var loserWithName
                   if (lastMove.amount > realAmount) {
@@ -255,7 +256,7 @@ socket.on('data2', room_id => {
                   promises.push(Room.insertMove(room_id, socket.cookies.user_id, lastMove.round, 8, 0))
                   promises.push(Room.insertMove(room_id, loser, lastMove.round, 9, 0))
                   promises.push(Room.insertMove(room_id, socket.cookies.user_id, lastMove.round, 0, 0))
-                  promises.push(Room.updateUserIdOrder(room_id, socket.cookies.user_id_order))
+                  promises.push(Room.updateUserIdOrder(room_id, result.user_id_order))
                   if (result.user_id_order.length == 1) {
                       promises.push(Room.endRoom(room_id))
                       Promise.all(promises)
@@ -291,7 +292,7 @@ socket.on('data2', room_id => {
                 return;
             }
             if (result.user_id_order[0] != socket.cookies.user_id) {
-                socket.emit('error-message', {message: 'This is not your turn'})
+                socket.emit('error-message', {message: 'It is not your turn'})
                 return;
             }
             Room.getLastMove(room_id)
@@ -306,7 +307,7 @@ socket.on('data2', room_id => {
                   lastMove.round += 1
                   if (roll == 1) {
                       io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: 'Player ' + socket.cookies.display_name + '#' + socket.cookies.user_id + ' called roll 1 on the first move of the round, there will be no wildcards!'})
-                      promises.push(Room.setNoWildcards(room_id, lsatMove.round))
+                      promises.push(Room.setNoWildcards(room_id, lastMove.round))
                   }
               }
               promises.push(Room.insertMove(room_id, socket.cookies.user_id, lastMove.round, roll, amount))
