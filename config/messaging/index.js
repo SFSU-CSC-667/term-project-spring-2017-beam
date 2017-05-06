@@ -32,7 +32,10 @@ const init = ( app, server ) => {
                   .then ( _ => Room.addRoundRoll(room_id, thisRound, total) )
                   .then ( _ =>  Room.startRoom(room_id)  )
                   .then( _ =>  Room.inGameStatus(room_id) )
-                  .then( room_update =>  io.to(room_id).emit('room-update', room_update))
+                  .then( room_update =>  {
+                    io.to(room_id).emit('room-update', room_update)
+                    updateLobby()
+                  })
             })
         }
     })
@@ -260,10 +263,16 @@ socket.on('data2', room_id => {
                       })
 
                       Promise.all(promises)
-                      .then ( _ => io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: winnerWithName + ' won the game!'}))
+                      .then ( _ => {
+                        io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: winnerWithName + ' won the game!'})
+                        updateLobby()
+                      })
                   } else {
                       Promise.all(promises)
-                      .then ( _ => rollDice(room_id, result.user_id_order))
+                      .then ( _ => {
+                        rollDice(room_id, result.user_id_order)
+                        updateLobby()
+                      })
                   }
                 })
 
@@ -356,7 +365,7 @@ socket.on('data2', room_id => {
                 socket.emit('error-message', {message: 'Game already in progress'})
                 return;
             }
-            Room.insertMove(room_id, socket.cookies.user_id, 0, 0, 0)
+            Room.insertMove(room_id, 0, 0, 0, 0)
             .then ( _ => {
                 rollDice(room_id, result.user_id_order)
             })

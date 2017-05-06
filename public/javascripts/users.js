@@ -157,7 +157,7 @@ socket.on('lobby-update', data => {
       `
       <tr>
         <td>
-          <a href="/room/`+data[row].id+ `">`+data[row].name + `#` + data[row].id+`</a>
+          <a href="/room/`+data[row].id+ `">`+data[row].name +`</a>
         </td>
         <td>
           `+data[row].master_user_display_name+ `#` + data[row].master_user_id+`
@@ -179,7 +179,9 @@ socket.on ( 'last-move', recentMove => {
     }
     activateButtons()
     last_move = recentMove
-    updateLastDice(recentMove.has_wildcards,recentMove.display_name + '#' + recentMove.user_id)
+    if (recentMove.user_id > 0) {
+      updateLastDice(recentMove.has_wildcards,recentMove.display_name + '#' + recentMove.user_id)
+    }
 })
 
 socket.on ( 'user-roll', ({room_id, roll}) => {
