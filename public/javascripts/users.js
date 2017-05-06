@@ -96,7 +96,7 @@ socket.on('room-update', data => {
         }
     } else if (data[0].user_id_order.length > 1) {
         if (last_move.roll > 0 && last_move.roll < 7 && data[0].user_id_order[0] == user.user_id) {
-            document.querySelector('div.liar_button').innerHTML = " <button class='liar_game_button btn'>Liar!</button>"
+            document.querySelector('div.liar_button').innerHTML = " <button class='liar_game_button btn'>Call Liar!</button>"
         }
         if (data[0].user_id_order.indexOf(parseInt(user.user_id)) > -1) {
             document.querySelector('div.roll_container').classList.remove('minusz')
