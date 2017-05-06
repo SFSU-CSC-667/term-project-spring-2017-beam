@@ -137,6 +137,14 @@ img{
 	float: left;
 }
 
+label{
+	margin-right: 3%;
+}
+
+.number_input{
+	width: 109%;
+}
+
 .liar_button{
 	padding: 0px;
     margin-left: 8%;
