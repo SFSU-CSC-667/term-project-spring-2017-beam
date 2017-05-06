@@ -134,6 +134,11 @@ img{
 	width: 100%;
 }
 
+#middle{
+	float: left;
+	width: 25%;
+}
+
 .roll_button{
 	float: left;
 }
