@@ -146,14 +146,14 @@ label{
 }
 
 .liar_button{
-	padding: 0px;
+	padding: 0px !important;
     margin-left: 8% !important;
     width: 50% !important;
     float: left;
 }
 
 .liar_game_button{
-	margin-left: 17%;
+	margin-left: 10%;
 }
 .custom-radio input[type="radio"]{
 	margin: 1px;
