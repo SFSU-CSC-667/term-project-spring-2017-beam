@@ -45,7 +45,7 @@
                 return true;
             }
 
-            var group = $("<div class='input-group'></div>");
+            var group = $("<div class='input-group number_input'></div>");
             var down = $("<button type='button'>-</button>").attr('class', 'btn btn-' + settings.downClass).click(function () {
                 setText(parseInt(clone.val()) - 1);
             });
