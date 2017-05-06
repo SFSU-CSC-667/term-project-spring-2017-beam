@@ -142,7 +142,7 @@ label{
 }
 
 .number_input{
-	width: 109%;
+	width: 107% !important;
 }
 
 .liar_button{
