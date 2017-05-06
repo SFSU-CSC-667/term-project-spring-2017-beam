@@ -126,7 +126,9 @@ img{
 	top: 3px;
 }
 .last_dice{
-	padding: 0px!important;
+	padding: 0px !important;
+	margin: : 0px !important;
+	width: : 100% !important;
 }
 #roll_container{
 	width: 23%;
