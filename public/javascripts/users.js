@@ -1,6 +1,6 @@
 const socket = io()
 const updateLastDice = function(has_wildcards,playerString) {
-    var last_dice_html = `<strong>Wildcards this round:</strong> `
+    var last_dice_html = `<h1>Game Details</h1><strong>Wildcards this round:</strong> `
     if (last_move.roll == 0) {
         last_dice_html += `?`
     } else if (has_wildcards) {
