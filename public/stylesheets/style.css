@@ -131,8 +131,7 @@ img{
 	width: : 100% !important;
 }
 #roll_container{
-	width: 23%;
-	float: left;
+	width: 100%;
 }
 
 .roll_button{
