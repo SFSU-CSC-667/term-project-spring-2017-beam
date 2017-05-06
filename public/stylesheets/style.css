@@ -126,7 +126,7 @@ img{
 	top: 3px;
 }
 .last_dice{
-	padding: 0px;
+	padding: 0px!important;
 }
 #roll_container{
 	width: 23%;
@@ -147,8 +147,8 @@ label{
 
 .liar_button{
 	padding: 0px;
-    margin-left: 8%;
-    width: 50%;
+    margin-left: 8% !important;
+    width: 50% !important;
     float: left;
 }
 
