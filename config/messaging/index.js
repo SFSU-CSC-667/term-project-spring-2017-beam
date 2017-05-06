@@ -117,11 +117,11 @@ socket.on('data2', room_id => {
         Room.findById(room_id)
         .then( result => {
             if (!result || result.started) {
-                socket.emit('error-message', {message: 'You cant leave this room'})
+                socket.emit('error-message', {message: 'You can not leave this room'})
             }
             const arrayIndex = result.user_id_order.indexOf(parseInt(socket.cookies.user_id)) 
             if (arrayIndex == -1) {
-                socket.emit('error-message', {message: 'Youre not in this room'})
+                socket.emit('error-message', {message: 'You are not in this room'})
                 return;
             }
             if (result.user_id_order.length == 1) {
@@ -157,7 +157,7 @@ socket.on('data2', room_id => {
         Room.findById(room_id)
         .then( result => {
             if (!result || result.started) {
-                socket.emit('error-message', {message: 'You cant enter this room'})
+                socket.emit('error-message', {message: 'You can not enter this room'})
             }
             if (result.user_id_order.indexOf(parseInt(socket.cookies.user_id)) > -1) {
                 socket.emit('error-message', {message: 'Already in this room'})
@@ -189,7 +189,7 @@ socket.on('data2', room_id => {
         Room.findById(room_id)
         .then( result => {
             if (!result || result.ended) {
-                socket.emit('error-message', {message: 'This room doesnt exist anymore'})
+                socket.emit('error-message', {message: 'This room does not exist anymore'})
                 setTimeout(function() {
                    socket.emit('redirect', {destination: '/'})
                 }, 5000)
@@ -206,7 +206,7 @@ socket.on('data2', room_id => {
             Room.getLastMove(room_id)
             .then (lastMove => {
               if (lastMove.roll == 0) {
-                socket.emit('error-message', {message: 'You cant call Liar on the first move of a round!'})
+                socket.emit('error-message', {message: 'You can not call Liar on the first move of a round!'})
                 return;
               }
               io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: 'Player ' + socket.cookies.display_name + '#' + socket.cookies.user_id + ' called ' + lastMove.display_name + '#' + lastMove.user_id + ' a liar!'})
@@ -283,7 +283,7 @@ socket.on('data2', room_id => {
         Room.findById(room_id)
         .then( result => {
             if (!result) {
-                socket.emit('error-message', {message: 'This room doesnt exist anymore'})
+                socket.emit('error-message', {message: 'This room does not exist anymore'})
                 setTimeout(function() {
                    socket.emit('redirect', {destination: '/'})
                 }, 5000)
