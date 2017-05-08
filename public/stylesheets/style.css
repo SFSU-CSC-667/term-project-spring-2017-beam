@@ -18,6 +18,7 @@ td,th {
 }
 .bid_flash {
   animation:         bid_flash 3s infinite; /* IE 10+ */
+  padding-left: 10px;
 }
 
 .minusz {
@@ -112,7 +113,7 @@ td,th {
 }
 
 img{
-        margin: 3px;
+    margin: 3px;
 	width: 30px;
 }
 
@@ -124,12 +125,42 @@ img{
 	z-index: 1;
 	top: 3px;
 }
+.last_dice{
+	padding: 0px !important;
+	margin: 0px !important;
+	width: 100% !important;
+}
 #roll_container{
-	width: 20%;
-	float: left;
-	margin-left: 1%;
+	width: 100%;
 }
 
+#middle{
+	float: left;
+	width: 25%;
+}
+
+.roll_button{
+	float: left;
+}
+
+label{
+	margin-right: 3%;
+}
+
+.number_input{
+	width: 107% !important;
+}
+
+.liar_button{
+	padding: 0px !important;
+    margin-left: 8% !important;
+    width: 50% !important;
+    float: left;
+}
+
+.liar_game_button{
+	margin-left: 10%;
+}
 .custom-radio input[type="radio"]{
 	margin: 1px;
 	position: absolute;
@@ -169,3 +200,4 @@ img{
 
 td img {
     width: 26px;
+}

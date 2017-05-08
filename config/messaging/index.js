@@ -32,7 +32,10 @@ const init = ( app, server ) => {
                   .then ( _ => Room.addRoundRoll(room_id, thisRound, total) )
                   .then ( _ =>  Room.startRoom(room_id)  )
                   .then( _ =>  Room.inGameStatus(room_id) )
-                  .then( room_update =>  io.to(room_id).emit('room-update', room_update))
+                  .then( room_update =>  {
+                    io.to(room_id).emit('room-update', room_update)
+                    updateLobby()
+                  })
             })
         }
     })
@@ -65,11 +68,12 @@ const init = ( app, server ) => {
             .then( result => {
                 socket.emit('room-update', result)
                 if (result[0].started) {
-                    if (result[0].user_id_order.indexOf(parseInt(socket.cookies.user_id)) > -1) {
-                        Room.getLastMove(room_id)
-                        .then (lastMove => { 
-                            socket.emit('last-move', {roll: lastMove.roll, amount: lastMove.amount, has_wildcards: lastMove.has_wildcards, display_name: lastMove.display_name, user_id: lastMove.user_id})
+                  Room.getLastMove(room_id)
+                  .then (lastMove => { 
+                    socket.emit('last-move', {roll: lastMove.roll, amount: lastMove.amount, has_wildcards: lastMove.has_wildcards, display_name: lastMove.display_name, user_id: lastMove.user_id})
                         })
+                    if (result[0].user_id_order.indexOf(parseInt(socket.cookies.user_id)) > -1) {
+                        
                         Room.getUserRoll(room_id, socket.cookies.user_id)
                         .then ( user_roll => {
                             socket.emit('user-roll', {room_id: room_id, roll: user_roll.dice})
@@ -116,11 +120,11 @@ socket.on('data2', room_id => {
         Room.findById(room_id)
         .then( result => {
             if (!result || result.started) {
-                socket.emit('error-message', {message: 'You cant leave this room'})
+                socket.emit('error-message', {message: 'You can not leave this room'})
             }
             const arrayIndex = result.user_id_order.indexOf(parseInt(socket.cookies.user_id)) 
             if (arrayIndex == -1) {
-                socket.emit('error-message', {message: 'Youre not in this room'})
+                socket.emit('error-message', {message: 'You are not in this room'})
                 return;
             }
             if (result.user_id_order.length == 1) {
@@ -156,7 +160,7 @@ socket.on('data2', room_id => {
         Room.findById(room_id)
         .then( result => {
             if (!result || result.started) {
-                socket.emit('error-message', {message: 'You cant enter this room'})
+                socket.emit('error-message', {message: 'You can not enter this room'})
             }
             if (result.user_id_order.indexOf(parseInt(socket.cookies.user_id)) > -1) {
                 socket.emit('error-message', {message: 'Already in this room'})
@@ -188,7 +192,7 @@ socket.on('data2', room_id => {
         Room.findById(room_id)
         .then( result => {
             if (!result || result.ended) {
-                socket.emit('error-message', {message: 'This room doesnt exist anymore'})
+                socket.emit('error-message', {message: 'This room does not exist anymore'})
                 setTimeout(function() {
                    socket.emit('redirect', {destination: '/'})
                 }, 5000)
@@ -205,7 +209,7 @@ socket.on('data2', room_id => {
             Room.getLastMove(room_id)
             .then (lastMove => {
               if (lastMove.roll == 0) {
-                socket.emit('error-message', {message: 'You cant call Liar on the first move of a round!'})
+                socket.emit('error-message', {message: 'You can not call Liar on the first move of a round!'})
                 return;
               }
               io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: 'Player ' + socket.cookies.display_name + '#' + socket.cookies.user_id + ' called ' + lastMove.display_name + '#' + lastMove.user_id + ' a liar!'})
@@ -259,10 +263,16 @@ socket.on('data2', room_id => {
                       })
 
                       Promise.all(promises)
-                      .then ( _ => io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: winnerWithName + ' won the game!'}))
+                      .then ( _ => {
+                        io.to(room_id).emit('chat', {user_id: '0', display_name: 'Game', message: winnerWithName + ' won the game!'})
+                        updateLobby()
+                      })
                   } else {
                       Promise.all(promises)
-                      .then ( _ => rollDice(room_id, result.user_id_order))
+                      .then ( _ => {
+                        rollDice(room_id, result.user_id_order)
+                        updateLobby()
+                      })
                   }
                 })
 
@@ -282,7 +292,7 @@ socket.on('data2', room_id => {
         Room.findById(room_id)
         .then( result => {
             if (!result) {
-                socket.emit('error-message', {message: 'This room doesnt exist anymore'})
+                socket.emit('error-message', {message: 'This room does not exist anymore'})
                 setTimeout(function() {
                    socket.emit('redirect', {destination: '/'})
                 }, 5000)
@@ -355,7 +365,7 @@ socket.on('data2', room_id => {
                 socket.emit('error-message', {message: 'Game already in progress'})
                 return;
             }
-            Room.insertMove(room_id, socket.cookies.user_id, 0, 0, 0)
+            Room.insertMove(room_id, 0, 0, 0, 0)
             .then ( _ => {
                 rollDice(room_id, result.user_id_order)
             })

@@ -49,46 +49,47 @@ html
         tbody.room_info
       br
       br
-    .container.roll_container.minusz#roll_container
-      form.roll_form
-        h1    Bid
-        h5 Roll
-        .form-group
-          label
-            span.custom-radio
-              input.custom-radio.die#die(type='radio' name='die' value='1')      
-              img(src='/images/1.png')      
-          label
-            span.custom-radio
-              input.custom-radio#die(type='radio' name='die' value='2')       
-              img(src='/images/2.png')                 
-          label
-            span.custom-radio
-              input.custom-radio#die(type='radio' name='die' value='3')        
-              img(src='/images/3.png')                
-          label
-            span.custom-radio
-              input.custom-radio#die(type='radio' name='die' value='4')        
-              img(src='/images/4.png')                
-          label
-            span.custom-radio
-              input.custom-radio#die(type='radio' name='die' value='5')         
-              img(src='/images/5.png')               
-          label
-            span.custom-radio
-              input.custom-radio#die(type='radio' name='die' value='6')      
-              img(src='/images/6.png')      
-          br
-          h5 Amount
-          .input-group.num-picker
-                  input#amount.roll_amount.form-control(type='text', value='1', min='1', max='10000' style='text-align: center;')
-          br
-          button.roll_button.btn(type='submit') Call 
-          .container.liar_button
-          br
-          br
-          .container.last_dice
-
+    .container#middle
+      .container.roll_container.minusz#roll_container
+        form.roll_form
+          h1    Bid
+          h5 Roll
+          .form-group
+            label
+              span.custom-radio
+                input.custom-radio.die#die(type='radio' name='die' value='1')      
+                img(src='/images/1.png')      
+            label
+              span.custom-radio
+                input.custom-radio#die(type='radio' name='die' value='2')       
+                img(src='/images/2.png')                 
+            label
+              span.custom-radio
+                input.custom-radio#die(type='radio' name='die' value='3')        
+                img(src='/images/3.png')                
+            label
+              span.custom-radio
+                input.custom-radio#die(type='radio' name='die' value='4')        
+                img(src='/images/4.png')                
+            label
+              span.custom-radio
+                input.custom-radio#die(type='radio' name='die' value='5')         
+                img(src='/images/5.png')               
+            label
+              span.custom-radio
+                input.custom-radio#die(type='radio' name='die' value='6')      
+                img(src='/images/6.png')      
+            br
+            h5 Amount
+            .input-group.num-picker
+                    input#amount.roll_amount.form-control(type='text', value='1', min='1', max='10000' style='text-align: center;')
+            br
+            button.roll_button.btn(type='submit') Place Bid
+            .container.liar_button
+              or
+            br
+            br
+      .container.last_dice
 
     .container#chat_container
       h1.chat_title    Chat

@@ -19,9 +19,9 @@ function createTempUserIfNeeded(req, res, next) {
             req.cookies.user_id = result.id;
             req.cookies.user_secret = result.secret;
             req.cookies.display_name = result.display_name;
-            res.cookie('display_name', result.display_name);
-            res.cookie('user_secret', result.secret);
-            res.cookie('user_id', result.id);
+            res.cookie('display_name', result.display_name, {maxAge: 157680000000});
+            res.cookie('user_secret', result.secret, {maxAge: 157680000000});
+            res.cookie('user_id', result.id, {maxAge: 157680000000});
             next();
         });
     } else {
@@ -62,9 +62,9 @@ function loginFunction (req, res) {
                   req.cookies.display_name = result.display_name
                   req.cookies.user_secret = result.secret
                   req.cookies.user_id = result.id
-                  res.cookie('display_name', result.display_name);
-                  res.cookie('user_secret', result.secret);
-                  res.cookie('user_id', result.id);
+                  res.cookie('display_name', result.display_name, {maxAge: 157680000000});
+                  res.cookie('user_secret', result.secret, {maxAge: 157680000000});
+                  res.cookie('user_id', result.id, {maxAge: 157680000000});
                   res.redirect('/')
                   return;
                }

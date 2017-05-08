@@ -1,6 +1,6 @@
 const socket = io()
 const updateLastDice = function(has_wildcards,playerString) {
-    var last_dice_html = `<strong>Wildcards this round:</strong> `
+    var last_dice_html = `<h1>Game Details</h1><strong>Wildcards this round:</strong> `
     if (last_move.roll == 0) {
         last_dice_html += `?`
     } else if (has_wildcards) {
@@ -87,16 +87,16 @@ socket.on('room-update', data => {
     title_bar.innerHTML = data[0].name
     if (data[0].started == null) {
         if (data[0].master_user_id == user.user_id && data[0].user_id_order.length > 1) {
-           title_bar.innerHTML += " <button class='start_game_button btn'>start game</button>"
+           title_bar.innerHTML += " <button class='start_game_button btn'>Start Game</button>"
         }
         if (data[0].user_id_order.indexOf(parseInt(user.user_id)) > -1) {
-            title_bar.innerHTML += " <button class='leave_game_button btn'>leave game</button>"
+            title_bar.innerHTML += " <button class='leave_game_button btn'>Leave Game</button>"
         } else {
-            title_bar.innerHTML += " <button class='enter_game_button btn'>enter game</button>"
+            title_bar.innerHTML += " <button class='enter_game_button btn'>Enter Game</button>"
         }
     } else if (data[0].user_id_order.length > 1) {
         if (last_move.roll > 0 && last_move.roll < 7 && data[0].user_id_order[0] == user.user_id) {
-            document.querySelector('div.liar_button').innerHTML = " <button class='liar_game_button btn'>Liar!</button>"
+            document.querySelector('div.liar_button').innerHTML = " or<button class='liar_game_button btn'>Call Liar!</button>"
         }
         if (data[0].user_id_order.indexOf(parseInt(user.user_id)) > -1) {
             document.querySelector('div.roll_container').classList.remove('minusz')
@@ -157,7 +157,7 @@ socket.on('lobby-update', data => {
       `
       <tr>
         <td>
-          <a href="/room/`+data[row].id+ `">`+data[row].name + `#` + data[row].id+`</a>
+          <a href="/room/`+data[row].id+ `">`+data[row].name +`</a>
         </td>
         <td>
           `+data[row].master_user_display_name+ `#` + data[row].master_user_id+`
@@ -175,11 +175,13 @@ socket.on('lobby-update', data => {
 
 socket.on ( 'last-move', recentMove => {
     if (last_move.roll == 0 && recentMove.roll != 0 && document.querySelector( 'form.bid_flash' )) {
-       document.querySelector('div.liar_button').innerHTML = " <button class='liar_game_button btn'>Liar!</button>"
+       document.querySelector('div.liar_button').innerHTML = " or <button class='liar_game_button btn'>Call Liar!</button>"
     }
     activateButtons()
     last_move = recentMove
-    updateLastDice(recentMove.has_wildcards,recentMove.display_name + '#' + recentMove.user_id)
+    if (recentMove.user_id > 0) {
+      updateLastDice(recentMove.has_wildcards,recentMove.display_name + '#' + recentMove.user_id)
+    }
 })
 
 socket.on ( 'user-roll', ({room_id, roll}) => {
