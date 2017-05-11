@@ -36,7 +36,7 @@ html
             a.change#change(href='#update_modal', data-toggle='modal', data-target='#myModal1')
                 |  Change Name
     
-  .container.game-container
+    .container.game-container
       h1.room_title Title
       .container#user-listing
         h1.player_title Players  
@@ -60,10 +60,8 @@ html
               #dice_amount_picker.input-group.num-picker
                 .input-group.number_input
                   span.input-group-btn
-                    button.btn.btn-default(type='button') -
                   input#amount.roll_amount.form-control(type='text', value='1', min='1', max='10000', style='text-align: center;')
                   span.input-group-btn
-                    button.btn.btn-default(type='button') +
               #dice_value_picker.dice_picker
                 label
                   span.custom-radio
