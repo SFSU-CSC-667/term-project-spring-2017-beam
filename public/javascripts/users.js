@@ -1,19 +1,20 @@
 const socket = io()
 const updateLastDice = function(has_wildcards,playerString) {
-    var last_dice_html = `<h1>Game Details</h1><strong>Wildcards this round:</strong> `
+    var last_dice_html += `<div class="large"><strong>` + playerString 
     if (last_move.roll == 0) {
-        last_dice_html += `?`
+        last_dice_html += `Called liar!</strong>`
+    } else {
+        last_dice_html += `</strong> bid <strong>` + last_move.amount + `</strong><img src="/images/` + last_move.roll + `.png">`
+    }
+    last_dice_html += `</div><div class="wildcard"><strong><span id="wildcard_state"`
+    if (last_move.roll == 0) {
+        last_dice_html += `class="inactive">?</span></strong></div>`
     } else if (has_wildcards) {
-        last_dice_html += `Yes`
+        last_dice_html += `class="active">active</span></strong></div>`
     } else {
-        last_dice_html += `No`
+        last_dice_html += `class="inactive">inactive</span></strong></div>`
     }
-    last_dice_html += `<br><br><strong>Last move by: </strong>` + playerString + `<br>`
-    if (last_move.roll == 0) {
-        last_dice_html += `<strong> Action: </strong>Called liar!`
-    } else {
-        last_dice_html += `<strong>Amount: </strong>` + last_move.amount + `<br> <strong>Roll</strong>: <img src="/images/` + last_move.roll + `.png">`
-    }
+    
     document.querySelector('div.last_dice').innerHTML = last_dice_html
 }
 const playerDicesHTML = function(){
