@@ -9,7 +9,7 @@ a {
 }
 
 td,th {
-    padding-right: 40px !important;
+    padding-right: 0px !important;
 }
 
 @keyframes bid_flash {
@@ -133,7 +133,7 @@ img{
 
 #middle{
 	float: left;
-	width: 30%;
+	width: 40%;
 }
 
 .roll_button{
