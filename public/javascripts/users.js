@@ -177,7 +177,6 @@ socket.on('lobby-update', data => {
 })
 
 socket.on ( 'last-move', recentMove => {
-  console.log("test2")
     if (last_move.roll == 0 && recentMove.roll != 0 && document.querySelector( 'form.bid_flash' )) {
        document.querySelector('div.liar_button').innerHTML = " or <button class='liar_game_button btn'>Call Liar!</button>"
     }
