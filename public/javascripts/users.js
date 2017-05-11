@@ -1,12 +1,12 @@
 const socket = io()
 const updateLastDice = function(has_wildcards,playerString) {
-    var last_dice_html += `<div class="large"><strong>` + playerString 
+    var last_dice_html = `<div class="large"><strong>` + playerString 
     if (last_move.roll == 0) {
         last_dice_html += `Called liar!</strong>`
     } else {
-        last_dice_html += `</strong> bid <strong>` + last_move.amount + `</strong><img src="/images/` + last_move.roll + `.png">`
+        last_dice_html += `</strong> bid <strong>` + last_move.amount + `</strong>x<img src="/images/` + last_move.roll + `.png">`
     }
-    last_dice_html += `</div><div class="wildcard"><strong><span id="wildcard_state"`
+    last_dice_html += `</div><div class="wildcard">Wildcards are <strong><span id="wildcard_state"`
     if (last_move.roll == 0) {
         last_dice_html += `class="inactive">?</span></strong></div>`
     } else if (has_wildcards) {
@@ -96,6 +96,8 @@ socket.on('room-update', data => {
             title_bar.innerHTML += " <button class='enter_game_button btn'>Enter Game</button>"
         }
     } else if (data[0].user_id_order.length > 1) {
+      console.log("test1")
+        console.log(data)
         if (last_move.roll > 0 && last_move.roll < 7 && data[0].user_id_order[0] == user.user_id) {
             document.querySelector('div.liar_button').innerHTML = "<button class='liar_game_button btn'>Call Liar!</button>"
         }
@@ -108,7 +110,7 @@ socket.on('room-update', data => {
         } else {
             document.querySelector('form.roll_form').classList.remove('bid_flash')
         }
-        document.querySelector('th.check_header').innerHTML = ''
+        if (document.querySelector('th.check_header')) document.querySelector('th.check_header').innerHTML = ''
 
     }
 
@@ -118,7 +120,7 @@ socket.on('room-update', data => {
     for(row in data) {
       document.querySelector('h1.room_title').value = data[row].room_id
       if(data[row].started != null)
-        document.querySelector('th.check_header').value = 'Current Turn'
+        if (document.querySelector('th.check_header')) document.querySelector('th.check_header').value = 'Current Turn'
       var rowHTML = 
       `
       <tr`

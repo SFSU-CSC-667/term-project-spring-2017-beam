@@ -66,11 +66,11 @@ const init = ( app, server ) => {
         if (room_id > 0) {
             Room.inGameStatus(room_id)
             .then( result => {
-                socket.emit('room-update', result)
                 if (result[0].started) {
                   Room.getLastMove(room_id)
                   .then (lastMove => { 
                     socket.emit('last-move', {roll: lastMove.roll, amount: lastMove.amount, has_wildcards: lastMove.has_wildcards, display_name: lastMove.display_name, user_id: lastMove.user_id})
+                    socket.emit('room-update', result)
                         })
                     if (result[0].user_id_order.indexOf(parseInt(socket.cookies.user_id)) > -1) {
                         
@@ -79,6 +79,8 @@ const init = ( app, server ) => {
                             socket.emit('user-roll', {room_id: room_id, roll: user_roll.dice})
                         })
                     }
+                } else {
+                    socket.emit('room-update', result)
                 }
             })
         }
