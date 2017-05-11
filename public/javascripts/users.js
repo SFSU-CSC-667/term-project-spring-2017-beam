@@ -2,11 +2,11 @@ const socket = io()
 const updateLastDice = function(has_wildcards,playerString) {
     var last_dice_html = `<div class="large"><strong>` + playerString 
     if (last_move.roll == 0) {
-        last_dice_html += `Called liar!</strong>`
+        last_dice_html += ` called liar!</strong>`
     } else {
         last_dice_html += `</strong> bid <strong>` + last_move.amount + `</strong>x<img src="/images/` + last_move.roll + `.png">`
     }
-    last_dice_html += `</div><div class="wildcard">Wildcards are <strong><span id="wildcard_state"`
+    last_dice_html += `</div><br><div class="wildcard">Wildcards are <strong><span id="wildcard_state"`
     if (last_move.roll == 0) {
         last_dice_html += `class="inactive">?</span></strong></div>`
     } else if (has_wildcards) {
@@ -83,7 +83,7 @@ socket.on( 'redirect', ({destination}) => {
 })
 
 socket.on('room-update', data => {
-    document.querySelector('div.liar_button').innerHTML = ''
+    if (document.querySelector('div.liar_button')) document.querySelector('div.liar_button').innerHTML = ''
     const title_bar = document.querySelector ('h1.room_title')
     title_bar.innerHTML = data[0].name
     if (data[0].started == null) {
@@ -99,7 +99,7 @@ socket.on('room-update', data => {
       console.log("test1")
         console.log(data)
         if (last_move.roll > 0 && last_move.roll < 7 && data[0].user_id_order[0] == user.user_id) {
-            document.querySelector('div.liar_button').innerHTML = "<button class='liar_game_button btn'>Call Liar!</button>"
+            if (document.querySelector('div.liar_button')) document.querySelector('div.liar_button').innerHTML = "<button class='liar_game_button btn'>Call Liar!</button>"
         }
         if (data[0].user_id_order.indexOf(parseInt(user.user_id)) > -1) {
             document.querySelector('div.roll_container').classList.remove('minusz')
@@ -177,7 +177,7 @@ socket.on('lobby-update', data => {
 })
 
 socket.on ( 'last-move', recentMove => {
-    if (last_move.roll == 0 && recentMove.roll != 0 && document.querySelector( 'form.bid_flash' )) {
+    if ( document.querySelector('div.liar_button') && last_move.roll == 0 && recentMove.roll != 0 && document.querySelector( 'form.bid_flash' )) {
        document.querySelector('div.liar_button').innerHTML = "<button class='liar_game_button btn'>Call Liar!</button>"
     }
     activateButtons()
