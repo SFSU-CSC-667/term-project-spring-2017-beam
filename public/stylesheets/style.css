@@ -57,7 +57,7 @@ td,th {
 }
 
 #chat_container{
-	width: 30%;
+	width: 28%;
 	float: right;
 }
 
@@ -104,7 +104,7 @@ td,th {
 }
 
 .chat_input_button{
-	margin: 2px;
+	margin-top: -54px;
 	margin-bottom: 10px !important;
 	float: right !important;
 }
@@ -133,7 +133,7 @@ img{
 
 #middle{
 	float: left;
-	width: 40%;
+	width: 42%;
 }
 
 .roll_button{
@@ -152,13 +152,13 @@ label{
 
 .liar_button{
 	padding: 0px !important;
-    margin-left: 8% !important;
-    width: 50% !important;
-    float: left;
+    margin-left: 0px !important;
+    width: 100% !important;
+    float: right;
 }
 
 .liar_game_button{
-	margin-left: 10%;
+	margin-top: -25%;
 	color: white;
 	background-color: red;
 }

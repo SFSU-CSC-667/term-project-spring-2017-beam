@@ -99,7 +99,7 @@ socket.on('room-update', data => {
       console.log("test1")
         console.log(data)
         if (last_move.roll > 0 && last_move.roll < 7 && data[0].user_id_order[0] == user.user_id) {
-            document.querySelector('div.liar_button').innerHTML = " or<button class='liar_game_button btn'>Call Liar!</button>"
+            document.querySelector('div.liar_button').innerHTML = "<button class='liar_game_button btn'>Call Liar!</button>"
         }
         if (data[0].user_id_order.indexOf(parseInt(user.user_id)) > -1) {
             document.querySelector('div.roll_container').classList.remove('minusz')
@@ -178,7 +178,7 @@ socket.on('lobby-update', data => {
 
 socket.on ( 'last-move', recentMove => {
     if (last_move.roll == 0 && recentMove.roll != 0 && document.querySelector( 'form.bid_flash' )) {
-       document.querySelector('div.liar_button').innerHTML = " or <button class='liar_game_button btn'>Call Liar!</button>"
+       document.querySelector('div.liar_button').innerHTML = "<button class='liar_game_button btn'>Call Liar!</button>"
     }
     activateButtons()
     last_move = recentMove

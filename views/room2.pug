@@ -52,16 +52,14 @@ html
             Wildcards are 
             strong
               span#wildcard_state.active active
-          .liar_button.liar_game_button.btn Call Liar!
+          .liar_button
         .container.roll_container.minusz#roll_container 
           form.roll_form
             .form-group.bid_container
               span.bid_instructions There are
               #dice_amount_picker.input-group.num-picker
                 .input-group.number_input
-                  span.input-group-btn
                   input#amount.roll_amount.form-control(type='text', value='1', min='1', max='10000', style='text-align: center;')
-                  span.input-group-btn
               #dice_value_picker.dice_picker
                 label
                   span.custom-radio
@@ -91,8 +89,6 @@ html
                     img(src='/images/6.png', title='', style='')
               |  
               button.roll_button.btn(type='submit') Place Bid
-              .container.liar_button
-              br
               br
       #chat_container.container
         h1.chat_title  Chat
@@ -101,7 +97,6 @@ html
             input.room_id(type='hidden', value='0')
             ul.chat_area
             td
-            br
             .chat_input_group
               input.chat_input_text.form-control(placeholder='Enter chat message here', maxlength='140')
               br
