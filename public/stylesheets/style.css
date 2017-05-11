@@ -52,16 +52,13 @@ td,th {
 	}
 
 #user-listing{
-	width: auto;
+	width: 30%;
 	float: left
 }
 
 #chat_container{
-	width: 35%;
+	width: 30%;
 	float: right;
-	border-style: solid;
-	border-width: thin;
-	border-radius: 5px;
 }
 
 .navbar-inverse{
@@ -136,11 +133,11 @@ img{
 
 #middle{
 	float: left;
-	width: 25%;
+	width: 30%;
 }
 
 .roll_button{
-	float: left;
+	float: right;
 	color: white;
 	background-color: #4a4;
 }
