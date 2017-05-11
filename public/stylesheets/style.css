@@ -158,8 +158,9 @@ label{
 }
 
 .liar_game_button{
-	margin-top: -25%;
+	margin-top: -140px;
 	color: white;
+	float: right;
 	background-color: red;
 }
 .custom-radio input[type="radio"]{
