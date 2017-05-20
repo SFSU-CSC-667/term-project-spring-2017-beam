@@ -35,72 +35,73 @@ html
             p.name= 'Playing as ' + user_info.display_name + '#' + user_info.id
             a.change#change(href='#update_modal', data-toggle='modal', data-target='#myModal1')
                 |  Change Name
-
-    .container#user-listing
+    
+    .container.game-container
       h1.room_title Title
-
-
-      table
-        thead
-          tr
-            th.check_header Leader
-            th Player
-            th Dice
-        tbody.room_info
-      br
-      br
-    .container#middle
-      .container.roll_container.minusz#roll_container
-        form.roll_form
-          h1    Bid
-          h5 Roll
+      .container#user-listing
+        h1.player_title Players  
+        table
+          tbody.room_info
+        br
+        br
+      .container#middle
+        h1 Bid
+        .container.last_dice
+          .large
+          .wildcard
+            Wildcards are 
+            strong
+              span#wildcard_state.active active
+        .container.roll_container.minusz#roll_container 
+          form.roll_form
+            .form-group.bid_container
+              span.bid_instructions There are
+              #dice_amount_picker.input-group.num-picker
+                .input-group.number_input
+                  input#amount.roll_amount.form-control(type='text', value='1', min='1', max='10000', style='text-align: center;')
+              #dice_value_picker.dice_picker
+                label
+                  span.custom-radio
+                    input#die.custom-radio.die(type='radio', name='die', value='1')
+                    img(src='/images/1.png', title='', style='')
+                label
+                  span.custom-radio.selected
+                    input#die.custom-radio(type='radio', name='die', value='2')
+                    img(src='/images/2.png', title='', style='')
+                label
+                  span.custom-radio
+                    input#die.custom-radio(type='radio', name='die', value='3')
+                    img(src='/images/3.png', title='', style='')
+                br
+                |  
+                label
+                  span.custom-radio
+                    input#die.custom-radio(type='radio', name='die', value='4')
+                    img(src='/images/4.png', title='', style='')
+                label
+                  span.custom-radio
+                    input#die.custom-radio(type='radio', name='die', value='5')
+                    img(src='/images/5.png', title='', style='')
+                label
+                  span.custom-radio
+                    input#die.custom-radio(type='radio', name='die', value='6')
+                    img(src='/images/6.png', title='', style='')
+              |  
+              button.roll_button.btn(type='submit') Place Bid
+              .liar_button
+              br
+      #chat_container.container
+        h1.chat_title  Chat
+        form#chat_window
           .form-group
-            label
-              span.custom-radio
-                input.custom-radio.die#die(type='radio' name='die' value='1')      
-                img(src='/images/1.png')      
-            label
-              span.custom-radio
-                input.custom-radio#die(type='radio' name='die' value='2')       
-                img(src='/images/2.png')                 
-            label
-              span.custom-radio
-                input.custom-radio#die(type='radio' name='die' value='3')        
-                img(src='/images/3.png')                
-            label
-              span.custom-radio
-                input.custom-radio#die(type='radio' name='die' value='4')        
-                img(src='/images/4.png')                
-            label
-              span.custom-radio
-                input.custom-radio#die(type='radio' name='die' value='5')         
-                img(src='/images/5.png')               
-            label
-              span.custom-radio
-                input.custom-radio#die(type='radio' name='die' value='6')      
-                img(src='/images/6.png')      
-            br
-            h5 Amount
-            .input-group.num-picker
-                    input#amount.roll_amount.form-control(type='text', value='1', min='1', max='10000' style='text-align: center;')
-            br
-            button.roll_button.btn(type='submit') Place Bid
-            .container.liar_button
-              or
-            br
-            br
-      .container.last_dice
-
-    .container#chat_container
-      h1.chat_title    Chat
-      form
-        .form-group
-          input.room_id(type='hidden' value='0')            
-          ul.chat_area
+            input.room_id(type='hidden', value='0')
+            ul.chat_area
             td
-          input.chat_input_text.form-control(placeholder='Enter chat message here', maxlength='140')
-          br
-          button.chat_input_button.btn(type='submit') Send
+            .chat_input_group
+              input.chat_input_text.form-control(placeholder='Enter chat message here', maxlength='140')
+              br
+              button.chat_input_button.btn(type='submit') Send
+    
 
     #myModal.modal.fade.bs-modal-sm(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel', aria-hidden='true')
       .modal-dialog.modal-sm
