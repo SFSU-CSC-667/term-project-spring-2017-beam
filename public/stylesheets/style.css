@@ -10,6 +10,7 @@ a {
 
 td,th {
     padding-right: 0px !important;
+    min-width: 120px;
 }
 
 @keyframes bid_flash {

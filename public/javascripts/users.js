@@ -124,11 +124,11 @@ socket.on('room-update', data => {
       var rowHTML = 
       `
       <tr`
-          if (data[row].user_id == data[row].master_user_id && data[row].started == null) rowHTML += `><td>X`
-          else if (data[row].user_id == data[row].user_id_order[0] && data[row].started != null) rowHTML += ` class="green_flash"><td>`
-          else rowHTML += `><td>`
+          if (data[row].user_id == data[row].master_user_id && data[row].started == null) rowHTML += `>`
+          else if (data[row].user_id == data[row].user_id_order[0] && data[row].started != null) rowHTML += ` class="green_flash">`
+          else rowHTML += `>`
           rowHTML+=`
-        </td>
+        
         <td>
           `+data[row].display_name+ `#` + data[row].user_id+`
         </td>`
