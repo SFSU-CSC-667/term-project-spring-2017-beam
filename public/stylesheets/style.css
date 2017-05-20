@@ -9,7 +9,7 @@ a {
 }
 
 td,th {
-    padding-right: 40px !important;
+    padding-right: 0px !important;
 }
 
 @keyframes bid_flash {
@@ -52,16 +52,13 @@ td,th {
 	}
 
 #user-listing{
-	width: auto;
+	width: 30%;
 	float: left
 }
 
 #chat_container{
-	width: 35%;
+	width: 28%;
 	float: right;
-	border-style: solid;
-	border-width: thin;
-	border-radius: 5px;
 }
 
 .navbar-inverse{
@@ -107,7 +104,7 @@ td,th {
 }
 
 .chat_input_button{
-	margin: 2px;
+	margin-top: -54px;
 	margin-bottom: 10px !important;
 	float: right !important;
 }
@@ -136,11 +133,13 @@ img{
 
 #middle{
 	float: left;
-	width: 25%;
+	width: 42%;
 }
 
 .roll_button{
-	float: left;
+	float: right;
+	color: white;
+	background-color: #4a4;
 }
 
 label{
@@ -153,13 +152,16 @@ label{
 
 .liar_button{
 	padding: 0px !important;
-    margin-left: 8% !important;
-    width: 50% !important;
-    float: left;
+    margin-left: 0px !important;
+    width: 100% !important;
+    float: right;
 }
 
 .liar_game_button{
-	margin-left: 10%;
+	margin-top: -140px;
+	color: white;
+	float: right;
+	background-color: red;
 }
 .custom-radio input[type="radio"]{
 	margin: 1px;
@@ -200,4 +202,56 @@ label{
 
 td img {
     width: 26px;
+}
+
+#chat_window {
+    border: thin solid black;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.large {
+    font-size: 18px;
+    display: inline-block;
+}
+
+#wildcard_state.active {
+    color: #4A4;
+}
+
+#wildcard_state.inactive {
+    color: red;
+}
+
+.wildcard {
+    display: inline-block;
+    margin-left: 24px;
+}
+
+#dice_amount_picker {
+    width: 100px;
+    padding-top: 0px;
+}
+
+#dice_value_picker, #dice_amount_picker {
+    display: inline-block;
+    padding-top: 20px;
+    margin-top: -20px;
+}
+
+.form-group.bid_container {
+	margin-top: 20px;
+}
+
+#dice_value_picker {
+	min-width: 100px;margin-left: 24px;
+}
+
+span.bid_instructions {
+    margin-right: 20px;
+}
+
+.chat_input_group {
+    margin-top: 40px;
+    margin-bottom: -30px;
 }

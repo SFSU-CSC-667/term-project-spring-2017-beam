@@ -1,19 +1,20 @@
 const socket = io()
 const updateLastDice = function(has_wildcards,playerString) {
-    var last_dice_html = `<h1>Game Details</h1><strong>Wildcards this round:</strong> `
+    var last_dice_html = `<div class="large"><strong>` + playerString 
     if (last_move.roll == 0) {
-        last_dice_html += `?`
+        last_dice_html += ` called liar!</strong>`
+    } else {
+        last_dice_html += `</strong> bid <strong>` + last_move.amount + `</strong>x<img src="/images/` + last_move.roll + `.png">`
+    }
+    last_dice_html += `</div><br><div class="wildcard">Wildcards are <strong><span id="wildcard_state"`
+    if (last_move.roll == 0) {
+        last_dice_html += `class="inactive">?</span></strong></div>`
     } else if (has_wildcards) {
-        last_dice_html += `Yes`
+        last_dice_html += `class="active">active</span></strong></div>`
     } else {
-        last_dice_html += `No`
+        last_dice_html += `class="inactive">inactive</span></strong></div>`
     }
-    last_dice_html += `<br><br><strong>Last move by: </strong>` + playerString + `<br>`
-    if (last_move.roll == 0) {
-        last_dice_html += `<strong> Action: </strong>Called liar!`
-    } else {
-        last_dice_html += `<strong>Amount: </strong>` + last_move.amount + `<br> <strong>Roll</strong>: <img src="/images/` + last_move.roll + `.png">`
-    }
+    
     document.querySelector('div.last_dice').innerHTML = last_dice_html
 }
 const playerDicesHTML = function(){
@@ -82,7 +83,7 @@ socket.on( 'redirect', ({destination}) => {
 })
 
 socket.on('room-update', data => {
-    document.querySelector('div.liar_button').innerHTML = ''
+    if (document.querySelector('div.liar_button')) document.querySelector('div.liar_button').innerHTML = ''
     const title_bar = document.querySelector ('h1.room_title')
     title_bar.innerHTML = data[0].name
     if (data[0].started == null) {
@@ -95,8 +96,10 @@ socket.on('room-update', data => {
             title_bar.innerHTML += " <button class='enter_game_button btn'>Enter Game</button>"
         }
     } else if (data[0].user_id_order.length > 1) {
+      console.log("test1")
+        console.log(data)
         if (last_move.roll > 0 && last_move.roll < 7 && data[0].user_id_order[0] == user.user_id) {
-            document.querySelector('div.liar_button').innerHTML = " or<button class='liar_game_button btn'>Call Liar!</button>"
+            if (document.querySelector('div.liar_button')) document.querySelector('div.liar_button').innerHTML = "<button class='liar_game_button btn'>Call Liar!</button>"
         }
         if (data[0].user_id_order.indexOf(parseInt(user.user_id)) > -1) {
             document.querySelector('div.roll_container').classList.remove('minusz')
@@ -107,7 +110,7 @@ socket.on('room-update', data => {
         } else {
             document.querySelector('form.roll_form').classList.remove('bid_flash')
         }
-        document.querySelector('th.check_header').innerHTML = ''
+        if (document.querySelector('th.check_header')) document.querySelector('th.check_header').innerHTML = ''
 
     }
 
@@ -117,7 +120,7 @@ socket.on('room-update', data => {
     for(row in data) {
       document.querySelector('h1.room_title').value = data[row].room_id
       if(data[row].started != null)
-        document.querySelector('th.check_header').value = 'Current Turn'
+        if (document.querySelector('th.check_header')) document.querySelector('th.check_header').value = 'Current Turn'
       var rowHTML = 
       `
       <tr`
@@ -174,8 +177,8 @@ socket.on('lobby-update', data => {
 })
 
 socket.on ( 'last-move', recentMove => {
-    if (last_move.roll == 0 && recentMove.roll != 0 && document.querySelector( 'form.bid_flash' )) {
-       document.querySelector('div.liar_button').innerHTML = " or <button class='liar_game_button btn'>Call Liar!</button>"
+    if ( document.querySelector('div.liar_button') && last_move.roll == 0 && recentMove.roll != 0 && document.querySelector( 'form.bid_flash' )) {
+       document.querySelector('div.liar_button').innerHTML = "<button class='liar_game_button btn'>Call Liar!</button>"
     }
     activateButtons()
     last_move = recentMove
