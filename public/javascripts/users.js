@@ -58,7 +58,8 @@ const activateButtons = function(){
     event.preventDefault()
     event.stopPropagation()
     event.stopImmediatePropagation()
-    const roll_die = document.querySelector('input[name=die]:checked') ? document.querySelector('input[name=die]:checked').value : -5
+    const roll_die = document.querySelector('input[name=die]:checked') ? 
+          document.querySelector('input[name=die]:checked').value : -5
     const roll_amount = document.querySelector('input.roll_amount').value
     socket.emit( 'make-move', {room_id: room.room_id, roll: roll_die, amount: roll_amount})
   })
