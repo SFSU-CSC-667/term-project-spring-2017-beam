@@ -378,10 +378,11 @@ const init = ( app, server ) => {
   
     socket.on( 'chat', ({room_id, message}) => {
         const cookies = socket.cookies
-        Room.insertMessage(room_id, cookies.user_id, message)
+        const san_message = message.replace(/[^a-z0-9áéíóúñü \.,_-]/gim,"").trim()
+        Room.insertMessage(room_id, cookies.user_id, san_message)
         .then( _ => io.to(room_id).emit('chat', {user_id: cookies.user_id,
                                                  display_name: cookies.display_name,
-                                                 message: message}))
+                                                 message: san_message}))
     })
 
 
