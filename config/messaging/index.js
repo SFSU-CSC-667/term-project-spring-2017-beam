@@ -379,7 +379,9 @@ const init = ( app, server ) => {
     socket.on( 'chat', ({room_id, message}) => {
         const cookies = socket.cookies
         Room.insertMessage(room_id, cookies.user_id, message)
-        .then( _ => io.to(room_id).emit('chat', {user_id: cookies.user_id, display_name: cookies.display_name, message: message}))
+        .then( _ => io.to(room_id).emit('chat', {user_id: cookies.user_id,
+                                                 display_name: cookies.display_name,
+                                                 message: message}))
     })
 
 
