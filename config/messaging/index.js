@@ -55,13 +55,13 @@ const init = ( app, server ) => {
     socket.cookies = cookie.parse(socket.handshake.headers.cookie
          || socket.request.headers.cookie)
     socket.join(socket.cookies.user_secret)
-    
     secretsById[socket.cookies.user_id] = socket.cookies.user_secret
+    
     socket.on( 'disconnect', data => {
       console.log( 'client disconnected' )
     })
 
-   socket.on('room-subscribe', room_id => {
+    socket.on('room-subscribe', room_id => {
         socket.join(room_id)
         if (room_id > 0) {
             Room.inGameStatus(room_id)
@@ -94,7 +94,7 @@ const init = ( app, server ) => {
         })
     })
 
-socket.on('data2', room_id => {
+    socket.on('data2', room_id => {
        console.log('data2 called')
        if (room_id > 0) {
             Room.inGameStatus(room_id)
