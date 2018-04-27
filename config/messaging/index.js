@@ -47,6 +47,10 @@ const init = ( app, server ) => {
         io.to('0').emit('lobby-update', result)
       })
   }
+  
+  function sanitizeInput(message) {
+    return message.replace(/[^a-z0-9áéíóúñü \.,_-]/gim,"").trim()
+  }
 
   app.set( 'io', io )
 
@@ -378,7 +382,7 @@ const init = ( app, server ) => {
   
     socket.on( 'chat', ({room_id, message}) => {
         const cookies = socket.cookies
-        const san_message = message.replace(/[^a-z0-9áéíóúñü \.,_-]/gim,"").trim()
+        const san_message = sanitizeInput(message)
         Room.insertMessage(room_id, cookies.user_id, san_message)
         .then( _ => io.to(room_id).emit('chat', {user_id: cookies.user_id,
                                                  display_name: cookies.display_name,
@@ -436,6 +440,7 @@ const init = ( app, server ) => {
 
     socket.on( 'display-name-update', ({display_name}) => {
         const cookies = socket.cookies
+        display_name = sanitizeInput(display_name)
         User.updateDisplayName(display_name, cookies.user_id)
         .then( result => {
             if (result.length == 0) {
